@@ -1,0 +1,726 @@
+{
+  "saveButtonText": "SAVE",
+  "@saveButtonText": {
+    "description": "Save button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishButtonText": "PUBLISH",
+  "@publishButtonText": {
+    "description": "Publish button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteButtonText": "DELETE",
+  "@deleteButtonText": {
+    "description": "Delete button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "updateButtonText": "UPDATE",
+  "@updateButtonText": {
+    "description": "Update button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editButtonText": "EDIT",
+  "@editButtonText": {
+    "description": "Edit button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nextButtonText": "NEXT",
+  "@nextButtonText": {
+    "description": "Next button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resetButtonText": "RESET",
+  "@resetButtonText": {
+    "description": "Reset button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clearTooltipText": "Clear",
+  "@clearTooltipText": {
+    "description": "Clear tooltip text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "doneTooltipText": "Done",
+  "@doneTooltipText": {
+    "description": "Done tooltip text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newTooltipText": "New",
+  "@newTooltipText": {
+    "description": "New tooltip text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "closeTooltipText": "Close",
+  "@closeTooltipText": {
+    "description": "Close tooltip text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "applicationSettingsAppBarTitle": "APPLICATION SETTINGS",
+  "@applicationSettingsAppBarTitle": {
+    "description": "Application settings app bar title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "applicationSettingsCountryText": "Country:",
+  "@applicationSettingsCountryText": {
+    "description": "Application settings country text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "applicationSettingsLanguageText": "Language:",
+  "@applicationSettingsLanguageText": {
+    "description": "Application settings language text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "applicationSettingsTimeZoneText": "Time zone:",
+  "@applicationSettingsTimeZoneText": {
+    "description": "Application settings time zone text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addFavoriteLocationAppBarTitle": "ADD A PLACE",
+  "@addFavoriteLocationAppBarTitle": {
+    "description": "App bar title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addFavoriteLocationPlaceNameLabel": "Name",
+  "@addFavoriteLocationPlaceNameLabel": {
+    "description": "Place name inputText label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addFavoriteLocationAlertTitle": "WARNING!",
+  "@addFavoriteLocationAlertTitle": {
+    "description": "Alert dialog title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addFavoriteLocationAlertOk": "OK",
+  "@addFavoriteLocationAlertOk": {
+    "description": "Ok button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addFavoriteLocationMissingPlaceName": "Please give a place name before saving.",
+  "@addFavoriteLocationMissingPlaceName": {
+    "description": "Missing place name alert dialog text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addFavoriteLocationMissingPlaceLocation": "Please select a place location before saving.",
+  "@addFavoriteLocationMissingPlaceLocation": {
+    "description": "Missing place location alert dialog text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addFavoriteLocationChoosePlaceText": "Choose a place",
+  "@addFavoriteLocationChoosePlaceText": {
+    "description": "Choose a place text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addFavoriteLocationMyPositionText": "My position",
+  "@addFavoriteLocationMyPositionText": {
+    "description": "My position text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addFavoriteLocationLocateOnMapText": "Locate on map",
+  "@addFavoriteLocationLocateOnMapText": {
+    "description": "Locate on map text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addFavoriteLocationLocateOnMapAppBarText": "LOCATE ON MAP",
+  "@addFavoriteLocationLocateOnMapAppBarText": {
+    "description": "Locate on map text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationMotto": "Finding a carrier has never been easier!",
+  "@authenticationMotto": {
+    "description": "motto of the company",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationSignupText": "SIGN UP",
+  "@authenticationSignupText": {
+    "description": "Signup text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "chooseUserTypeAppBarText": "ACCOUNT TYPE",
+  "@chooseUserTypeAppBarText": {
+    "description": "Choose user type screen title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "chooseUserTypeHeaderText": "Which kind of user are you?",
+  "@chooseUserTypeHeaderText": {
+    "description": "Choose user type header title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "chooseUserTypeTransporterLabel": "Transporter:",
+  "@chooseUserTypeTransporterLabel": {
+    "description": "Choose user type transporter label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "chooseUserTypeCustomerLabel": "Customer:",
+  "@chooseUserTypeCustomerLabel": {
+    "description": "Choose user type customer label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "chooseUserTypeErrorText": "Please select an account type.",
+  "@chooseUserTypeErrorText": {
+    "description": "Choose user type error text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpAppBarTitle": "SIGN UP",
+  "@signUpAppBarTitle": {
+    "description": "Sign up screen title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpAppButtonText": "SIGN UP",
+  "@signUpAppButtonText": {
+    "description": "Sign up button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpTOS1": "By signing up, you accept, without reservations, our ",
+  "@signUpTOS1": {
+    "description": "Sign up terms of service part 1 text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpTOS2": "terms of service ",
+  "@signUpTOS2": {
+    "description": "Sign up terms of service part 2 text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpTOS3": "and our ",
+  "@signUpTOS3": {
+    "description": "Sign up terms of service part 3 text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpTOS4": "privacy policy.",
+  "@signUpTOS4": {
+    "description": "Sign up terms of service part 4 text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpAlreadyMemberSignInText": "ALREADY MEMBER? SIGN IN",
+  "@signUpAlreadyMemberSignInText": {
+    "description": "Sign up already member sign in text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpGenderLabel": "Gender",
+  "@signUpGenderLabel": {
+    "description": "Sign up gender label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpFirstnameLabel": "Firstname",
+  "@signUpFirstnameLabel": {
+    "description": "Sign up firstname label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpLastnameLabel": "Lastname",
+  "@signUpLastnameLabel": {
+    "description": "Sign up lastname label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpBirthDateLabel": "Birth date",
+  "@signUpBirthDateLabel": {
+    "description": "Sign up birth date label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpEmailLabel": "E-mail",
+  "@signUpEmailLabel": {
+    "description": "Sign up email label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpMobileNumberLabel": "Mobile number",
+  "@signUpMobileNumberLabel": {
+    "description": "Sign up mobile number label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpPasswordLabel": "Password (8 characters min)",
+  "@signUpPasswordLabel": {
+    "description": "Sign up password label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpConfirmPasswordLabel": "Password confirmation",
+  "@signUpConfirmPasswordLabel": {
+    "description": "Sign up password confirmation label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpFirstnameValidationMessage": "Firstname is mandatory.",
+  "@signUpFirstnameValidationMessage": {
+    "description": "Sign up firstname error message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpLastnameValidationMessage": "Lastname is mandatory.",
+  "@signUpLastnameValidationMessage": {
+    "description": "Sign up lastname error message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpPasswordValidationMessage": "Password does not correspond to confirmation.",
+  "@signUpPasswordValidationMessage": {
+    "description": "Sign up password error message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpSubscribeNewsletterText": "Receive promotions and good deals?",
+  "@signUpSubscribeNewsletterText": {
+    "description": "Sign up receive newsletter text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpUnavailableText": "Signing up is temporarily unavailable. Please try again later.",
+  "@signUpUnavailableText": {
+    "description": "Sign up unavailable text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationSigninText": "SIGN IN",
+  "@authenticationSigninText": {
+    "description": "Signin text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "authenticationBadCredentialsText": "Login or password are incorrect.",
+  "@authenticationBadCredentialsText": {
+    "description": "Bad credentials text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "somethingWentWrongText": "An error occured while processing your request. Please contact support team if error persists.",
+  "@somethingWentWrongText": {
+    "description": "something Went Wrong Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInForgottenPasswordText": "Forgot password?",
+  "@signInForgottenPasswordText": {
+    "description": "Forgot password text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInNotYetMemeberSignUpText": "NOT YET MEMBER? -> SIGN UP",
+  "@signInNotYetMemeberSignUpText": {
+    "description": "Forgot password text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInLoginLabel": "E-mail OR Mobile number",
+  "@signInLoginLabel": {
+    "description": "Login label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInPasswordLabel": "Password",
+  "@signInPasswordLabel": {
+    "description": "Password label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginValidatorMessage": "E-mail or mobile number is incorrect.",
+  "@loginValidatorMessage": {
+    "description": "login validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "emailValidatorMessage": "E-mail is incorrect.",
+  "@emailValidatorMessage": {
+    "description": "email validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "phoneValidatorMessage": "Mobile number is incorrect.",
+  "@phoneValidatorMessage": {
+    "description": "email validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "passwordValidatorMessage": "Password should contain at least 8 characters.",
+  "@passwordValidatorMessage": {
+    "description": "password validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "dateBeforeValidatorMessage": "Start date should be before end date.",
+  "@dateBeforeValidatorMessage": {
+    "description": "dateBefore validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ageEmptyValidatorMessage": "Birth date is mandatory.",
+  "@ageEmptyValidatorMessage": {
+    "description": "dateBefore validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ageMinValidatorMessage": "You should be at least 18 years old.",
+  "@ageMinValidatorMessage": {
+    "description": "age min validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ageMaxValidatorMessage": "You should be at most 100 years old.",
+  "@ageMaxValidatorMessage": {
+    "description": "age max validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyAppBarTitle": "JOURNEY REQUEST",
+  "@createJourneyAppBarTitle": {
+    "description": "Journey request screen title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyHeaderText": "Detail your request:",
+  "@createJourneyHeaderText": {
+    "description": "Journey request header text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyDepartureLabel": "Departure",
+  "@createJourneyDepartureLabel": {
+    "description": "Journey request departure label text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyDepartureValidatorMessage": "Departure is mandatory.",
+  "@createJourneyDepartureValidatorMessage": {
+    "description": "Journey request departure validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyArrivalLabel": "Arrival",
+  "@createJourneyArrivalLabel": {
+    "description": "Journey request arrival label text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyArrivalValidatorMessage": "Arrival is mandatory.",
+  "@createJourneyArrivalValidatorMessage": {
+    "description": "Journey request arrival validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyVehiculeLabel": "Vehicule",
+  "@createJourneyVehiculeLabel": {
+    "description": "Journey request vehicule label text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyVehiculeValidatorMessage": "Vehicule is mandatory.",
+  "@createJourneyVehiculeValidatorMessage": {
+    "description": "Create journey request vehicule validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyDateLabel": "Date",
+  "@createJourneyDateLabel": {
+    "description": "Journey request date label text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyDateValidatorMessage": "Date is mandatory.",
+  "@createJourneyDateValidatorMessage": {
+    "description": "Date field validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyTimeLabel": "Time",
+  "@createJourneyTimeLabel": {
+    "description": "Journey request time label text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyTimeValidatorMessage": "Time is mandatory.",
+  "@createJourneyTimeValidatorMessage": {
+    "description": "Time field validation message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyHandlersLabel": "Handlers",
+  "@createJourneyHandlersLabel": {
+    "description": "Journey request handlers label text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyDescriptionLabel": "Describe your request",
+  "@createJourneyDescriptionLabel": {
+    "description": "Journey request description label text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createJourneyDescriptionValidatorMessage": "Description is mandatory.",
+  "@createJourneyDescriptionValidatorMessage": {
+    "description": "Journey request description validator message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "favoritePlacesAppBarTitle": "FAVORITE PLACES",
+  "@favoritePlacesAppBarTitle": {
+    "description": "Favorite places app bar title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "favoritePlacesEmptyText": "You do not have favorite places yet.",
+  "@favoritePlacesEmptyText": {
+    "description": "Favorite places empty text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "localitySearchHelpText": "Type a locality name",
+  "@localitySearchHelpText": {
+    "description": "Locality search help text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingText": "Loading...",
+  "@loadingText": {
+    "description": "Loading text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resetPasswordAppBarTitle": "PASSWORD RESET",
+  "@resetPasswordAppBarTitle": {
+    "description": "reset Password AppBar Title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resetPasswordResultText": "If login exists, an E-mail or SMS containing password reset link will be sent to you within 10 minutes.",
+  "@resetPasswordResultText": {
+    "description": "reset Password result text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "validateMobileAlertTitle": "Mobile validation required",
+  "@validateMobileAlertTitle": {
+    "description": "validate Mobile Alert Title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "validateMobileAlertText1": "Your mobile number is not yet validated.",
+  "@validateMobileAlertText1": {
+    "description": "validate Mobile Alert Text1",
+    "type": "text",
+    "placeholders": {}
+  },
+  "validateMobileAlertText2": "Please validate it before proceeding.",
+  "@validateMobileAlertText2": {
+    "description": "validate Mobile Alert Text2",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysAppBarTitle": "MY JOURNEYS",
+  "@clientJourneysAppBarTitle": {
+    "description": "client journeys app bar title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysEmptyText": "You have no journey requests for the chosen period.",
+  "@clientJourneysEmptyText": {
+    "description": "client journeys empty text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysSortDateDesc": "Latest first",
+  "@clientJourneysSortDateDesc": {
+    "description": "client journeys date sort desc",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysSortDateAsc": "Oldest first",
+  "@clientJourneysSortDateAsc": {
+    "description": "client journeys date sort asc",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysFilterLastWeek": "Last week",
+  "@clientJourneysFilterLastWeek": {
+    "description": "client journeys filter created last week",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysFilterLastMonth": "Last month",
+  "@clientJourneysFilterLastMonth": {
+    "description": "client journeys filter created last month",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysFilterLastQuarter": "Last quarter",
+  "@clientJourneysFilterLastQuarter": {
+    "description": "client journeys filter created last quarter",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysFilterLastSemester": "Last semester",
+  "@clientJourneysFilterLastSemester": {
+    "description": "client journeys filter created last semester",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysFilterLastYear": "Last year",
+  "@clientJourneysFilterLastYear": {
+    "description": "client journeys filter created last year",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysInfoTooltip": "Details",
+  "@clientJourneysInfoTooltip": {
+    "description": "client journeys info tooltip",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysProposalsTooltip": "Offers",
+  "@clientJourneysProposalsTooltip": {
+    "description": "client journeys proposals tooltip",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysOpened": "OPEN",
+  "@clientJourneysOpened": {
+    "description": "client journeys open",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneysExpired": "EXPIRED",
+  "@clientJourneysExpired": {
+    "description": "client journeys expired",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneyDetailsAppBarTitle": "JOURNEY DETAILS",
+  "@clientJourneyDetailsAppBarTitle": {
+    "description": "client Journey Details App Bar Title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "clientJourneyDetailsDescriptionLabel": "Description",
+  "@clientJourneyDetailsDescriptionLabel": {
+    "description": "client Journey details description label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "localitySearchNoResultText": "No results were found. Try to create a new location from map.",
+  "@localitySearchNoResultText": {
+    "description": "locality Search No Result Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteJourneyRequestWarningTitle": "DELETION OF JOURNEY REQUEST",
+  "@deleteJourneyRequestWarningTitle": {
+    "description": "delete Journey Request Warning Title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteJourneyRequestWarningText": "Are you sure you want to remove this journey request?",
+  "@deleteJourneyRequestWarningText": {
+    "description": "delete Journey Request Warning Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteJourneyRequestErrorMessage": "Something went wrong. We were unable to delete this journey request. If problem persists, please contact support.",
+  "@deleteJourneyRequestErrorMessage": {
+    "description": "delete Journey Request Error Message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proposalsNoProposalsYetText": "No offers yet.",
+  "@proposalsNoProposalsYetText": {
+    "description": "proposals No Proposals Yet Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proposalsAppBarTitle": "OFFERS",
+  "@proposalsAppBarTitle": {
+    "description": "proposals AppBar Title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proposalsRejectText": "REJECT",
+  "@proposalsRejectText": {
+    "description": "proposals Reject Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proposalsAcceptText": "ACCEPT",
+  "@proposalsAcceptText": {
+    "description": "proposals Accept Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proposalsContactText": "CONTACT",
+  "@proposalsContactText": {
+    "description": "proposals Contact Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "proposalRejectedMessage": "Proposal of {transporterName} rejected.",
+  "@proposalRejectedMessage": {
+    "description": "proposal Rejected Message",
+    "type": "text",
+    "placeholders": {
+      "transporterName": {
+        "type": "String",
+        "example": "Eddy"
+      }
+    }
+  },
+  "proposalAcceptedMessage": "Proposal of {transporterName} accepted.",
+  "@proposalAcceptedMessage": {
+    "description": "proposal Accepted Message",
+    "type": "text",
+    "placeholders": {
+      "transporterName": {
+        "type": "String",
+        "example": "Eddy"
+      }
+    }
+  },
+  "proposalAcceptedText": "ACCEPTED",
+  "@proposalAcceptedText": {
+    "description": "proposal Accepted Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "genericErrorMessage": "Something went wrong. If problem persists, please contact support.",
+  "@genericErrorMessage": {
+    "description": "generic Error Message",
+    "type": "text",
+    "placeholders": {}
+  }
+}
