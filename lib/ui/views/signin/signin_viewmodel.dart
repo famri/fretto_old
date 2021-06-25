@@ -28,15 +28,18 @@ class SigninViewModel extends FormViewModel {
   void signin() {
     final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
-    runBusyFuture(_authenticationService.signin(loginValue!, passwordValue!),
+    runBusyFuture(
+        _authenticationService
+            .signin(loginValue!, passwordValue!)
+            .then((_) => _navigationService.clearStackAndShow(Routes.homeView)),
         busyObject: signinBusyObj);
-
-    _navigationService.replaceWith(Routes.homeView);
   }
 
   void navigateToPasswordResetRequest() {}
 
-  void navigateToAccountTypeChoice() {}
+  void navigateToAccountTypeChoice() {
+    _navigationService.navigateTo(Routes.accountTypeChoiceView);
+  }
 
   @override
   void setFormStatus() {}

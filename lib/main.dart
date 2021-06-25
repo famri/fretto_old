@@ -2,14 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/ui/shared/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import 'api/local_storage_api.dart';
 import 'app/app.locator.dart';
 import 'app/app.router.dart';
 import 'l10n/locale/app_localizations.dart';
-import 'services/local_storage_service.dart';
 
 void main() async {
   /* ENSURE ASYNC WILL NOT GENERATE RUNTIME ERROR */
@@ -33,7 +34,8 @@ class Fretto extends StatefulWidget {
 }
 
 class _FrettoState extends State<Fretto> {
-  LocalStorageService _localStorageService = locator<LocalStorageService>();
+  ApplicationSettingsService _applicationSettingsService =
+      locator<ApplicationSettingsService>();
 
   String _userLocaleLanguage = 'en';
   String _userLocaleCountry = 'US';
@@ -46,22 +48,22 @@ class _FrettoState extends State<Fretto> {
   void restartApp() {
     setState(() {
       key = UniqueKey();
-      if (_localStorageService.applicationSettings != null) {
+      if (_applicationSettingsService.applicationSettings != null) {
         _userLocaleLanguage =
-            _localStorageService.applicationSettings!.userLocaleLanguage;
+            _applicationSettingsService.applicationSettings!.userLocaleLanguage;
         _userLocaleCountry =
-            _localStorageService.applicationSettings!.userLocaleCountry;
+            _applicationSettingsService.applicationSettings!.userLocaleCountry;
       }
     });
   }
 
   @override
   void initState() {
-    if (_localStorageService.applicationSettings != null) {
+    if (_applicationSettingsService.applicationSettings != null) {
       _userLocaleLanguage =
-          _localStorageService.applicationSettings!.userLocaleLanguage;
+          _applicationSettingsService.applicationSettings!.userLocaleLanguage;
       _userLocaleCountry =
-          _localStorageService.applicationSettings!.userLocaleCountry;
+          _applicationSettingsService.applicationSettings!.userLocaleCountry;
     }
 
     super.initState();

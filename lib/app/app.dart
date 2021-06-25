@@ -2,11 +2,12 @@ import 'package:fretto/api/authentication_api.dart';
 import 'package:fretto/api/country_api.dart';
 import 'package:fretto/api/gender_api.dart';
 import 'package:fretto/api/user_locale_api.dart';
+import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/authentication_service.dart';
 import 'package:fretto/services/country_service.dart';
 import 'package:fretto/services/environment_service.dart';
 import 'package:fretto/services/gender_service.dart';
-import 'package:fretto/services/local_storage_service.dart';
+import 'package:fretto/api/local_storage_api.dart';
 import 'package:fretto/services/user_locale_service.dart';
 import 'package:fretto/ui/views/account_type_choice/account_type_choice_view.dart';
 import 'package:fretto/ui/views/application_settings/application_settings_view.dart';
@@ -27,13 +28,11 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: SigninView),
     MaterialRoute(page: AccountTypeChoiceView),
     MaterialRoute(page: SignupView),
-    MaterialRoute(page: SigninView),
     MaterialRoute(page: HomeView),
   ],
   dependencies: [
     Presolve(
-        classType: LocalStorageService,
-        presolveUsing: LocalStorageService.getInstance),
+        classType: LocalStorageApi, presolveUsing: LocalStorageApi.getInstance),
     Presolve(
         classType: EnvironmentService,
         presolveUsing: EnvironmentService.getInstance),
@@ -45,6 +44,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: LocationHelper),
     LazySingleton(classType: AuthenticationApi),
     LazySingleton(classType: AuthenticationService),
+    LazySingleton(classType: ApplicationSettingsService),
     LazySingleton(classType: GenderApi),
     LazySingleton(classType: GenderService)
   ],

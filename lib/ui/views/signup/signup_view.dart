@@ -52,7 +52,7 @@ class SignupView extends StatelessWidget with $SignupView {
           centerTitle: true,
         ),
         body: SafeArea(
-            child: model.busy(model.gendersBusyObj)
+            child: model.isBusy
                 ? Center(child: CircularProgressIndicator())
                 : Container(
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
@@ -171,17 +171,16 @@ class SignupView extends StatelessWidget with $SignupView {
                                     focusNode: passwordFocusNode),
                                 verticalSpaceRegular,
                                 BoxInputField(
-                                    controller: passwordConfirmationController,
-                                    validator: (passwordConfirmation) =>
-                                        model.validatePasswordConfirmation(
-                                            passwordConfirmation, context),
-                                    placeholder: AppLocalizations.of(context)!
-                                        .signUpConfirmPasswordLabel,
-                                    password: true,
-                                    textInputAction: TextInputAction.done,
-                                    focusNode: passwordConfirmationFocusNode,
-                                    onFieldSubmitted: (value) =>
-                                        model.signup()),
+                                  controller: passwordConfirmationController,
+                                  validator: (passwordConfirmation) =>
+                                      model.validatePasswordConfirmation(
+                                          passwordConfirmation, context),
+                                  placeholder: AppLocalizations.of(context)!
+                                      .signUpConfirmPasswordLabel,
+                                  password: true,
+                                  textInputAction: TextInputAction.done,
+                                  focusNode: passwordConfirmationFocusNode,
+                                ),
                                 verticalSpaceRegular,
                                 Row(
                                   children: [
@@ -245,7 +244,7 @@ class SignupView extends StatelessWidget with $SignupView {
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
                                       await launch(
-                                          'https://www.wamya.com/about-us/terms-and-conditions');
+                                          'https://www.fretto.com/about-us/terms-and-conditions');
                                     },
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,
@@ -260,7 +259,7 @@ class SignupView extends StatelessWidget with $SignupView {
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
                                       await launch(
-                                          'https://www.wamya.com/about-us/privacy-policy');
+                                          'https://www.fretto.com/about-us/privacy-policy');
                                     },
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,

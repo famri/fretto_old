@@ -1,20 +1,25 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:fretto/api/authentication_api.dart';
+import 'package:fretto/api/local_storage_api.dart';
 import 'package:fretto/app/app.locator.dart';
+import 'package:fretto/app/app.logger.dart';
+import 'package:fretto/constants/app_keys.dart';
 import 'package:fretto/exceptions/authentication_exception.dart';
 import 'package:fretto/models/bearer_token_info.dart';
 import 'package:fretto/models/user_auth_data.dart';
 import 'package:fretto/models/user_info.dart';
-import 'package:fretto/services/country_service.dart';
-import 'package:fretto/services/local_storage_service.dart';
+import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/utils/validators.dart';
+import 'package:logger/logger.dart';
 
 class AuthenticationService {
+  Logger log = getLogger('AuthenticationService');
   final AuthenticationApi _authenticationApi = locator<AuthenticationApi>();
-  final LocalStorageService _localStorageService =
-      locator<LocalStorageService>();
-  final CountryService _countryService = locator<CountryService>();
+  final LocalStorageApi _localStorageApi = locator<LocalStorageApi>();
+  final ApplicationSettingsService _applicationSettingsService =
+      locator<ApplicationSettingsService>();
 
   UserAuthData? _userAuthData;
   Timer? _authTimer;
@@ -29,15 +34,13 @@ class AuthenticationService {
       _userAuthData!.token != null &&
       _userAuthData!.expiryDate!.isAfter(DateTime.now());
 
-  Future<void> signin(String username, String password) async {
+  Future<bool> signin(String username, String password) async {
     // if username is mobile number then try to add international calling code
     if (Validators.isMobileNumber(username)) {
-      if (_localStorageService.applicationSettings != null) {
-        String? countryIcc = _countryService.getCountryInternationalCallingCode(
-            _localStorageService.applicationSettings!.userCountryId);
-        if (countryIcc != null) {
-          username = countryIcc + '_' + username;
-        }
+      if (_applicationSettingsService.applicationSettings != null) {
+        String countryIcc =
+            _applicationSettingsService.applicationSettings!.userCountryIcc;
+        username = countryIcc + '_' + username;
       }
     }
     BearerTokenInfo bearerTokenInfo =
@@ -51,10 +54,12 @@ class AuthenticationService {
         username: userInfo.username,
         authorities: userInfo.authorities);
     // Save new userAuthData
-    _localStorageService.userAuthData = _userAuthData;
+    bool isSuccessfullyAuthenticated =
+        await _updateStoredUserAuthData(_userAuthData);
+    return isSuccessfullyAuthenticated;
   }
 
-  Future<void> signup(
+  Future<bool> signup(
       String email,
       String icc,
       String mobileNumber,
@@ -86,25 +91,40 @@ class AuthenticationService {
         username: userInfo.username,
         authorities: userInfo.authorities);
     // Save new userAuthData
-    _localStorageService.userAuthData = _userAuthData;
+    bool isSuccessfullyAuthenticated =
+        await _updateStoredUserAuthData(_userAuthData);
+    return isSuccessfullyAuthenticated;
   }
 
   Future<bool> tryAutoLogin() async {
-    _userAuthData = _localStorageService.userAuthData;
-
-    if (_userAuthData == null ||
-        _userAuthData!.expiryDate == null ||
-        _userAuthData!.expiryDate!.isBefore(DateTime.now())) {
+    var storedUserAuthDataStr = _localStorageApi.loadFromDisk(UserAuthDataKey);
+    if (storedUserAuthDataStr == null) {
       return false;
     }
 
-    return true;
+    UserAuthData storedUserAuthData =
+        UserAuthData.fromJson(json.decode(storedUserAuthDataStr));
+    if (storedUserAuthData.expiryDate == null ||
+        storedUserAuthData.expiryDate!.isBefore(DateTime.now())) {
+      return false;
+    }
+    try {
+      await _authenticationApi.checkAccessToken(storedUserAuthData.token!);
+      _userAuthData = storedUserAuthData;
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  Future<void> logout() async {
+  Future<bool> logout() async {
     this._userAuthData = null;
-    _localStorageService.userAuthData = null;
-    if (_authTimer != null) _authTimer!.cancel();
+
+    if (_authTimer != null) {
+      _authTimer!.cancel();
+    }
+    bool isRemovedSuccessfully = await _updateStoredUserAuthData(null);
+    return isRemovedSuccessfully;
   }
 
   void configureAutoLogout() {
@@ -116,5 +136,38 @@ class AuthenticationService {
     final timeToExpiry =
         _userAuthData!.expiryDate!.difference(DateTime.now()).inSeconds;
     _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
+  }
+
+  UserAuthData? get userAuthData {
+    if (_userAuthData == null) {
+      var storedUserAuthDataStr =
+          _localStorageApi.loadFromDisk(UserAuthDataKey);
+      if (storedUserAuthDataStr == null) {
+        return null;
+      }
+
+      _userAuthData = UserAuthData.fromJson(json.decode(storedUserAuthDataStr));
+    }
+    return _userAuthData;
+  }
+
+  Future<bool> _updateStoredUserAuthData(UserAuthData? userAuthData) async {
+    if (userAuthData == null) {
+      bool isRemovedSuccessfully =
+          await _localStorageApi.removeFromDisk(UserAuthDataKey);
+      if (!isRemovedSuccessfully) {
+        log.e('Unable to remove old user authentication data.');
+      }
+      return isRemovedSuccessfully;
+    }
+
+    bool isSavedSuccessfully = await _localStorageApi.saveToDisk(
+        UserAuthDataKey, json.encode(userAuthData.toJson()));
+
+    if (!isSavedSuccessfully) {
+      log.e('Unable to save new user authentication data.');
+    }
+
+    return isSavedSuccessfully;
   }
 }

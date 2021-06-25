@@ -7,9 +7,9 @@ import 'package:fretto/exceptions/api_error_code.dart';
 import 'package:fretto/exceptions/authentication_api_exception.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/models/gender.dart';
+import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/authentication_service.dart';
 import 'package:fretto/services/gender_service.dart';
-import 'package:fretto/services/local_storage_service.dart';
 import 'package:fretto/ui/views/signup/signup_view.form.dart';
 import 'package:fretto/utils/validators.dart';
 import 'package:intl/intl.dart';
@@ -21,8 +21,8 @@ class SignupViewModel extends FormViewModel {
 
   final NavigationService _navigationService = locator<NavigationService>();
 
-  final LocalStorageService _localStorageService =
-      locator<LocalStorageService>();
+  final ApplicationSettingsService _applicationSettingsService =
+      locator<ApplicationSettingsService>();
 
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
@@ -62,21 +62,21 @@ class SignupViewModel extends FormViewModel {
   get receiveNewsLetter => _receiveNewsLetter;
 
   Future<void> loadGenders() async {
-    runBusyFuture(_loadGenders(), busyObject: gendersBusyObj);
+    runBusyFuture(_loadGenders());
   }
 
   Future<void> _loadGenders() async {
-    if (_localStorageService.applicationSettings != null) {
+    if (_applicationSettingsService.applicationSettings != null) {
       _localeLanguageCode =
-          _localStorageService.applicationSettings!.userLocaleLanguage;
+          _applicationSettingsService.applicationSettings!.userLocaleLanguage;
       _localeCountryCode =
-          _localStorageService.applicationSettings!.userLocaleCountry;
+          _applicationSettingsService.applicationSettings!.userLocaleCountry;
     }
     _genders = await _genderService.loadCountries(
         _localeLanguageCode, _localeCountryCode);
 
     _genderId = _genders!.first.id;
-    _icc = _localStorageService.applicationSettings!.userCountryIcc;
+    _icc = _applicationSettingsService.applicationSettings!.userCountryIcc;
     _receiveNewsLetter = false;
 
     _isInitialized = true;
@@ -95,25 +95,25 @@ class SignupViewModel extends FormViewModel {
     final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
     runBusyFuture(
-        _authenticationService.signup(
-            emailValue!,
-            _icc!,
-            mobileNumberValue!,
-            passwordValue!,
-            isTransporter!,
-            _genderId!,
-            firstnameValue!,
-            lastnameValue!,
-            _dateFormatter.parse(dateOfBirthValue!),
-            _receiveNewsLetter!),
+        _authenticationService
+            .signup(
+                emailValue!,
+                _icc!,
+                mobileNumberValue!,
+                passwordValue!,
+                isTransporter!,
+                _genderId!,
+                firstnameValue!,
+                lastnameValue!,
+                _dateFormatter.parse(dateOfBirthValue!),
+                _receiveNewsLetter!)
+            .then((_) {
+          _navigationService.clearStackAndShow(Routes.homeView);
+        }),
         busyObject: signupBusyObj);
-
-    _navigationService.replaceWith(Routes.homeView);
   }
 
-  void navigateToTermsOfService() {
-    
-  }
+  void navigateToTermsOfService() {}
 
   void navigateToPrivacyPolicy() {}
 
@@ -152,9 +152,9 @@ class SignupViewModel extends FormViewModel {
       case ApiErrorCode.UNAUTHORIZED:
       case ApiErrorCode.FORBIDDEN:
       case ApiErrorCode.SERVER_ERROR:
-        return AppLocalizations.of(context)!.somethingWentWrongText;
       case ApiErrorCode.BAD_REQUEST:
-        return AppLocalizations.of(context)!.authenticationBadCredentialsText;
+        return AppLocalizations.of(context)!.somethingWentWrongText;
+
       default:
         return AppLocalizations.of(context)!.somethingWentWrongText;
     }

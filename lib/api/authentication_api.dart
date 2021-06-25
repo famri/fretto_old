@@ -2,14 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fretto/app/app.locator.dart';
+import 'package:fretto/app/app.logger.dart';
 import 'package:fretto/constants/app_keys.dart';
 import 'package:fretto/exceptions/authentication_api_exception.dart';
 import 'package:fretto/models/bearer_token_info.dart';
 import 'package:fretto/models/user_info.dart';
 import 'package:fretto/services/environment_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 class AuthenticationApi {
+  Logger log = getLogger('AuthenticationApi');
   final EnvironmentService _environmentService = locator<EnvironmentService>();
 
   Future<BearerTokenInfo> signup(

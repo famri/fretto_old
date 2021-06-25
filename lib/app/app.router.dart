@@ -46,7 +46,6 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.signinView, page: SigninView),
     RouteDef(Routes.accountTypeChoiceView, page: AccountTypeChoiceView),
     RouteDef(Routes.signupView, page: SignupView),
-    RouteDef(Routes.signinView, page: SigninView),
     RouteDef(Routes.homeView, page: HomeView),
   ];
   @override

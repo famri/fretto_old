@@ -1,24 +1,27 @@
+import 'package:flutter/material.dart';
 import 'package:fretto/app/app.locator.dart';
+import 'package:fretto/app/app.logger.dart';
 import 'package:fretto/app/app.router.dart';
 import 'package:fretto/constants/app_keys.dart';
 import 'package:fretto/exceptions/application_settings_exception.dart';
 import 'package:fretto/models/application_settings.dart';
 import 'package:fretto/models/country.dart';
 import 'package:fretto/models/user_locale.dart';
+import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/country_service.dart';
 import 'package:fretto/services/environment_service.dart';
-import 'package:fretto/services/local_storage_service.dart';
 import 'package:fretto/services/user_locale_service.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../main.dart';
-import 'package:flutter/material.dart';
 
 class ApplicationSettingsViewModel extends BaseViewModel {
+  static final Logger log = getLogger('ApplicationSettingsViewModel');
   final EnvironmentService environmentService = locator<EnvironmentService>();
-  final LocalStorageService localStorageService =
-      locator<LocalStorageService>();
+  final ApplicationSettingsService _applicationSettingsService =
+      locator<ApplicationSettingsService>();
   final CountryService _countryService = locator<CountryService>();
   final UserLocaleService _userLocaleService = locator<UserLocaleService>();
   final NavigationService _navigationService = locator<NavigationService>();
@@ -67,11 +70,11 @@ class ApplicationSettingsViewModel extends BaseViewModel {
 
   Future<void> loadCountriesAndUserLocales() async {
     setBusy(true);
-    if (localStorageService.applicationSettings != null) {
+    if (_applicationSettingsService.applicationSettings != null) {
       _userLocaleLanguageCode =
-          localStorageService.applicationSettings!.userLocaleLanguage;
+          _applicationSettingsService.applicationSettings!.userLocaleLanguage;
       _userLocaleCountryCode =
-          localStorageService.applicationSettings!.userLocaleCountry;
+          _applicationSettingsService.applicationSettings!.userLocaleCountry;
     }
 
     _countries = await _countryService.loadCountries(
@@ -79,10 +82,13 @@ class ApplicationSettingsViewModel extends BaseViewModel {
 
     _userLocales = await _userLocaleService.loadUserLocales();
 
-    if (localStorageService.applicationSettings != null) {
-      _userCountryId = localStorageService.applicationSettings!.userCountryId;
-      _userLocaleId = localStorageService.applicationSettings!.userLocaleId;
-      _userTimezoneId = localStorageService.applicationSettings!.userTimeZoneId;
+    if (_applicationSettingsService.applicationSettings != null) {
+      _userCountryId =
+          _applicationSettingsService.applicationSettings!.userCountryId;
+      _userLocaleId =
+          _applicationSettingsService.applicationSettings!.userLocaleId;
+      _userTimezoneId =
+          _applicationSettingsService.applicationSettings!.userTimeZoneId;
     } else {
       _userCountryId = _countries!.first.id;
       _userLocaleId = _userLocales!.first.id;
@@ -92,28 +98,35 @@ class ApplicationSettingsViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  Future<void> _saveApplicationSettings(BuildContext context) async {
+  Future<bool> _saveApplicationSettings(BuildContext context) async {
     if (_isInitialized) {
-      localStorageService.applicationSettings = ApplicationSettings(
-          userCountryId: _userCountryId!,
-          userLocaleId: _userLocaleId!,
-          userTimeZoneId: _userTimezoneId!,
-          timeZoneName: _countries!
-              .firstWhere((element) => element.id == _userCountryId)
-              .timeZones
-              .firstWhere((element) => element.id == _userTimezoneId)
-              .name,
-          userLocaleCountry: _userLocales!
-              .firstWhere((element) => element.id == _userLocaleId)
-              .countryCode,
-          userLocaleLanguage: _userLocales!
-              .firstWhere((element) => element.id == _userLocaleId)
-              .languageCode,
-          userCountryIcc: _countries!
-              .firstWhere((element) => element.id == _userCountryId)
-              .icc
-              .value);
+      bool isUpdatedSuccessfully = await _applicationSettingsService
+          .updateApplicationSettings(ApplicationSettings(
+              userCountryId: _userCountryId!,
+              userLocaleId: _userLocaleId!,
+              userTimeZoneId: _userTimezoneId!,
+              timeZoneName: _countries!
+                  .firstWhere((element) => element.id == _userCountryId)
+                  .timeZones
+                  .firstWhere((element) => element.id == _userTimezoneId)
+                  .name,
+              userLocaleCountry: _userLocales!
+                  .firstWhere((element) => element.id == _userLocaleId)
+                  .countryCode,
+              userLocaleLanguage: _userLocales!
+                  .firstWhere((element) => element.id == _userLocaleId)
+                  .languageCode,
+              userCountryIcc: _countries!
+                  .firstWhere((element) => element.id == _userCountryId)
+                  .icc
+                  .value));
+      if (!isUpdatedSuccessfully) {
+        log.e('Unable to update Application Settings.');
+        return false;
+      }
+
       _checkLocaleChangeForRestart(context);
+      return true;
     } else {
       throw ApplicationSettingsException(message: 'Cannot save null settings.');
     }
