@@ -13,6 +13,7 @@ class StartupView extends StatelessWidget {
           SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
         model.runStartupLogic();
       }),
+      //createNewModelOnInsert: true,
       builder: (context, model, child) => Scaffold(
         body: Center(
           child: CircularProgressIndicator(),

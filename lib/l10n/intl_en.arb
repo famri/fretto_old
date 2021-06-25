@@ -722,5 +722,60 @@
     "description": "generic Error Message",
     "type": "text",
     "placeholders": {}
+  },
+  "checkYourConnectionText": "Unable to connect. Please check your Internet connection.",
+  "@checkYourConnection": {
+    "description": "check Your Connection Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nullLengthValidationMessage": "{fieldName} should have a length between {min} and {max} charaters",
+  "@nullLengthValidationMessage": {
+    "description": "null Length Validation Message",
+    "type": "text",
+    "placeholders": {
+      "fieldName": {
+        "type": "String",
+        "example": "Firstname"
+      },
+      "min": {
+        "type": "String",
+        "example": "2"
+      },
+      "max": {
+        "type": "String",
+        "example": "15"
+      }
+    }
+  },
+  "minLengthValidationMessage": "{fieldName} should have at least {min} characters",
+  "@minLengthValidationMessage": {
+    "description": "min Length Validation Message",
+    "type": "text",
+    "placeholders": {
+      "fieldName": {
+        "type": "String",
+        "example": "Firstname"
+      },
+      "min": {
+        "type": "String",
+        "example": "2"
+      }
+    }
+  },
+  "maxLengthValidationMessage": "{fieldName} should have at most {max} characters",
+  "@maxLengthValidationMessage": {
+    "description": "max Length Validation Message",
+    "type": "text",
+    "placeholders": {
+      "fieldName": {
+        "type": "String",
+        "example": "Firstname"
+      },
+      "max": {
+        "type": "String",
+        "example": "15"
+      }
+    }
   }
 }

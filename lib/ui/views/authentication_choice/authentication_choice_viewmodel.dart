@@ -9,7 +9,7 @@ class AuthenticationChoiceViewModel extends BaseViewModel {
     _navigationService.navigateTo(Routes.signinView);
   }
 
-  void navigateToSignUp() {
-    _navigationService.navigateTo(Routes.signupView);
+  void navigateToAccountTypeChoice() {
+    _navigationService.navigateTo(Routes.accountTypeChoiceView);
   }
 }

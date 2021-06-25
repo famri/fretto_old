@@ -18,14 +18,14 @@ class UserAuthData {
         refreshToken: json['refreshToken'],
         expiryDate: DateTime.parse(json['expiryDate'].toString()),
         username: json['username'],
-        authorities: json['authorities']);
+        authorities: (json['authorities'] as List<dynamic>).cast<String>());
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = Map<String, dynamic>();
     json['token'] = this.token;
     json['refreshToken'] = this.refreshToken;
-    json['expiryDate'] = this.expiryDate;
+    json['expiryDate'] = this.expiryDate!.toIso8601String();
     json['username'] = this.username;
     json['authorities'] = this.authorities;
 

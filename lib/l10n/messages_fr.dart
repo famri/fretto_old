@@ -19,9 +19,15 @@ typedef String MessageIfAbsent(String? messageStr, List<Object>? args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'fr';
 
-  static m0(transporterName) => "La proposition de ${transporterName} a été acceptée.";
+  static m0(fieldName, max) => "${fieldName} doit avoir au plus ${max} caractères.";
 
-  static m1(transporterName) => "La proposition de ${transporterName} a été rejetée.";
+  static m1(fieldName, min) => "${fieldName} doit avoir au moins ${min} caractères.";
+
+  static m2(fieldName, min, max) => "le champ ${fieldName} doit avoir une longeur comprise entre ${min} et ${max}.";
+
+  static m3(transporterName) => "La proposition de ${transporterName} a été acceptée.";
+
+  static m4(transporterName) => "La proposition de ${transporterName} a été rejetée.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function> {
@@ -98,12 +104,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "localitySearchHelpText" : MessageLookupByLibrary.simpleMessage("Saisissez un nom de localité"),
     "localitySearchNoResultText" : MessageLookupByLibrary.simpleMessage("Aucun résultat trouvé. Essayer de créer un nouvel emplacements sur la carte."),
     "loginValidatorMessage" : MessageLookupByLibrary.simpleMessage("E-mail ou numéro mobile incorrect."),
+    "maxLengthValidationMessage" : m0,
+    "minLengthValidationMessage" : m1,
     "newTooltipText" : MessageLookupByLibrary.simpleMessage("Nouveau"),
     "nextButtonText" : MessageLookupByLibrary.simpleMessage("SUIVANT"),
+    "nullLengthValidationMessage" : m2,
     "passwordValidatorMessage" : MessageLookupByLibrary.simpleMessage("Le mot de passe doit contenir au moins 8 caractères."),
     "phoneValidatorMessage" : MessageLookupByLibrary.simpleMessage("Numéro mobile incorrect."),
-    "proposalAcceptedMessage" : m0,
-    "proposalRejectedMessage" : m1,
+    "proposalAcceptedMessage" : m3,
+    "proposalRejectedMessage" : m4,
     "proposalsAcceptText" : MessageLookupByLibrary.simpleMessage("ACCEPTER"),
     "proposalsAppBarTitle" : MessageLookupByLibrary.simpleMessage("PROPOSITIONS"),
     "proposalsContactText" : MessageLookupByLibrary.simpleMessage("CONTACTER"),
@@ -134,6 +143,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "signUpPasswordValidationMessage" : MessageLookupByLibrary.simpleMessage("Le mot de passe ne correspond pas à sa confirmation."),
     "signUpSubscribeNewsletterText" : MessageLookupByLibrary.simpleMessage("Recevoir les promotions et bons plans?"),
     "signUpTOS1" : MessageLookupByLibrary.simpleMessage("En vous inscrivant, vous acceptez, sans réserves, nos "),
+    "signUpTOS2" : MessageLookupByLibrary.simpleMessage("conditions générales d\'utilisation "),
     "signUpTOS3" : MessageLookupByLibrary.simpleMessage("et notre "),
     "signUpTOS4" : MessageLookupByLibrary.simpleMessage("politique de confidentialité."),
     "signUpUnavailableText" : MessageLookupByLibrary.simpleMessage("L\'inscription est temporairement indisponible. Veuillez réessayer plus tard."),

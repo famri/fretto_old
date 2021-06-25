@@ -5,6 +5,7 @@ class ApplicationSettings {
   String timeZoneName;
   String userLocaleLanguage;
   String userLocaleCountry;
+  String userCountryIcc;
 
   ApplicationSettings({
     required this.userCountryId,
@@ -13,6 +14,7 @@ class ApplicationSettings {
     required this.timeZoneName,
     required this.userLocaleLanguage,
     required this.userLocaleCountry,
+    required this.userCountryIcc,
   });
 
   factory ApplicationSettings.fromJson(Map<String, dynamic> json) {
@@ -22,7 +24,8 @@ class ApplicationSettings {
         userTimeZoneId: json['userTimeZoneId'],
         timeZoneName: json['timeZoneName'],
         userLocaleLanguage: json['userLocaleLanguage'],
-        userLocaleCountry: json['userLocaleCountry']);
+        userLocaleCountry: json['userLocaleCountry'],
+        userCountryIcc: json['userCountryIcc']);
   }
 
   Map<String, dynamic> toJson() {
@@ -33,7 +36,7 @@ class ApplicationSettings {
     json['timeZoneName'] = this.timeZoneName;
     json['userLocaleLanguage'] = this.userLocaleLanguage;
     json['userLocaleCountry'] = this.userLocaleCountry;
-
+    json['userCountryIcc'] = this.userCountryIcc;
     return json;
   }
 }

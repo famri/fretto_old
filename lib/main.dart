@@ -34,6 +34,7 @@ class Fretto extends StatefulWidget {
 
 class _FrettoState extends State<Fretto> {
   LocalStorageService _localStorageService = locator<LocalStorageService>();
+
   String _userLocaleLanguage = 'en';
   String _userLocaleCountry = 'US';
 
@@ -45,6 +46,12 @@ class _FrettoState extends State<Fretto> {
   void restartApp() {
     setState(() {
       key = UniqueKey();
+      if (_localStorageService.applicationSettings != null) {
+        _userLocaleLanguage =
+            _localStorageService.applicationSettings!.userLocaleLanguage;
+        _userLocaleCountry =
+            _localStorageService.applicationSettings!.userLocaleCountry;
+      }
     });
   }
 
@@ -63,6 +70,7 @@ class _FrettoState extends State<Fretto> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      key: key,
       navigatorKey: StackedService.navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'FRETTO',

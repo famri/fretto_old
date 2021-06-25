@@ -305,7 +305,7 @@ class AppLocalizations {
   String get signUpTOS2 {
     return Intl.message(
       'terms of service ',
-      name: 'signUpTOS1',
+      name: 'signUpTOS2',
       desc: 'Sign up terms of service part 2 text',
     );
   }
@@ -971,6 +971,35 @@ class AppLocalizations {
       desc: 'proposal Accepted Text',
     );
   }
+
+  String get checkYourConnectionText {
+    return Intl.message(
+      'Unable to connect. Please check your Internet connection.',
+      name: 'check Your Connection Text',
+      desc: 'check Your Connection Text',
+    );
+  }
+
+  String nullLengthValidationMessage(fieldName, min, max) => Intl.message(
+      "$fieldName should have a length between $min and $max charaters",
+      name: "nullLengthValidationMessage",
+      args: [fieldName, min, max],
+      desc: "null Length Validation Message",
+      examples: const {'fieldName': "Firstname", "min": "2", "max": "15"});
+
+  String minLengthValidationMessage(fieldName, min) =>
+      Intl.message("$fieldName should have at least $min characters",
+          name: "minLengthValidationMessage",
+          args: [fieldName, min],
+          desc: "min Length Validation Message",
+          examples: const {'fieldName': 'Firstname', 'min': '2'});
+
+  String maxLengthValidationMessage(fieldName, max) =>
+      Intl.message("$fieldName should have at most $max characters",
+          name: "maxLengthValidationMessage",
+          args: [fieldName, max],
+          desc: "max Length Validation Message",
+          examples: const {'fieldName': 'Firstname', 'max': '15'});
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

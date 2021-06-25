@@ -7,28 +7,43 @@ class BoxInputField extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final bool password;
+  final TextInputType keyboardType;
+  final TextInputAction textInputAction;
+  final FocusNode? focusNode;
+  final Function(String?)? onFieldSubmitted;
+
   final void Function()? trailingTapped;
+  final String? Function(String?)? validator;
 
   final circularBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),
   );
 
-  BoxInputField({
-    Key? key,
-    required this.controller,
-    this.placeholder = '',
-    this.leading,
-    this.trailing,
-    this.trailingTapped,
-    this.password = false,
-  }) : super(key: key);
+  BoxInputField(
+      {Key? key,
+      required this.controller,
+      this.placeholder = '',
+      this.leading,
+      this.trailing,
+      this.trailingTapped,
+      this.password = false,
+      this.keyboardType = TextInputType.text,
+      this.textInputAction = TextInputAction.next,
+      this.focusNode,
+      this.validator,
+      this.onFieldSubmitted})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
+      validator: validator,
       style: TextStyle(height: 1),
       obscureText: password,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      focusNode: focusNode,
       decoration: InputDecoration(
         hintText: placeholder,
         contentPadding:
@@ -49,7 +64,7 @@ class BoxInputField extends StatelessWidget {
           borderSide: BorderSide(color: Colors.red),
         ),
         focusedBorder: circularBorder.copyWith(
-          borderSide: BorderSide(color: kcPrimaryColor),
+          borderSide: BorderSide(color: kcAccentColor),
         ),
         enabledBorder: circularBorder.copyWith(
           borderSide: BorderSide(color: kcLightGreyColor),
@@ -57,6 +72,7 @@ class BoxInputField extends StatelessWidget {
         // filled: true,
         // fillColor: kcVeryLightGreyColor,
       ),
+      onFieldSubmitted: onFieldSubmitted,
     );
   }
 }

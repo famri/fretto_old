@@ -4,14 +4,16 @@ import 'package:fretto/app/app.logger.dart';
 import 'package:fretto/constants/app_keys.dart';
 import 'package:fretto/models/application_settings.dart';
 import 'package:fretto/models/user_auth_data.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService {
   final log = getLogger('LocalStorageService');
+
   LocalStorageService._();
   static LocalStorageService? _instance;
   static SharedPreferences? _preferences;
+  static UserAuthData? _userAuthData;
+  static ApplicationSettings? _applicationSettings;
 
   static Future<LocalStorageService> getInstance() async {
     if (_instance == null) {
@@ -24,6 +26,7 @@ class LocalStorageService {
   }
 
   UserAuthData? get userAuthData {
+    if (_userAuthData != null) return _userAuthData;
     var userAuthDataJson = _loadFromDisk(UserAuthDataKey);
 
     if (userAuthDataJson == null) return null;
@@ -31,14 +34,18 @@ class LocalStorageService {
   }
 
   set userAuthData(UserAuthData? userAuthData) {
+    _userAuthData = userAuthData;
+
     if (userAuthData == null) {
       _removeFromDisk(UserAuthDataKey);
       return;
     }
+
     _saveToDisk(UserAuthDataKey, json.encode(userAuthData.toJson()));
   }
 
   ApplicationSettings? get applicationSettings {
+    if (_applicationSettings != null) return _applicationSettings;
     var applicationSettingsJson = _loadFromDisk(ApplicationSettingsKey);
 
     if (applicationSettingsJson == null) return null;
@@ -46,10 +53,13 @@ class LocalStorageService {
   }
 
   set applicationSettings(ApplicationSettings? applicationSettings) {
+    _applicationSettings = applicationSettings;
+
     if (applicationSettings == null) {
       _removeFromDisk(ApplicationSettingsKey);
       return;
     }
+
     _saveToDisk(
         ApplicationSettingsKey, json.encode(applicationSettings.toJson()));
   }

@@ -40,7 +40,7 @@ dependencies:
   http: ^0.13.3
   intl: ^0.17.0
   intl_generator: ^0.2.0+0
-  #url_launcher: ^6.0.6
+  url_launcher: ^6.0.6
   #uuid: ^3.0.4
 
   decimal: ^1.2.0

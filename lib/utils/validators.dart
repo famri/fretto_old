@@ -8,20 +8,24 @@ class Validators {
 
   static RegExp phoneNumberExp = RegExp(r'^([0-9]{8,10})$');
 
-  static String? loginValidator(String login, BuildContext context) {
+  static String? loginValidator(String? login, BuildContext context) {
     bool isOk = true;
-    Iterable<RegExpMatch> matches = emailExp.allMatches(login);
-    if (matches.isEmpty) {
-      matches = phoneNumberExp.allMatches(login);
+    if (login != null) {
+      Iterable<RegExpMatch> matches = emailExp.allMatches(login);
       if (matches.isEmpty) {
-        isOk = false;
+        matches = phoneNumberExp.allMatches(login);
+        if (matches.isEmpty) {
+          isOk = false;
+        }
       }
     }
-
     return isOk ? null : AppLocalizations.of(context)!.loginValidatorMessage;
   }
 
-  static String? emailValidator(String email, BuildContext context) {
+  static String? emailValidator(String? email, BuildContext context) {
+    if (email == null) {
+      return AppLocalizations.of(context)!.emailValidatorMessage;
+    }
     Iterable<RegExpMatch> matches = emailExp.allMatches(email);
     if (matches.isEmpty) {
       return AppLocalizations.of(context)!.emailValidatorMessage;
@@ -30,7 +34,10 @@ class Validators {
   }
 
   static String? phoneNumberValidator(
-      String phoneNumber, BuildContext context) {
+      String? phoneNumber, BuildContext context) {
+    if (phoneNumber == null) {
+      return AppLocalizations.of(context)!.emailValidatorMessage;
+    }
     Iterable<RegExpMatch> matches = phoneNumberExp.allMatches(phoneNumber);
     if (matches.isEmpty) {
       return AppLocalizations.of(context)!.phoneValidatorMessage;
@@ -38,7 +45,7 @@ class Validators {
     return null;
   }
 
-  static String? passwordValidator(String password, BuildContext context) {
+  static String? passwordValidator(String? password, BuildContext context) {
     return (password != null && password.length >= 8)
         ? null
         : AppLocalizations.of(context)!.passwordValidatorMessage;
@@ -51,7 +58,7 @@ class Validators {
         : AppLocalizations.of(context)!.dateBeforeValidatorMessage;
   }
 
-  static String? ageValidator(String value, BuildContext context,
+  static String? ageValidator(String? value, BuildContext context,
       {int minAge = 18, int maxAge = 100}) {
     if (value == null || value.isEmpty)
       return AppLocalizations.of(context)!.ageEmptyValidatorMessage;
@@ -67,7 +74,25 @@ class Validators {
     return null;
   }
 
-  static bool isMobileNumber(String mobileNumber) {
+  static String? lengthValidator(
+      String? value, String fieldName, BuildContext context, int min, int max) {
+    if (value == null)
+      return AppLocalizations.of(context)!
+          .nullLengthValidationMessage(fieldName, min, max);
+    if (value.length < min)
+      return AppLocalizations.of(context)!
+          .minLengthValidationMessage(fieldName, min);
+    if (value.length > max)
+      return AppLocalizations.of(context)!
+          .minLengthValidationMessage(fieldName, max);
+
+    return null;
+  }
+
+  static bool isMobileNumber(String? mobileNumber) {
+    if (mobileNumber == null) {
+      return false;
+    }
     Iterable<RegExpMatch> matches = phoneNumberExp.allMatches(mobileNumber);
 
     return matches.isNotEmpty;

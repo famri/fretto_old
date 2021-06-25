@@ -46,6 +46,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.signinView, page: SigninView),
     RouteDef(Routes.accountTypeChoiceView, page: AccountTypeChoiceView),
     RouteDef(Routes.signupView, page: SignupView),
+    RouteDef(Routes.signinView, page: SigninView),
     RouteDef(Routes.homeView, page: HomeView),
   ];
   @override
@@ -70,8 +71,11 @@ class StackedRouter extends RouterBase {
       );
     },
     SigninView: (data) {
+      var args = data.getArgs<SigninViewArguments>(
+        orElse: () => SigninViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const SigninView(),
+        builder: (context) => SigninView(key: args.key),
         settings: data,
       );
     },
@@ -82,8 +86,12 @@ class StackedRouter extends RouterBase {
       );
     },
     SignupView: (data) {
+      var args = data.getArgs<SignupViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => const SignupView(),
+        builder: (context) => SignupView(
+          key: args.key,
+          isTransporter: args.isTransporter,
+        ),
         settings: data,
       );
     },
@@ -94,4 +102,21 @@ class StackedRouter extends RouterBase {
       );
     },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// SigninView arguments holder class
+class SigninViewArguments {
+  final Key? key;
+  SigninViewArguments({this.key});
+}
+
+/// SignupView arguments holder class
+class SignupViewArguments {
+  final Key? key;
+  final bool isTransporter;
+  SignupViewArguments({this.key, required this.isTransporter});
 }

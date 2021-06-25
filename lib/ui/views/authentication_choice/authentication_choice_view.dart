@@ -26,7 +26,7 @@ class AuthenticationChoiceView extends StatelessWidget {
                 ),
                 Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.only(top: 0),
                   height: screenHeightPercentage(context, percentage: 0.2),
                   child: Image.asset('assets/images/fretto_logo.png',
                       fit: BoxFit.scaleDown),
@@ -52,7 +52,7 @@ class AuthenticationChoiceView extends StatelessWidget {
                             child: BoxButton(
                               title: AppLocalizations.of(context)!
                                   .authenticationSignupText,
-                              onTap: model.navigateToSignUp,
+                              onTap: model.navigateToAccountTypeChoice,
                             )),
                         verticalSpaceSmall,
                         Padding(

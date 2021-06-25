@@ -46,7 +46,10 @@ class BoxDropDownButtonField extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(element.title),
+                  Text(
+                    element.title,
+                    style: TextStyle(height: 1),
+                  ),
                   if (element.imagePath != null)
                     SizedBox(
                         width: 25,
@@ -61,7 +64,6 @@ class BoxDropDownButtonField extends StatelessWidget {
           .toList(),
       onChanged: onChanged,
       isExpanded: true,
-      style: subheadingStyle.copyWith(color: kcPetroliumBlue),
     );
   }
 }

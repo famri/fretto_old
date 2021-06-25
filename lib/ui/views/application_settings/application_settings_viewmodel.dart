@@ -49,7 +49,7 @@ class ApplicationSettingsViewModel extends BaseViewModel {
   get timeZoneController => _userTimezoneId;
 
   Future<void> saveSettings(BuildContext context) async {
-    await runBusyFuture(_saveApplicationSettings());
+    await runBusyFuture(_saveApplicationSettings(context));
     _checkLocaleChangeForRestart(context);
   }
 
@@ -92,7 +92,7 @@ class ApplicationSettingsViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  Future<void> _saveApplicationSettings() async {
+  Future<void> _saveApplicationSettings(BuildContext context) async {
     if (_isInitialized) {
       localStorageService.applicationSettings = ApplicationSettings(
           userCountryId: _userCountryId!,
@@ -108,7 +108,12 @@ class ApplicationSettingsViewModel extends BaseViewModel {
               .countryCode,
           userLocaleLanguage: _userLocales!
               .firstWhere((element) => element.id == _userLocaleId)
-              .languageCode);
+              .languageCode,
+          userCountryIcc: _countries!
+              .firstWhere((element) => element.id == _userCountryId)
+              .icc
+              .value);
+      _checkLocaleChangeForRestart(context);
     } else {
       throw ApplicationSettingsException(message: 'Cannot save null settings.');
     }
@@ -124,8 +129,7 @@ class ApplicationSettingsViewModel extends BaseViewModel {
                 .languageCode !=
             'en') {
       Fretto.restartApp(context);
-    } else {
-      _navigationService.replaceWith(Routes.startupView);
     }
+    _navigationService.replaceWith(Routes.startupView);
   }
 }

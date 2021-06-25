@@ -12,10 +12,12 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../api/authentication_api.dart';
 import '../api/country_api.dart';
+import '../api/gender_api.dart';
 import '../api/user_locale_api.dart';
 import '../services/authentication_service.dart';
 import '../services/country_service.dart';
 import '../services/environment_service.dart';
+import '../services/gender_service.dart';
 import '../services/local_storage_service.dart';
 import '../services/user_locale_service.dart';
 import '../utils/location_helper.dart';
@@ -43,4 +45,6 @@ Future setupLocator(
   locator.registerLazySingleton(() => LocationHelper());
   locator.registerLazySingleton(() => AuthenticationApi());
   locator.registerLazySingleton(() => AuthenticationService());
+  locator.registerLazySingleton(() => GenderApi());
+  locator.registerLazySingleton(() => GenderService());
 }

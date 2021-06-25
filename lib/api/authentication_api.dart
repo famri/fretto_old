@@ -54,15 +54,16 @@ class AuthenticationApi {
             String errorMessage = strBuffer
                 .toString()
                 .substring(0, strBuffer.toString().length - 2);
-            throw AuthenticationApiException(message: errorMessage);
+            throw AuthenticationApiException(
+                message: errorMessage, statusCode: response.statusCode);
           }
           throw AuthenticationApiException(
-              message:
-                  'Received status code:' + response.statusCode.toString());
+              message: 'Received status code:' + response.statusCode.toString(),
+              statusCode: response.statusCode);
         } else {
           throw AuthenticationApiException(
-              message:
-                  'Received status code:' + response.statusCode.toString());
+              message: 'Received status code:' + response.statusCode.toString(),
+              statusCode: response.statusCode);
         }
       }
 
@@ -101,11 +102,12 @@ class AuthenticationApi {
           String errorMessage = strBuffer
               .toString()
               .substring(0, strBuffer.toString().length - 2);
-          throw AuthenticationApiException(message: errorMessage);
+          throw AuthenticationApiException(
+              message: errorMessage, statusCode: response.statusCode);
         } else {
           throw AuthenticationApiException(
-              message:
-                  'Received status code:' + response.statusCode.toString());
+              message: 'Received status code:' + response.statusCode.toString(),
+              statusCode: response.statusCode);
         }
       }
 
@@ -132,11 +134,13 @@ class AuthenticationApi {
       if (checkTokenResponse.body.isNotEmpty &&
           checkTokenResponseData['error_description'] != null) {
         String errorMessage = checkTokenResponseData['error_description'];
-        throw AuthenticationApiException(message: errorMessage);
+        throw AuthenticationApiException(
+            message: errorMessage, statusCode: checkTokenResponse.statusCode);
       } else {
         throw AuthenticationApiException(
             message: 'Received status code:' +
-                checkTokenResponse.statusCode.toString());
+                checkTokenResponse.statusCode.toString(),
+            statusCode: checkTokenResponse.statusCode);
       }
     }
 
