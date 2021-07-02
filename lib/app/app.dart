@@ -1,18 +1,30 @@
 import 'package:fretto/api/authentication_api.dart';
 import 'package:fretto/api/country_api.dart';
+import 'package:fretto/api/engine_type_api.dart';
 import 'package:fretto/api/gender_api.dart';
+import 'package:fretto/api/journey_request_api.dart';
+import 'package:fretto/api/place_api.dart';
 import 'package:fretto/api/user_locale_api.dart';
 import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/authentication_service.dart';
 import 'package:fretto/services/country_service.dart';
+import 'package:fretto/services/engine_type_service.dart';
 import 'package:fretto/services/environment_service.dart';
 import 'package:fretto/services/gender_service.dart';
 import 'package:fretto/api/local_storage_api.dart';
+import 'package:fretto/services/journey_request_service.dart';
+import 'package:fretto/services/place_service.dart';
 import 'package:fretto/services/user_locale_service.dart';
 import 'package:fretto/ui/views/account_type_choice/account_type_choice_view.dart';
 import 'package:fretto/ui/views/application_settings/application_settings_view.dart';
 import 'package:fretto/ui/views/authentication_choice/authentication_choice_view.dart';
+import 'package:fretto/ui/views/create_favorite_place/create_favorite_place_view.dart';
+import 'package:fretto/ui/views/discussions/discussions_viemodel.dart';
+import 'package:fretto/ui/views/favorite_places/favorite_places_view.dart';
 import 'package:fretto/ui/views/home/home_view.dart';
+import 'package:fretto/ui/views/journey_creation/journey_creation_viewmodel.dart';
+import 'package:fretto/ui/views/journey_requests/journey_requests_viewmodel.dart';
+import 'package:fretto/ui/views/profile/profile_viewmodel.dart';
 import 'package:fretto/ui/views/signin/signin_view.dart';
 import 'package:fretto/ui/views/signup/signup_view.dart';
 import 'package:fretto/ui/views/startup/startup_view.dart';
@@ -29,6 +41,8 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: AccountTypeChoiceView),
     MaterialRoute(page: SignupView),
     MaterialRoute(page: HomeView),
+    MaterialRoute(page: CreateFavoritePlaceView),
+    MaterialRoute(page: FavoritePlacesView),
   ],
   dependencies: [
     Presolve(
@@ -37,16 +51,28 @@ import 'package:stacked_services/stacked_services.dart';
         classType: EnvironmentService,
         presolveUsing: EnvironmentService.getInstance),
     Singleton(classType: NavigationService),
+    Singleton(classType: SnackbarService),
+    Singleton(classType: BottomSheetService),
+    LazySingleton(classType: ApplicationSettingsService),
+    LazySingleton(classType: AuthenticationApi),
+    LazySingleton(classType: AuthenticationService),
+    LazySingleton(classType: EngineTypeApi),
+    LazySingleton(classType: EngineTypeService),
+    LazySingleton(classType: JourneyRequestApi),
+    LazySingleton(classType: JourneyRequestService),
+    LazySingleton(classType: JourneyCreationViewModel),
+    LazySingleton(classType: JourneyRequestsViewModel),
+    LazySingleton(classType: DiscussionsViewModel),
+    LazySingleton(classType: ProfileViewModel),
     LazySingleton(classType: CountryApi),
     LazySingleton(classType: CountryService),
     LazySingleton(classType: UserLocaleApi),
     LazySingleton(classType: UserLocaleService),
     LazySingleton(classType: LocationHelper),
-    LazySingleton(classType: AuthenticationApi),
-    LazySingleton(classType: AuthenticationService),
-    LazySingleton(classType: ApplicationSettingsService),
     LazySingleton(classType: GenderApi),
-    LazySingleton(classType: GenderService)
+    LazySingleton(classType: GenderService),
+    LazySingleton(classType: PlaceApi),
+    LazySingleton(classType: PlaceService),
   ],
   logger: StackedLogger(),
 )

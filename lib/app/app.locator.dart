@@ -12,15 +12,25 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../api/authentication_api.dart';
 import '../api/country_api.dart';
+import '../api/engine_type_api.dart';
 import '../api/gender_api.dart';
+import '../api/journey_request_api.dart';
 import '../api/local_storage_api.dart';
+import '../api/place_api.dart';
 import '../api/user_locale_api.dart';
 import '../services/application_settings_service.dart';
 import '../services/authentication_service.dart';
 import '../services/country_service.dart';
+import '../services/engine_type_service.dart';
 import '../services/environment_service.dart';
 import '../services/gender_service.dart';
+import '../services/journey_request_service.dart';
+import '../services/place_service.dart';
 import '../services/user_locale_service.dart';
+import '../ui/views/discussions/discussions_viemodel.dart';
+import '../ui/views/journey_creation/journey_creation_viewmodel.dart';
+import '../ui/views/journey_requests/journey_requests_viewmodel.dart';
+import '../ui/views/profile/profile_viewmodel.dart';
 import '../utils/location_helper.dart';
 
 final locator = StackedLocator.instance;
@@ -39,14 +49,26 @@ Future setupLocator(
   locator.registerSingleton(environmentService);
 
   locator.registerSingleton(NavigationService());
+  locator.registerSingleton(SnackbarService());
+  locator.registerSingleton(BottomSheetService());
+  locator.registerLazySingleton(() => ApplicationSettingsService());
+  locator.registerLazySingleton(() => AuthenticationApi());
+  locator.registerLazySingleton(() => AuthenticationService());
+  locator.registerLazySingleton(() => EngineTypeApi());
+  locator.registerLazySingleton(() => EngineTypeService());
+  locator.registerLazySingleton(() => JourneyRequestApi());
+  locator.registerLazySingleton(() => JourneyRequestService());
+  locator.registerLazySingleton(() => JourneyCreationViewModel());
+  locator.registerLazySingleton(() => JourneyRequestsViewModel());
+  locator.registerLazySingleton(() => DiscussionsViewModel());
+  locator.registerLazySingleton(() => ProfileViewModel());
   locator.registerLazySingleton(() => CountryApi());
   locator.registerLazySingleton(() => CountryService());
   locator.registerLazySingleton(() => UserLocaleApi());
   locator.registerLazySingleton(() => UserLocaleService());
   locator.registerLazySingleton(() => LocationHelper());
-  locator.registerLazySingleton(() => AuthenticationApi());
-  locator.registerLazySingleton(() => AuthenticationService());
-  locator.registerLazySingleton(() => ApplicationSettingsService());
   locator.registerLazySingleton(() => GenderApi());
   locator.registerLazySingleton(() => GenderService());
+  locator.registerLazySingleton(() => PlaceApi());
+  locator.registerLazySingleton(() => PlaceService());
 }

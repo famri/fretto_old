@@ -1,9 +1,12 @@
-enum ApiErrorCode {
+enum ErrorCode {
+  //Technical
   BAD_REQUEST,
   NOT_FOUND,
   FORBIDDEN,
   UNAUTHORIZED,
   SERVER_ERROR,
   CONNECTION_FAILED,
-  UNKNOWN
+  UNKNOWN,
+  //Functional 
+  MOBILE_NOT_VALIDATED,
 }

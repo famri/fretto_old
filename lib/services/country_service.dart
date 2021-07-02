@@ -13,19 +13,10 @@ class CountryService {
 
   Future<List<Country>?> loadCountries(
       String localeLanguageCode, String localeCountryCode) async {
-    _countries =
-        await _countryApi.fetchCountries(localeLanguageCode, localeCountryCode);
-    return _countries;
-  }
-
-  String? getCountryInternationalCallingCode(int countryId) {
-    if (_countries != null) {
-      return _countries!
-          .firstWhere((element) => element.id == countryId)
-          .icc
-          .value;
-    } else {
-      return null;
+    if (_countries == null) {
+      _countries = await _countryApi.fetchCountries(
+          localeLanguageCode, localeCountryCode);
     }
+    return _countries;
   }
 }

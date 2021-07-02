@@ -7,10 +7,11 @@ import 'package:fretto/ui/shared/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-import 'api/local_storage_api.dart';
 import 'app/app.locator.dart';
 import 'app/app.router.dart';
 import 'l10n/locale/app_localizations.dart';
+import 'ui/shared/setup_bottom_sheet_ui.dart';
+import 'ui/shared/setup_snackbar_ui.dart';
 
 void main() async {
   /* ENSURE ASYNC WILL NOT GENERATE RUNTIME ERROR */
@@ -21,6 +22,8 @@ void main() async {
   HttpOverrides.global = new MyHttpOverrides();
   /* REGISTER DEPENDENCIES */
   await setupLocator();
+  setupSnackbarUi();
+  setupBottomSheetUi();
   runApp(Fretto());
 }
 

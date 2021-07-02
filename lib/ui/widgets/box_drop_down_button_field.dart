@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fretto/ui/shared/colors.dart';
-import 'package:fretto/ui/shared/styles.dart';
 
 class BoxDropDownButtonField extends StatelessWidget {
-  final int value;
+  final int? value;
   final List<DropdownMenuItemElement> elements;
 
   final void Function(int? value)? onChanged;
+  final FocusNode? focusNode;
+  final FocusNode? nextFocusNode;
+  final String? hintText;
+  final String? label;
+  final String? Function(int? value)? validator;
 
   final circularBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),
@@ -16,17 +20,26 @@ class BoxDropDownButtonField extends StatelessWidget {
       {Key? key,
       required this.value,
       required this.elements,
-      required this.onChanged})
+      required this.onChanged,
+      this.focusNode,
+      this.nextFocusNode,
+      this.hintText,
+      this.label,
+      this.validator})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<int>(
+      focusNode: focusNode,
+      validator: validator,
       decoration: InputDecoration(
+        labelText: label,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         filled: true,
         fillColor: kcVeryLightGreyColor,
+        hintText: hintText,
         border: circularBorder.copyWith(
           borderSide: BorderSide(color: kcLightGreyColor),
         ),
@@ -34,7 +47,7 @@ class BoxDropDownButtonField extends StatelessWidget {
           borderSide: BorderSide(color: Colors.red),
         ),
         focusedBorder: circularBorder.copyWith(
-          borderSide: BorderSide(color: kcPrimaryColor),
+          borderSide: BorderSide(color: kcAccentColor),
         ),
         enabledBorder: circularBorder.copyWith(
           borderSide: BorderSide(color: kcLightGreyColor),
@@ -50,19 +63,19 @@ class BoxDropDownButtonField extends StatelessWidget {
                     element.title,
                     style: TextStyle(height: 1),
                   ),
-                  if (element.imagePath != null)
-                    SizedBox(
-                        width: 25,
-                        height: 25,
-                        child: Image.network(
-                          element.imagePath!,
-                          fit: BoxFit.contain,
-                        )),
+                  if (element.trailing != null) element.trailing!
                 ],
               ),
               value: element.value))
           .toList(),
-      onChanged: onChanged,
+      onChanged: (value) {
+        if (nextFocusNode != null) {
+          FocusScope.of(context).requestFocus(nextFocusNode);
+        }
+        if (onChanged != null) {
+          onChanged!(value);
+        }
+      },
       isExpanded: true,
     );
   }
@@ -71,8 +84,8 @@ class BoxDropDownButtonField extends StatelessWidget {
 class DropdownMenuItemElement {
   final String title;
   final int value;
-  final String? imagePath;
+  final Widget? trailing;
 
   DropdownMenuItemElement(
-      {required this.title, required this.value, this.imagePath});
+      {required this.title, required this.value, this.trailing});
 }

@@ -19,16 +19,9 @@ class SigninView extends StatelessWidget with $SigninView {
   SigninView({Key? key}) : super(key: key);
 
   @override
-  void disposeForm() {
-    passwordFocusNode.dispose();
-    super.disposeForm();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SigninViewModel>.reactive(
       onModelReady: (model) => listenToFormUpdated(model),
-      onDispose: disposeForm,
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.authenticationSigninText),

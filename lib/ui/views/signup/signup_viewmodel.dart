@@ -28,7 +28,6 @@ class SignupViewModel extends FormViewModel {
       locator<AuthenticationService>();
 
   final DateFormat _dateFormatter = DateFormat.yMd();
-
   bool _isInitialized = false;
 
   List<Gender>? _genders;
@@ -38,7 +37,7 @@ class SignupViewModel extends FormViewModel {
 
   final _formKey = GlobalKey<FormState>();
 
-  ApiErrorCode? _errorCode;
+  ErrorCode? _errorCode;
 
   int? _genderId;
 
@@ -61,18 +60,18 @@ class SignupViewModel extends FormViewModel {
 
   get receiveNewsLetter => _receiveNewsLetter;
 
-  Future<void> loadGenders() async {
-    runBusyFuture(_loadGenders());
+  Future<void> initialize() async {
+    runBusyFuture(_initialize());
   }
 
-  Future<void> _loadGenders() async {
+  Future<void> _initialize() async {
     if (_applicationSettingsService.applicationSettings != null) {
       _localeLanguageCode =
           _applicationSettingsService.applicationSettings!.userLocaleLanguage;
       _localeCountryCode =
           _applicationSettingsService.applicationSettings!.userLocaleCountry;
     }
-    _genders = await _genderService.loadCountries(
+    _genders = await _genderService.loadGenders(
         _localeLanguageCode, _localeCountryCode);
 
     _genderId = _genders!.first.id;
@@ -121,38 +120,38 @@ class SignupViewModel extends FormViewModel {
   void onFutureError(dynamic error, Object? key) {
     if (error is AuthenticationApiException) {
       if (error.statusCode == 400) {
-        _errorCode = ApiErrorCode.BAD_REQUEST;
+        _errorCode = ErrorCode.BAD_REQUEST;
       } else if (error.statusCode == 404) {
-        _errorCode = ApiErrorCode.NOT_FOUND;
+        _errorCode = ErrorCode.NOT_FOUND;
       } else if (error.statusCode == 401) {
-        _errorCode = ApiErrorCode.UNAUTHORIZED;
+        _errorCode = ErrorCode.UNAUTHORIZED;
       } else if (error.statusCode == 403) {
-        _errorCode = ApiErrorCode.FORBIDDEN;
+        _errorCode = ErrorCode.FORBIDDEN;
       } else if (error.statusCode == 500) {
-        _errorCode = ApiErrorCode.SERVER_ERROR;
+        _errorCode = ErrorCode.SERVER_ERROR;
       } else {
-        _errorCode = ApiErrorCode.UNKNOWN;
+        _errorCode = ErrorCode.UNKNOWN;
       }
     } else if (error is SocketException) {
       if (error.message == 'Connection failed') {
-        _errorCode = ApiErrorCode.CONNECTION_FAILED;
+        _errorCode = ErrorCode.CONNECTION_FAILED;
       } else {
-        _errorCode = ApiErrorCode.UNKNOWN;
+        _errorCode = ErrorCode.UNKNOWN;
       }
     } else {
-      _errorCode = ApiErrorCode.UNKNOWN;
+      _errorCode = ErrorCode.UNKNOWN;
     }
   }
 
   String getErrorMessage(BuildContext context) {
     switch (_errorCode) {
-      case ApiErrorCode.CONNECTION_FAILED:
+      case ErrorCode.CONNECTION_FAILED:
         return AppLocalizations.of(context)!.checkYourConnectionText;
-      case ApiErrorCode.NOT_FOUND:
-      case ApiErrorCode.UNAUTHORIZED:
-      case ApiErrorCode.FORBIDDEN:
-      case ApiErrorCode.SERVER_ERROR:
-      case ApiErrorCode.BAD_REQUEST:
+      case ErrorCode.NOT_FOUND:
+      case ErrorCode.UNAUTHORIZED:
+      case ErrorCode.FORBIDDEN:
+      case ErrorCode.SERVER_ERROR:
+      case ErrorCode.BAD_REQUEST:
         return AppLocalizations.of(context)!.somethingWentWrongText;
 
       default:

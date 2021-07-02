@@ -52,20 +52,27 @@ class ApplicationSettingsView extends StatelessWidget {
                                                             BoxDropDownButtonField(
                                                           value: model
                                                               .countryController,
-                                                          elements: model.countries
-                                                              .map<DropdownMenuItemElement>((country) => DropdownMenuItemElement(
-                                                                  title: country
-                                                                      .name,
-                                                                  value: country
-                                                                      .id,
-                                                                  imagePath: 'https://' +
-                                                                      model
-                                                                          .appDomain +
-                                                                      '/' +
-                                                                      model
-                                                                          .appName +
-                                                                      country
-                                                                          .flagPath))
+                                                          elements: model
+                                                              .countries
+                                                              .map<DropdownMenuItemElement>((country) =>
+                                                                  DropdownMenuItemElement(
+                                                                      title: country
+                                                                          .name,
+                                                                      value:
+                                                                          country
+                                                                              .id,
+                                                                      trailing: SizedBox(
+                                                                          width: 25,
+                                                                          height: 25,
+                                                                          child: Image.network(
+                                                                            'https://' +
+                                                                                model.appDomain +
+                                                                                '/' +
+                                                                                model.appName +
+                                                                                country.flagPath,
+                                                                            fit:
+                                                                                BoxFit.contain,
+                                                                          ))))
                                                               .toList(),
                                                           onChanged:
                                                               (int? value) {

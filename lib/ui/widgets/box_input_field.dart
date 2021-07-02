@@ -11,10 +11,11 @@ class BoxInputField extends StatelessWidget {
   final TextInputAction textInputAction;
   final FocusNode? focusNode;
   final Function(String?)? onFieldSubmitted;
-
+  final Function()? onTap;
   final void Function()? trailingTapped;
   final String? Function(String?)? validator;
-
+  final String? label;
+  final int? maxLines;
   final circularBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(8),
   );
@@ -31,7 +32,10 @@ class BoxInputField extends StatelessWidget {
       this.textInputAction = TextInputAction.next,
       this.focusNode,
       this.validator,
-      this.onFieldSubmitted})
+      this.onFieldSubmitted,
+      this.onTap,
+      this.label,
+      this.maxLines = 1})
       : super(key: key);
 
   @override
@@ -44,7 +48,11 @@ class BoxInputField extends StatelessWidget {
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       focusNode: focusNode,
+      onTap: onTap,
+      readOnly: onTap != null,
+      maxLines: maxLines,
       decoration: InputDecoration(
+        labelText: label,
         hintText: placeholder,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -69,8 +77,6 @@ class BoxInputField extends StatelessWidget {
         enabledBorder: circularBorder.copyWith(
           borderSide: BorderSide(color: kcLightGreyColor),
         ),
-        // filled: true,
-        // fillColor: kcVeryLightGreyColor,
       ),
       onFieldSubmitted: onFieldSubmitted,
     );

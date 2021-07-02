@@ -19,8 +19,8 @@ class PlaceSuggestion {
         id: json["id"],
         type: json["type"],
         name: json["name"],
-        delegation: json["delegation"],
-        department: json["department"],
+        delegation: json["delegation"] ?? 'NO DELEGATION',
+        department: json["department"] ?? 'NO DEPARTMENT',
         country: json["country"]);
   }
 }

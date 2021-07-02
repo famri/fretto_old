@@ -29,23 +29,9 @@ class SignupView extends StatelessWidget with $SignupView {
   SignupView({Key? key, required this.isTransporter}) : super(key: key);
 
   @override
-  void disposeForm() {
-    firstnameFocusNode.dispose();
-    lastnameFocusNode.dispose();
-    dateOfBirthFocusNode.dispose();
-    emailFocusNode.dispose();
-    mobileNumberFocusNode.dispose();
-    passwordFocusNode.dispose();
-    passwordConfirmationFocusNode.dispose();
-
-    super.disposeForm();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SignupViewModel>.reactive(
       onModelReady: (model) => initialize(model),
-      onDispose: disposeForm,
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.authenticationSignupText),
@@ -276,7 +262,7 @@ class SignupView extends StatelessWidget with $SignupView {
 
   Future<void> initialize(SignupViewModel model) async {
     listenToFormUpdated(model);
-    await model.loadGenders();
+    await model.initialize();
     model.isTransporter = isTransporter;
   }
 }

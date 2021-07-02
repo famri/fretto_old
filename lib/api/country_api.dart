@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 class CountryApi {
   final log = getLogger('CountryApi');
-  final EnvironmentService environmentService = locator<EnvironmentService>();
+  final EnvironmentService _environmentService = locator<EnvironmentService>();
 
   Future<List<Country>> fetchCountries(
       String localeLanguageCode, String localeCountryCode) async {
@@ -20,8 +20,8 @@ class CountryApi {
 
     Map<String, String> queryParams = {"lang": lang};
 
-    var countriesUri = Uri.https(environmentService.getValue(AppDomain),
-        environmentService.getValue(AppName) + '/countries', queryParams);
+    var countriesUri = Uri.https(_environmentService.getValue(AppDomain),
+        _environmentService.getValue(AppName) + '/countries', queryParams);
 
     try {
       final response = await http.get(

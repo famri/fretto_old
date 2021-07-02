@@ -11,7 +11,7 @@ class GenderService {
 
   get genders => _genders;
 
-  Future<List<Gender>?> loadCountries(
+  Future<List<Gender>?> loadGenders(
       String localeLanguageCode, String localeCountryCode) async {
     _genders =
         await _genderApi.fetchGenders(localeLanguageCode, localeCountryCode);

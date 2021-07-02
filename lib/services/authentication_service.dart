@@ -5,6 +5,7 @@ import 'package:fretto/api/authentication_api.dart';
 import 'package:fretto/api/local_storage_api.dart';
 import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/app/app.logger.dart';
+import 'package:fretto/app/app.router.dart';
 import 'package:fretto/constants/app_keys.dart';
 import 'package:fretto/exceptions/authentication_exception.dart';
 import 'package:fretto/models/bearer_token_info.dart';
@@ -13,6 +14,7 @@ import 'package:fretto/models/user_info.dart';
 import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/utils/validators.dart';
 import 'package:logger/logger.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class AuthenticationService {
   Logger log = getLogger('AuthenticationService');
@@ -20,6 +22,7 @@ class AuthenticationService {
   final LocalStorageApi _localStorageApi = locator<LocalStorageApi>();
   final ApplicationSettingsService _applicationSettingsService =
       locator<ApplicationSettingsService>();
+  final NavigationService _navigationService = locator<NavigationService>();
 
   UserAuthData? _userAuthData;
   Timer? _authTimer;
@@ -33,6 +36,8 @@ class AuthenticationService {
       _userAuthData != null &&
       _userAuthData!.token != null &&
       _userAuthData!.expiryDate!.isAfter(DateTime.now());
+
+  String? get token => _userAuthData == null ? null : _userAuthData!.token;
 
   Future<bool> signin(String username, String password) async {
     // if username is mobile number then try to add international calling code
@@ -117,14 +122,16 @@ class AuthenticationService {
     }
   }
 
-  Future<bool> logout() async {
+  Future<void> logout() async {
     this._userAuthData = null;
 
     if (_authTimer != null) {
       _authTimer!.cancel();
     }
     bool isRemovedSuccessfully = await _updateStoredUserAuthData(null);
-    return isRemovedSuccessfully;
+    if (isRemovedSuccessfully) {
+      _navigationService.clearStackAndShow(Routes.signinView);
+    }
   }
 
   void configureAutoLogout() {

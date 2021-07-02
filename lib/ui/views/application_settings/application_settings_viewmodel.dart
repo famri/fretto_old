@@ -119,7 +119,10 @@ class ApplicationSettingsViewModel extends BaseViewModel {
               userCountryIcc: _countries!
                   .firstWhere((element) => element.id == _userCountryId)
                   .icc
-                  .value));
+                  .value,
+              userCountryCode: _countries!
+                  .firstWhere((element) => element.id == _userCountryId)
+                  .code));
       if (!isUpdatedSuccessfully) {
         log.e('Unable to update Application Settings.');
         return false;

@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 class GenderApi {
   final log = getLogger('GenderApi');
-  final EnvironmentService environmentService = locator<EnvironmentService>();
+  final EnvironmentService _environmentService = locator<EnvironmentService>();
 
   Future<List<Gender>> fetchGenders(
       String localeLanguageCode, String localeCountryCode) async {
@@ -20,8 +20,8 @@ class GenderApi {
 
     Map<String, String> queryParams = {"lang": lang};
 
-    var gendersUri = Uri.https(environmentService.getValue(AppDomain),
-        environmentService.getValue(AppName) + '/genders', queryParams);
+    var gendersUri = Uri.https(_environmentService.getValue(AppDomain),
+        _environmentService.getValue(AppName) + '/genders', queryParams);
 
     try {
       final response = await http.get(
