@@ -1004,6 +1004,8 @@ class AppLocalizations {
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   final Locale overriddenLocale;
+  static AppLocalizations? _instance;
+  static AppLocalizations? get instance => _instance;
 
   const AppLocalizationDelegate(this.overriddenLocale);
 
@@ -1012,7 +1014,11 @@ class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
       <String>['en', 'fr'].contains(locale.languageCode);
 
   @override
-  Future<AppLocalizations> load(Locale locale) => AppLocalizations.load(locale);
+  Future<AppLocalizations> load(Locale locale) async {
+    AppLocalizations appLocalizations = await AppLocalizations.load(locale);
+    _instance = appLocalizations;
+    return appLocalizations;
+  }
 
   @override
   bool shouldReload(LocalizationsDelegate<AppLocalizations> old) => false;

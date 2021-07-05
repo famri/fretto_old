@@ -4,7 +4,9 @@ import 'package:fretto/api/engine_type_api.dart';
 import 'package:fretto/api/gender_api.dart';
 import 'package:fretto/api/journey_request_api.dart';
 import 'package:fretto/api/place_api.dart';
+import 'package:fretto/api/sms_api.dart';
 import 'package:fretto/api/user_locale_api.dart';
+import 'package:fretto/api/user_profile_api.dart';
 import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/authentication_service.dart';
 import 'package:fretto/services/country_service.dart';
@@ -14,7 +16,9 @@ import 'package:fretto/services/gender_service.dart';
 import 'package:fretto/api/local_storage_api.dart';
 import 'package:fretto/services/journey_request_service.dart';
 import 'package:fretto/services/place_service.dart';
+import 'package:fretto/services/sms_service.dart';
 import 'package:fretto/services/user_locale_service.dart';
+import 'package:fretto/services/user_profile_service.dart';
 import 'package:fretto/ui/views/account_type_choice/account_type_choice_view.dart';
 import 'package:fretto/ui/views/application_settings/application_settings_view.dart';
 import 'package:fretto/ui/views/authentication_choice/authentication_choice_view.dart';
@@ -24,6 +28,7 @@ import 'package:fretto/ui/views/favorite_places/favorite_places_view.dart';
 import 'package:fretto/ui/views/home/home_view.dart';
 import 'package:fretto/ui/views/journey_creation/journey_creation_viewmodel.dart';
 import 'package:fretto/ui/views/journey_requests/journey_requests_viewmodel.dart';
+import 'package:fretto/ui/views/mobile_number_check/mobile_number_check_view.dart';
 import 'package:fretto/ui/views/profile/profile_viewmodel.dart';
 import 'package:fretto/ui/views/signin/signin_view.dart';
 import 'package:fretto/ui/views/signup/signup_view.dart';
@@ -43,6 +48,7 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: HomeView),
     MaterialRoute(page: CreateFavoritePlaceView),
     MaterialRoute(page: FavoritePlacesView),
+    MaterialRoute(page: MobileNumberCheckView),
   ],
   dependencies: [
     Presolve(
@@ -73,6 +79,10 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: GenderService),
     LazySingleton(classType: PlaceApi),
     LazySingleton(classType: PlaceService),
+    LazySingleton(classType: UserProfileApi),
+    LazySingleton(classType: UserProfileService),
+    LazySingleton(classType: SMSApi),
+    LazySingleton(classType: SMSService),
   ],
   logger: StackedLogger(),
 )

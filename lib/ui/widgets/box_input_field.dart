@@ -43,7 +43,6 @@ class BoxInputField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       validator: validator,
-      style: TextStyle(height: 1),
       obscureText: password,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
@@ -52,6 +51,7 @@ class BoxInputField extends StatelessWidget {
       readOnly: onTap != null,
       maxLines: maxLines,
       decoration: InputDecoration(
+        isDense: true,
         labelText: label,
         hintText: placeholder,
         contentPadding:

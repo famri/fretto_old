@@ -35,8 +35,8 @@ class BoxDropDownButtonField extends StatelessWidget {
       validator: validator,
       decoration: InputDecoration(
         labelText: label,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        //isDense: true,
+        contentPadding: const EdgeInsets.all(12.5),
         filled: true,
         fillColor: kcVeryLightGreyColor,
         hintText: hintText,

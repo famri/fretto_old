@@ -120,6 +120,10 @@ class ApplicationSettingsViewModel extends BaseViewModel {
                   .firstWhere((element) => element.id == _userCountryId)
                   .icc
                   .value,
+              userCountryIccId: _countries!
+                  .firstWhere((element) => element.id == _userCountryId)
+                  .icc
+                  .id,
               userCountryCode: _countries!
                   .firstWhere((element) => element.id == _userCountryId)
                   .code));

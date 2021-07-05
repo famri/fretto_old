@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fretto/app/app.locator.dart';
+import 'package:fretto/app/app.router.dart';
 import 'package:fretto/exceptions/api_error_code.dart';
 import 'package:fretto/exceptions/mobile_validation_exception.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
@@ -218,7 +219,7 @@ class JourneyCreationViewModel extends FormViewModel {
     if (confirmationResponse != null) {
       //the bottom sheet was not dismissed
       if (confirmationResponse.confirmed) {
-        // _navigationService.navigateTo(Routes.mobileValidation);
+        _navigationService.navigateTo(Routes.mobileNumberCheckView);
       }
     }
   }

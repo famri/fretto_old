@@ -126,26 +126,28 @@ class JourneyRequestApi {
         },
         body: jsonEncode(requestBody),
       );
-      var responseData = json.decode(response.body);
+
       if (response.statusCode != 201) {
-        if (response.body.isNotEmpty &&
-            responseData['errorCode'] != null &&
-            responseData['errors'] != null) {
-          String errorsCode = responseData['errorCode'];
-          var errorsList = json.decode(response.body)['errors'];
-          var strBuffer = StringBuffer();
-          errorsList.forEach((item) {
-            strBuffer.write(item);
-            strBuffer.write(', ');
-          });
-          String errorMessage = strBuffer
-              .toString()
-              .substring(0, strBuffer.toString().length - 2);
-          if (errorsCode == 'MOBILE_VALIDATION') {
-            throw MobileValidationException(errorMessage);
-          } else {
-            throw JourneyRequestApiException(
-                message: errorMessage, statusCode: response.statusCode);
+        if (response.body.isNotEmpty) {
+          var responseData = json.decode(response.body);
+          if (responseData['errorCode'] != null &&
+              responseData['errors'] != null) {
+            String errorsCode = responseData['errorCode'];
+            var errorsList = json.decode(response.body)['errors'];
+            var strBuffer = StringBuffer();
+            errorsList.forEach((item) {
+              strBuffer.write(item);
+              strBuffer.write(', ');
+            });
+            String errorMessage = strBuffer
+                .toString()
+                .substring(0, strBuffer.toString().length - 2);
+            if (errorsCode == 'MOBILE_VALIDATION') {
+              throw MobileValidationException(errorMessage);
+            } else {
+              throw JourneyRequestApiException(
+                  message: errorMessage, statusCode: response.statusCode);
+            }
           }
         }
         throw JourneyRequestApiException(

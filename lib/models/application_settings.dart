@@ -6,6 +6,7 @@ class ApplicationSettings {
   String userLocaleLanguage;
   String userLocaleCountry;
   String userCountryIcc;
+  int userCountryIccId;
   String userCountryCode;
 
   ApplicationSettings(
@@ -16,6 +17,7 @@ class ApplicationSettings {
       required this.userLocaleLanguage,
       required this.userLocaleCountry,
       required this.userCountryIcc,
+      required this.userCountryIccId,
       required this.userCountryCode});
 
   factory ApplicationSettings.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class ApplicationSettings {
         userLocaleLanguage: json['userLocaleLanguage'],
         userLocaleCountry: json['userLocaleCountry'],
         userCountryIcc: json['userCountryIcc'],
+        userCountryIccId: json['userCountryIccId'],
         userCountryCode: json['userCountryCode']);
   }
 
@@ -39,6 +42,7 @@ class ApplicationSettings {
     json['userLocaleLanguage'] = this.userLocaleLanguage;
     json['userLocaleCountry'] = this.userLocaleCountry;
     json['userCountryIcc'] = this.userCountryIcc;
+    json['userCountryIccId'] = this.userCountryIccId;
     json['userCountryCode'] = this.userCountryCode;
     return json;
   }
