@@ -6,15 +6,22 @@ import 'package:fretto/ui/widgets/box_drop_down_button_field.dart';
 import 'package:fretto/ui/widgets/box_input_field.dart';
 import 'package:fretto/utils/validators.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked_annotations.dart';
 
+import 'mobile_number_check_view.form.dart';
 import 'mobile_number_check_viewmodel.dart';
 
-class MobileNumberCheckView extends StatelessWidget {
+@FormView(fields: [
+  FormTextField(name: 'mobileNumber'),
+])
+class MobileNumberCheckView extends StatelessWidget
+    with $MobileNumberCheckView {
   MobileNumberCheckView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<MobileNumberCheckViewModel>.reactive(
+      onModelReady: (model) => _initialize(model),
       builder: (context, model, child) => Scaffold(
           appBar: AppBar(
             title: Text('Vérification de mobile'),
@@ -37,7 +44,6 @@ class MobileNumberCheckView extends StatelessWidget {
                                         flex: 5,
                                         child: BoxDropDownButtonField(
                                           elements: model
-                                              .data!
                                               .internationalCallingCodes!
                                               .entries
                                               .map<DropdownMenuItemElement>(
@@ -54,16 +60,15 @@ class MobileNumberCheckView extends StatelessWidget {
                                       Expanded(
                                           flex: 6,
                                           child: BoxInputField(
-                                            controller:
-                                                model.mobileNumberController,
+                                            controller: mobileNumberController,
                                             validator: (phoneNumber) =>
                                                 Validators.phoneNumberValidator(
-                                                    phoneNumber, context),
+                                                    phoneNumber),
                                             placeholder:
                                                 AppLocalizations.of(context)!
                                                     .signUpMobileNumberLabel,
                                             textInputAction:
-                                                TextInputAction.next,
+                                                TextInputAction.done,
                                             keyboardType: TextInputType.number,
                                           ))
                                     ])),
@@ -71,11 +76,19 @@ class MobileNumberCheckView extends StatelessWidget {
                             Padding(
                                 padding: EdgeInsets.symmetric(vertical: 15.0),
                                 child: BoxButton(
-                                  title: 'Vérifier',
+                                  title: 'Confirmer',
                                   onTap: model.checkMobile,
                                 ))
                           ])))),
       viewModelBuilder: () => MobileNumberCheckViewModel(),
     );
+  }
+
+  Future<void> _initialize(MobileNumberCheckViewModel model) async {
+    listenToFormUpdated(model);
+    model.setBusy(true);
+    await model.init();
+    mobileNumberController.text = model.mobileNumber!;
+    model.setBusy(false);
   }
 }

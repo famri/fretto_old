@@ -16,6 +16,7 @@ import '../ui/views/create_favorite_place/create_favorite_place_view.dart';
 import '../ui/views/favorite_places/favorite_places_view.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/mobile_number_check/mobile_number_check_view.dart';
+import '../ui/views/mobile_validation_sms_code/mobile_validation_sms_code_view.dart';
 import '../ui/views/signin/signin_view.dart';
 import '../ui/views/signup/signup_view.dart';
 import '../ui/views/startup/startup_view.dart';
@@ -31,6 +32,8 @@ class Routes {
   static const String createFavoritePlaceView = '/create-favorite-place-view';
   static const String favoritePlacesView = '/favorite-places-view';
   static const String mobileNumberCheckView = '/mobile-number-check-view';
+  static const String mobileValidationSMSCodeView =
+      '/mobile-validation-sm-scode-view';
   static const all = <String>{
     startupView,
     applicationSettingsView,
@@ -42,6 +45,7 @@ class Routes {
     createFavoritePlaceView,
     favoritePlacesView,
     mobileNumberCheckView,
+    mobileValidationSMSCodeView,
   };
 }
 
@@ -59,6 +63,8 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.createFavoritePlaceView, page: CreateFavoritePlaceView),
     RouteDef(Routes.favoritePlacesView, page: FavoritePlacesView),
     RouteDef(Routes.mobileNumberCheckView, page: MobileNumberCheckView),
+    RouteDef(Routes.mobileValidationSMSCodeView,
+        page: MobileValidationSMSCodeView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -142,6 +148,18 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    MobileValidationSMSCodeView: (data) {
+      var args =
+          data.getArgs<MobileValidationSMSCodeViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => MobileValidationSMSCodeView(
+          key: args.key,
+          icc: args.icc,
+          mobileNumber: args.mobileNumber,
+        ),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -179,4 +197,13 @@ class CreateFavoritePlaceViewArguments {
 class MobileNumberCheckViewArguments {
   final Key? key;
   MobileNumberCheckViewArguments({this.key});
+}
+
+/// MobileValidationSMSCodeView arguments holder class
+class MobileValidationSMSCodeViewArguments {
+  final Key? key;
+  final String icc;
+  final String mobileNumber;
+  MobileValidationSMSCodeViewArguments(
+      {this.key, required this.icc, required this.mobileNumber});
 }

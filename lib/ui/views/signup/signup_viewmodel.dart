@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/app/app.router.dart';
-import 'package:fretto/exceptions/api_error_code.dart';
 import 'package:fretto/exceptions/authentication_api_exception.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/models/gender.dart';
 import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/authentication_service.dart';
 import 'package:fretto/services/gender_service.dart';
+import 'package:fretto/ui/shared/snackbar_type.dart';
 import 'package:fretto/ui/views/signup/signup_view.form.dart';
 import 'package:fretto/utils/validators.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +27,8 @@ class SignupViewModel extends FormViewModel {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
 
+  final SnackbarService _snackbarService = locator<SnackbarService>();
+
   final DateFormat _dateFormatter = DateFormat.yMd();
   bool _isInitialized = false;
 
@@ -36,8 +38,6 @@ class SignupViewModel extends FormViewModel {
   String gendersBusyObj = 'gendersBusyObj';
 
   final _formKey = GlobalKey<FormState>();
-
-  ErrorCode? _errorCode;
 
   int? _genderId;
 
@@ -115,63 +115,51 @@ class SignupViewModel extends FormViewModel {
   void navigateToTermsOfService() {}
 
   void navigateToPrivacyPolicy() {}
-
   @override
   void onFutureError(dynamic error, Object? key) {
     if (error is AuthenticationApiException) {
       if (error.statusCode == 400) {
-        _errorCode = ErrorCode.BAD_REQUEST;
-      } else if (error.statusCode == 404) {
-        _errorCode = ErrorCode.NOT_FOUND;
-      } else if (error.statusCode == 401) {
-        _errorCode = ErrorCode.UNAUTHORIZED;
-      } else if (error.statusCode == 403) {
-        _errorCode = ErrorCode.FORBIDDEN;
-      } else if (error.statusCode == 500) {
-        _errorCode = ErrorCode.SERVER_ERROR;
+        _showErrorSnackbar(AppLocalizationDelegate
+            .appLocalizations!.authenticationBadCredentialsText);
       } else {
-        _errorCode = ErrorCode.UNKNOWN;
+        _showErrorSnackbar(
+            AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
       }
     } else if (error is SocketException) {
       if (error.message == 'Connection failed') {
-        _errorCode = ErrorCode.CONNECTION_FAILED;
+        _showErrorSnackbar(
+            AppLocalizationDelegate.appLocalizations!.checkYourConnectionText);
       } else {
-        _errorCode = ErrorCode.UNKNOWN;
+        _showErrorSnackbar(
+            AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
       }
     } else {
-      _errorCode = ErrorCode.UNKNOWN;
+      _showErrorSnackbar(
+          AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
     }
   }
 
-  String getErrorMessage(BuildContext context) {
-    switch (_errorCode) {
-      case ErrorCode.CONNECTION_FAILED:
-        return AppLocalizations.of(context)!.checkYourConnectionText;
-      case ErrorCode.NOT_FOUND:
-      case ErrorCode.UNAUTHORIZED:
-      case ErrorCode.FORBIDDEN:
-      case ErrorCode.SERVER_ERROR:
-      case ErrorCode.BAD_REQUEST:
-        return AppLocalizations.of(context)!.somethingWentWrongText;
+  void _showErrorSnackbar(String message) {
+    _snackbarService.showCustomSnackBar(
+      variant: SnackbarType.error,
+      message: message,
+      duration: Duration(seconds: 3),
+    );
+  }
 
-      default:
-        return AppLocalizations.of(context)!.somethingWentWrongText;
+  String? validatePasswordConfirmation(
+      String? passwordConfirmation) {
+    String? validationMessage =
+        Validators.passwordValidator(passwordConfirmation);
+    if (validationMessage != null) return validationMessage;
+    if (passwordValue != passwordConfirmation) {
+      return AppLocalizationDelegate.appLocalizations!.signUpPasswordValidationMessage;
     }
+    return null;
   }
 
   @override
   void setFormStatus() {
     // TODO: implement setFormStatus
-  }
-
-  String? validatePasswordConfirmation(
-      String? passwordConfirmation, BuildContext context) {
-    String? validationMessage =
-        Validators.passwordValidator(passwordConfirmation, context);
-    if (validationMessage != null) return validationMessage;
-    if (passwordValue != passwordConfirmation) {
-      return AppLocalizations.of(context)!.signUpPasswordValidationMessage;
-    }
-    return null;
   }
 }

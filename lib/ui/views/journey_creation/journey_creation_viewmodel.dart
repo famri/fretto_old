@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/app/app.router.dart';
-import 'package:fretto/exceptions/api_error_code.dart';
 import 'package:fretto/exceptions/mobile_validation_exception.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/models/engine_type.dart';
@@ -25,7 +24,7 @@ class JourneyCreationViewModel extends FormViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final SnackbarService _snackbarService = locator<SnackbarService>();
   final BottomSheetService _bottomSheetService = locator<BottomSheetService>();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
 
   BuildContext? context;
 
@@ -87,7 +86,7 @@ class JourneyCreationViewModel extends FormViewModel {
   }
 
   Future<void> createJourneyRequest() async {
-    bool isValid = _formKey.currentState!.validate();
+    bool isValid = _formKey!.currentState!.validate();
     if (!isValid) return;
     runBusyFuture(
         _journeyRequestService
@@ -148,59 +147,32 @@ class JourneyCreationViewModel extends FormViewModel {
       _showValidateMobileBottomSheet();
     } else if (error is SocketException) {
       if (error.message == 'Connection failed') {
-        _showErrorSnackbar(ErrorCode.CONNECTION_FAILED);
+        _showErrorSnackbar(
+            AppLocalizationDelegate.appLocalizations!.checkYourConnectionText);
       } else {
-        _showErrorSnackbar(ErrorCode.UNKNOWN);
+        _showErrorSnackbar(
+            AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
       }
     } else {
-      _showErrorSnackbar(ErrorCode.UNKNOWN);
+      _showErrorSnackbar(
+          AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
     }
   }
 
-  void _showErrorSnackbar(ErrorCode errorCode) {
+  void _showErrorSnackbar(String message) {
     _snackbarService.showCustomSnackBar(
       variant: SnackbarType.error,
-      message: _getErrorMessage(errorCode),
-      //title: 'The message is the message',
+      message: message,
       duration: Duration(seconds: 3),
-      /* onTap: (_) {
-          print('snackbar tapped');
-        }, */
-      //mainButtonTitle: 'Undo',
-      //onMainButtonTapped: () => print('Undo the action!'),
     );
   }
 
-  void _showSuccessSnackbar() {
+  void _showSuccessSnackbar(String message) {
     _snackbarService.showCustomSnackBar(
       variant: SnackbarType.success,
-      message: 'success!',
-      //title: 'The message is the message',
+      message: message,
       duration: Duration(seconds: 3),
-      /* onTap: (_) {
-          print('snackbar tapped');
-        }, */
-      //mainButtonTitle: 'Undo',
-      //onMainButtonTapped: () => print('Undo the action!'),
     );
-  }
-
-  String _getErrorMessage(ErrorCode errorCode) {
-    switch (errorCode) {
-      case ErrorCode.CONNECTION_FAILED:
-        return AppLocalizations.of(context!)!.checkYourConnectionText;
-      case ErrorCode.NOT_FOUND:
-      case ErrorCode.UNAUTHORIZED:
-      case ErrorCode.FORBIDDEN:
-      case ErrorCode.SERVER_ERROR:
-        return AppLocalizations.of(context!)!.somethingWentWrongText;
-      case ErrorCode.BAD_REQUEST:
-        return AppLocalizations.of(context!)!.authenticationBadCredentialsText;
-      case ErrorCode.MOBILE_NOT_VALIDATED:
-        return AppLocalizations.of(context!)!.validateMobileAlertText1;
-      default:
-        return AppLocalizations.of(context!)!.somethingWentWrongText;
-    }
   }
 
   void setContext(BuildContext context) {
@@ -210,11 +182,12 @@ class JourneyCreationViewModel extends FormViewModel {
   Future<void> _showValidateMobileBottomSheet() async {
     var confirmationResponse = await _bottomSheetService.showCustomSheet(
       variant: BottomSheetType.FLOATING_BOX,
-      title: AppLocalizations.of(context!)!.validateMobileAlertTitle,
-      description: AppLocalizations.of(context!)!.validateMobileAlertText1 +
-          AppLocalizations.of(context!)!.validateMobileAlertText2,
-      mainButtonTitle: MaterialLocalizations.of(context!).cancelButtonLabel,
-      secondaryButtonTitle: MaterialLocalizations.of(context!).okButtonLabel,
+      title: AppLocalizationDelegate.appLocalizations!.validateMobileAlertTitle,
+      description: AppLocalizationDelegate
+              .appLocalizations!.validateMobileAlertText1 +
+          AppLocalizationDelegate.appLocalizations!.validateMobileAlertText2,
+      mainButtonTitle: 'CANCEL',
+      secondaryButtonTitle: 'OK',
     );
     if (confirmationResponse != null) {
       //the bottom sheet was not dismissed
@@ -224,5 +197,33 @@ class JourneyCreationViewModel extends FormViewModel {
     }
   }
 
-  _clearFormAndNavigateToJourneyRequests() {}
+  _clearFormAndNavigateToJourneyRequests() {
+    _clearForm();
+    _showSuccessSnackbar(
+        AppLocalizationDelegate.appLocalizations!.createJourneyAppBarTitle);
+
+    Future.delayed(
+        Duration(seconds: 3),
+        () => _navigationService.navigateTo(Routes.homeView,
+            arguments: HomeViewArguments(viewIndex: 1)));
+  }
+
+  void _clearForm() {
+    formValueMap[ArrivalValueKey] = null;
+    formValueMap[DepartureValueKey] = null;
+
+    formValueMap[DateValueKey] = null;
+    formValueMap[TimeValueKey] = null;
+    formValueMap[DescriptionValueKey] = null;
+    _engineTypeId = null;
+    _departurePlaceId = null;
+    _departurePlaceType = null;
+    _arrivalPlaceId = null;
+    _arrivalPlaceType = null;
+    _selectedDate = null;
+    _selectedTime = null;
+    _workers = null;
+    _formKey = null;
+    notifyListeners();
+  }
 }

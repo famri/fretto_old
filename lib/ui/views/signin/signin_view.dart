@@ -39,7 +39,7 @@ class SigninView extends StatelessWidget with $SigninView {
                             BoxInputField(
                               controller: loginController,
                               validator: (login) =>
-                                  Validators.loginValidator(login, context),
+                                  Validators.loginValidator(login),
                               placeholder: AppLocalizations.of(context)!
                                   .signInLoginLabel,
                               leading: Icon(Icons.person),
@@ -50,8 +50,7 @@ class SigninView extends StatelessWidget with $SigninView {
                             BoxInputField(
                                 controller: passwordController,
                                 validator: (password) =>
-                                    Validators.passwordValidator(
-                                        password, context),
+                                    Validators.passwordValidator(password),
                                 placeholder: AppLocalizations.of(context)!
                                     .signInPasswordLabel,
                                 leading: Icon(Icons.lock),
@@ -61,12 +60,6 @@ class SigninView extends StatelessWidget with $SigninView {
                                 onFieldSubmitted: (value) => model.signin())
                           ],
                         )),
-                    verticalSpaceRegular,
-                    if (model.hasErrorForKey(model.signinBusyObj))
-                      Text(
-                        model.getErrorMessage(context),
-                        style: TextStyle(color: Colors.red),
-                      ),
                     verticalSpaceRegular,
                     Padding(
                       padding: EdgeInsets.symmetric(

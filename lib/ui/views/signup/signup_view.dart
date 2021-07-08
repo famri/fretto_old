@@ -69,7 +69,6 @@ class SignupView extends StatelessWidget with $SignupView {
                                           lastname,
                                           AppLocalizations.of(context)!
                                               .signUpLastnameLabel,
-                                          context,
                                           2,
                                           15),
                                   placeholder: AppLocalizations.of(context)!
@@ -85,7 +84,6 @@ class SignupView extends StatelessWidget with $SignupView {
                                           firstname,
                                           AppLocalizations.of(context)!
                                               .signUpFirstnameLabel,
-                                          context,
                                           2,
                                           15),
                                   placeholder: AppLocalizations.of(context)!
@@ -106,13 +104,13 @@ class SignupView extends StatelessWidget with $SignupView {
                                     focusNode: dateOfBirthFocusNode,
                                     requestNextFocus: true,
                                     validator: (value) =>
-                                        Validators.ageValidator(value, context,
+                                        Validators.ageValidator(value,
                                             minAge: 18, maxAge: 100)),
                                 verticalSpaceRegular,
                                 BoxInputField(
                                   controller: emailController,
                                   validator: (email) =>
-                                      Validators.emailValidator(email, context),
+                                      Validators.emailValidator(email),
                                   placeholder: AppLocalizations.of(context)!
                                       .signUpEmailLabel,
                                   textInputAction: TextInputAction.next,
@@ -135,7 +133,7 @@ class SignupView extends StatelessWidget with $SignupView {
                                             controller: mobileNumberController,
                                             validator: (phoneNumber) =>
                                                 Validators.phoneNumberValidator(
-                                                    phoneNumber, context),
+                                                    phoneNumber),
                                             placeholder:
                                                 AppLocalizations.of(context)!
                                                     .signUpMobileNumberLabel,
@@ -148,8 +146,7 @@ class SignupView extends StatelessWidget with $SignupView {
                                 BoxInputField(
                                     controller: passwordController,
                                     validator: (password) =>
-                                        Validators.passwordValidator(
-                                            password, context),
+                                        Validators.passwordValidator(password),
                                     placeholder: AppLocalizations.of(context)!
                                         .signUpPasswordLabel,
                                     password: true,
@@ -160,7 +157,7 @@ class SignupView extends StatelessWidget with $SignupView {
                                   controller: passwordConfirmationController,
                                   validator: (passwordConfirmation) =>
                                       model.validatePasswordConfirmation(
-                                          passwordConfirmation, context),
+                                          passwordConfirmation),
                                   placeholder: AppLocalizations.of(context)!
                                       .signUpConfirmPasswordLabel,
                                   password: true,
@@ -190,12 +187,6 @@ class SignupView extends StatelessWidget with $SignupView {
                                 )
                               ],
                             )),
-                        verticalSpaceRegular,
-                        if (model.hasErrorForKey(model.signupBusyObj))
-                          Text(
-                            model.getErrorMessage(context),
-                            style: TextStyle(color: Colors.red),
-                          ),
                         verticalSpaceRegular,
                         Padding(
                           padding: EdgeInsets.symmetric(

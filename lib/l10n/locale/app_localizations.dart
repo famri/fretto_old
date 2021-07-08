@@ -1005,7 +1005,7 @@ class AppLocalizations {
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   final Locale overriddenLocale;
   static AppLocalizations? _instance;
-  static AppLocalizations? get instance => _instance;
+  static AppLocalizations? get appLocalizations => _instance;
 
   const AppLocalizationDelegate(this.overriddenLocale);
 

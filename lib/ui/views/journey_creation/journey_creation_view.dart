@@ -46,7 +46,7 @@ class JourneyCreationView extends StatelessWidget with $JourneyCreationView {
     return ViewModelBuilder<JourneyCreationViewModel>.reactive(
       onDispose: dispose,
       disposeViewModel: false,
-      onModelReady: (model) => _initialize(context, model),
+      onModelReady: (model) => _initialize(model),
       builder: (context, model, child) => Scaffold(
           appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.createJourneyAppBarTitle),
@@ -256,9 +256,7 @@ class JourneyCreationView extends StatelessWidget with $JourneyCreationView {
     );
   }
 
-  Future<void> _initialize(
-      BuildContext context, JourneyCreationViewModel model) async {
-    model.setContext(context);
+  Future<void> _initialize(JourneyCreationViewModel model) async {
     await model.loadEngineTypes();
     arrivalController.text = model.formValueMap[ArrivalValueKey] ?? '';
     departureController.text = model.formValueMap[DepartureValueKey] ?? '';

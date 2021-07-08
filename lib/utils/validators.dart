@@ -8,7 +8,7 @@ class Validators {
 
   static RegExp phoneNumberExp = RegExp(r'^([0-9]{8,10})$');
 
-  static String? loginValidator(String? login, BuildContext context) {
+  static String? loginValidator(String? login) {
     bool isOk = true;
     if (login != null) {
       Iterable<RegExpMatch> matches = emailExp.allMatches(login);
@@ -19,71 +19,71 @@ class Validators {
         }
       }
     }
-    return isOk ? null : AppLocalizations.of(context)!.loginValidatorMessage;
+    return isOk ? null : AppLocalizationDelegate.appLocalizations!.loginValidatorMessage;
   }
 
-  static String? emailValidator(String? email, BuildContext context) {
+  static String? emailValidator(String? email) {
     if (email == null) {
-      return AppLocalizations.of(context)!.emailValidatorMessage;
+      return AppLocalizationDelegate.appLocalizations!.emailValidatorMessage;
     }
     Iterable<RegExpMatch> matches = emailExp.allMatches(email);
     if (matches.isEmpty) {
-      return AppLocalizations.of(context)!.emailValidatorMessage;
+      return AppLocalizationDelegate.appLocalizations!.emailValidatorMessage;
     }
     return null;
   }
 
   static String? phoneNumberValidator(
-      String? phoneNumber, BuildContext context) {
+      String? phoneNumber) {
     if (phoneNumber == null) {
-      return AppLocalizations.of(context)!.emailValidatorMessage;
+      return AppLocalizationDelegate.appLocalizations!.emailValidatorMessage;
     }
     Iterable<RegExpMatch> matches = phoneNumberExp.allMatches(phoneNumber);
     if (matches.isEmpty) {
-      return AppLocalizations.of(context)!.phoneValidatorMessage;
+      return AppLocalizationDelegate.appLocalizations!.phoneValidatorMessage;
     }
     return null;
   }
 
-  static String? passwordValidator(String? password, BuildContext context) {
+  static String? passwordValidator(String? password) {
     return (password != null && password.length >= 8)
         ? null
-        : AppLocalizations.of(context)!.passwordValidatorMessage;
+        : AppLocalizationDelegate.appLocalizations!.passwordValidatorMessage;
   }
 
   static String? dateBeforeValidator(
-      DateTime beforeDate, DateTime afterDate, BuildContext context) {
+      DateTime beforeDate, DateTime afterDate) {
     return (beforeDate.isBefore(afterDate))
         ? null
-        : AppLocalizations.of(context)!.dateBeforeValidatorMessage;
+        :AppLocalizationDelegate.appLocalizations!.dateBeforeValidatorMessage;
   }
 
-  static String? ageValidator(String? value, BuildContext context,
+  static String? ageValidator(String? value,
       {int minAge = 18, int maxAge = 100}) {
     if (value == null || value.isEmpty)
-      return AppLocalizations.of(context)!.ageEmptyValidatorMessage;
+      return AppLocalizationDelegate.appLocalizations!.ageEmptyValidatorMessage;
     DateTime pickedDate = DateFormat('dd/MM/yyyy').parse(value);
     if (pickedDate
         .isAfter(DateTime.now().subtract(Duration(days: 365 * minAge)))) {
-      return AppLocalizations.of(context)!.ageMinValidatorMessage;
+      return AppLocalizationDelegate.appLocalizations!.ageMinValidatorMessage;
     }
     if (pickedDate
         .isBefore(DateTime.now().subtract(Duration(days: 365 * maxAge)))) {
-      return AppLocalizations.of(context)!.ageMaxValidatorMessage;
+      return AppLocalizationDelegate.appLocalizations!.ageMaxValidatorMessage;
     }
     return null;
   }
 
   static String? lengthValidator(
-      String? value, String fieldName, BuildContext context, int min, int max) {
+      String? value, String fieldName, int min, int max) {
     if (value == null)
-      return AppLocalizations.of(context)!
+      return AppLocalizationDelegate.appLocalizations!
           .nullLengthValidationMessage(fieldName, min, max);
     if (value.length < min)
-      return AppLocalizations.of(context)!
+      return AppLocalizationDelegate.appLocalizations!
           .minLengthValidationMessage(fieldName, min);
     if (value.length > max)
-      return AppLocalizations.of(context)!
+      return AppLocalizationDelegate.appLocalizations!
           .minLengthValidationMessage(fieldName, max);
 
     return null;

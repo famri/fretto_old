@@ -17,7 +17,7 @@ import '../api/gender_api.dart';
 import '../api/journey_request_api.dart';
 import '../api/local_storage_api.dart';
 import '../api/place_api.dart';
-import '../api/sms_api.dart';
+import '../api/mobile_validation_api.dart';
 import '../api/user_locale_api.dart';
 import '../api/user_profile_api.dart';
 import '../services/application_settings_service.dart';
@@ -28,7 +28,7 @@ import '../services/environment_service.dart';
 import '../services/gender_service.dart';
 import '../services/journey_request_service.dart';
 import '../services/place_service.dart';
-import '../services/sms_service.dart';
+import '../services/mobile_validation_service.dart';
 import '../services/user_locale_service.dart';
 import '../services/user_profile_service.dart';
 import '../ui/views/discussions/discussions_viemodel.dart';
@@ -77,6 +77,6 @@ Future setupLocator(
   locator.registerLazySingleton(() => PlaceService());
   locator.registerLazySingleton(() => UserProfileApi());
   locator.registerLazySingleton(() => UserProfileService());
-  locator.registerLazySingleton(() => SMSApi());
-  locator.registerLazySingleton(() => SMSService());
+  locator.registerLazySingleton(() => MobileValidationApi());
+  locator.registerLazySingleton(() => MobileValidationService());
 }
