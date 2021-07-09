@@ -1,56 +1,50 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/app/app.router.dart';
 import 'package:fretto/exceptions/geo_place_api_exception.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/models/geo_place_dto.dart';
-import 'package:fretto/models/place_location.dart';
 import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/geo_place_service.dart';
 import 'package:fretto/ui/shared/snackbar_type.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'create_favorite_place_view.form.dart';
 
-class CreateFavoritePlaceViewModel extends FormViewModel {
+class FavoritePlacesViewModel extends BaseViewModel {
+  final NavigationService _navigationService = locator<NavigationService>();
   final GeoPlaceService _geoPlaceService = locator<GeoPlaceService>();
   final ApplicationSettingsService _applicationSettingsService =
       locator<ApplicationSettingsService>();
+
   final SnackbarService _snackbarService = locator<SnackbarService>();
-  final NavigationService _navigationService = locator<NavigationService>();
 
-  final String placeSelection = 'placeSelection';
+  List<GeoPlaceDto>? _userFavoritePlaces;
+  List<GeoPlaceDto>? get userFavoritePlaces => _userFavoritePlaces;
 
-  PlaceLocation? _placeLocation;
-
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  GlobalKey<FormState> get formKey => _formKey;
-
-  Future<void> runBusySaveFavoritePlace() async {
-    bool isValid = _formKey.currentState!.validate();
-    if (!isValid) return;
-    if (_placeLocation == null) {
-      setErrorForObject(
-          placeSelection,
-          AppLocalizationDelegate
-              .appLocalizations!.addFavoriteLocationMissingPlaceLocation);
-      notifyListeners();
-      return;
+  Future<void> navigateToCreateFavoritePlace() async {
+    GeoPlaceDto createdGeoPlace =
+        await _navigationService.navigateTo(Routes.createFavoritePlaceView);
+    if (_userFavoritePlaces != null) {
+      _userFavoritePlaces = [createdGeoPlace, ..._userFavoritePlaces!];
+    } else {
+      _userFavoritePlaces = [createdGeoPlace];
     }
-
-    runBusyFuture(_geoPlaceService.saveFavoriteGeoPlace(
-            placeTitleValue!,
-            _placeLocation!,
-            _applicationSettingsService.applicationSettings!.userLocaleLanguage,
-            _applicationSettingsService.applicationSettings!.userLocaleCountry))
-        .then((createdGeoPlace) =>
-            _navigationService.back(result: createdGeoPlace));
+    notifyListeners();
   }
 
-  void selectPlace(double latitude, double longitude) {
-    _placeLocation = PlaceLocation(latitude: latitude, longitude: longitude);
+  void loadUserFavoritePlaces() {
+    runBusyFuture(_loadFavoritePlaces());
+  }
+
+  Future<void> _loadFavoritePlaces() async {
+    _userFavoritePlaces = await _geoPlaceService.loadFavoriteGeoPlaces(
+        _applicationSettingsService.applicationSettings!.userLocaleLanguage,
+        _applicationSettingsService.applicationSettings!.userLocaleCountry);
+  }
+
+  void returnGeoPlace(int index) {
+    _navigationService.back(result: _userFavoritePlaces![index]);
   }
 
   @override
@@ -78,10 +72,5 @@ class CreateFavoritePlaceViewModel extends FormViewModel {
       message: message,
       duration: Duration(seconds: 3),
     );
-  }
-
-  @override
-  void setFormStatus() {
-    // TODO: implement setFormStatus
   }
 }

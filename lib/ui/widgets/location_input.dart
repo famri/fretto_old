@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/models/place_location.dart';
+import 'package:fretto/ui/shared/colors.dart';
+import 'package:fretto/ui/shared/ui_helpers.dart';
 import 'package:fretto/ui/widgets/box_button.dart';
 import 'package:fretto/utils/location_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,7 +11,7 @@ import 'package:location/location.dart';
 import 'map_screen.dart';
 
 class LocationInput extends StatefulWidget {
-  final Function onSelectPlace;
+  final Function(double latitude, double longitude) onSelectPlace;
 
   LocationInput(this.onSelectPlace);
 
@@ -55,7 +57,7 @@ class _LocationInputState extends State<LocationInput> {
 
       LocationData? locData = await location.getLocation();
       _showPreview(locData.latitude!, locData.longitude!);
-      widget.onSelectPlace(locData.latitude, locData.longitude);
+      widget.onSelectPlace(locData.latitude!, locData.longitude!);
     } catch (error) {
       return;
     }
@@ -103,6 +105,7 @@ class _LocationInputState extends State<LocationInput> {
                   width: double.infinity,
                 ),
         ),
+        verticalSpaceMedium,
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -111,14 +114,17 @@ class _LocationInputState extends State<LocationInput> {
                   .addFavoriteLocationMyPositionText,
               leading: Icon(
                 Icons.location_on,
+                color: kcPrimaryColor,
               ),
               onTap: _getCurrentUserLocation,
             ),
+            verticalSpaceMedium,
             BoxButton.outline(
               title: AppLocalizations.of(context)!
-                  .addFavoriteLocationMyPositionText,
+                  .addFavoriteLocationLocateOnMapText,
               leading: Icon(
                 Icons.map,
+                color: kcPrimaryColor,
               ),
               onTap: _selectOnMap,
             )

@@ -2,6 +2,7 @@ import 'package:fretto/api/authentication_api.dart';
 import 'package:fretto/api/country_api.dart';
 import 'package:fretto/api/engine_type_api.dart';
 import 'package:fretto/api/gender_api.dart';
+import 'package:fretto/api/geo_place_api.dart';
 import 'package:fretto/api/journey_request_api.dart';
 import 'package:fretto/api/place_api.dart';
 import 'package:fretto/api/mobile_validation_api.dart';
@@ -14,6 +15,7 @@ import 'package:fretto/services/engine_type_service.dart';
 import 'package:fretto/services/environment_service.dart';
 import 'package:fretto/services/gender_service.dart';
 import 'package:fretto/api/local_storage_api.dart';
+import 'package:fretto/services/geo_place_service.dart';
 import 'package:fretto/services/journey_request_service.dart';
 import 'package:fretto/services/place_service.dart';
 import 'package:fretto/services/mobile_validation_service.dart';
@@ -85,6 +87,8 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: UserProfileService),
     LazySingleton(classType: MobileValidationApi),
     LazySingleton(classType: MobileValidationService),
+    LazySingleton(classType: GeoPlaceApi),
+    LazySingleton(classType: GeoPlaceService),
   ],
   logger: StackedLogger(),
 )

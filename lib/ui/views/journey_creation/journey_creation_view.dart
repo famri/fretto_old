@@ -341,13 +341,10 @@ class JourneyCreationView extends StatelessWidget with $JourneyCreationView {
 
   void _showDepartureFavoritePlaces(
       BuildContext context, JourneyCreationViewModel model) async {
-    GeoPlaceDto? departureGeoPlace =
-        await Navigator.of(context).push<GeoPlaceDto>(
-      MaterialPageRoute(builder: (context) => FavoritePlacesView()),
-    );
+    GeoPlaceDto? departureGeoPlace = await model.navigateToFavoriteGeoPlaces();
+
     if (departureGeoPlace != null) {
       model.updateDeparturePlaceIdAndType(departureGeoPlace.id, 'geo-place');
-
       departureController.text = departureGeoPlace.name;
 
       FocusScope.of(context).requestFocus(arrivalFocusNode);
@@ -356,14 +353,11 @@ class JourneyCreationView extends StatelessWidget with $JourneyCreationView {
 
   void _showArrivalFavoritePlaces(
       BuildContext context, JourneyCreationViewModel model) async {
-    GeoPlaceDto? arrivalGeoPlace =
-        await Navigator.of(context).push<GeoPlaceDto>(
-      MaterialPageRoute(builder: (context) => FavoritePlacesView()),
-    );
+    GeoPlaceDto? arrivalGeoPlace = await model.navigateToFavoriteGeoPlaces();
     if (arrivalGeoPlace != null) {
-      model.updateDeparturePlaceIdAndType(arrivalGeoPlace.id, 'geo-place');
+      model.updateArrivalPlaceIdAndType(arrivalGeoPlace.id, 'geo-place');
 
-      departureController.text = arrivalGeoPlace.name;
+      arrivalController.text = arrivalGeoPlace.name;
 
       FocusScope.of(context).requestFocus(_engineTypeFocusNode);
     }

@@ -12,10 +12,11 @@ class LocationHelper {
     required double latitude,
     required double longitude,
   }) {
-    return 'https://maps.googleapis.com/maps/api/staticmap?center=&$latitude,$longitude&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=${_environmentService.getValue(GoogleMapsEnvKey)}';
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=&$latitude,$longitude&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7C%7C$latitude,$longitude&key=${_environmentService.getValue(GoogleMapsEnvKey)}';
   }
 
-  static Future<String> getPlaceAddress(double latitude, double longitude) async {
+  static Future<String> getPlaceAddress(
+      double latitude, double longitude) async {
     Map<String, String> queryParams = {
       'latlng': '$latitude,$longitude',
       'key': _environmentService.getValue(GoogleMapsEnvKey)

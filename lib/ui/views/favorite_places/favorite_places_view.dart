@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
-import 'package:fretto/models/geo_place_dto.dart';
 import 'package:stacked/stacked.dart';
 
-import 'favorite_places_viemodel.dart';
+import 'favorite_places_viewmodel.dart';
 
 class FavoritePlacesView extends StatelessWidget {
   const FavoritePlacesView({Key? key}) : super(key: key);
@@ -32,31 +31,30 @@ class FavoritePlacesView extends StatelessWidget {
           body: SafeArea(
               child: model.isBusy
                   ? Center(child: CircularProgressIndicator())
-                  : model.userFavoritePlaces.isEmpty
+                  : model.userFavoritePlaces!.isEmpty
                       ? Center(
                           child: Text(AppLocalizations.of(context)!
                               .favoritePlacesEmptyText))
-                      : SingleChildScrollView(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: model.userFavoritePlaces.length,
-                              itemBuilder: (ctx, index) {
-                                return GestureDetector(
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.location_on,
-                                        color: Colors.amber,
-                                      ),
-                                      Text(model.userFavoritePlaces[index].name)
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    Navigator.of(context).pop<GeoPlaceDto>(
-                                        model.userFavoritePlaces[index]);
-                                  },
-                                );
-                              })))),
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: model.userFavoritePlaces!.length,
+                          itemBuilder: (ctx, index) {
+                            return ListTile(
+                              hoverColor: Colors.red,
+                              key: Key(model.userFavoritePlaces![index].id
+                                  .toString()),
+                              leading: Icon(
+                                Icons.location_on,
+                                color: Colors.amber,
+                              ),
+                              title:
+                                  Text(model.userFavoritePlaces![index].name),
+                              horizontalTitleGap: 5.0,
+                              onTap: () {
+                                model.returnGeoPlace(index);
+                              },
+                            );
+                          }))),
       viewModelBuilder: () => FavoritePlacesViewModel(),
     );
   }

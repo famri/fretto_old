@@ -5,21 +5,21 @@ import 'package:fretto/models/code_validation_result.dart';
 import 'package:logger/logger.dart';
 
 class MobileValidationService {
-  Logger log = getLogger('SMSService');
-  final MobileValidationApi _smsApi = locator<MobileValidationApi>();
+  Logger log = getLogger('MobileValidationService');
+  final MobileValidationApi _mobileValidationApi = locator<MobileValidationApi>();
 
   Future<void> sendMobileValidationCode(
       String iccValue,
       String mobileNumberValue,
       String userLocaleLanguage,
       String userLocaleCountry) async {
-    await _smsApi.sendMobileValidationCode(iccValue, mobileNumberValue,
+    await _mobileValidationApi.sendMobileValidationCode(iccValue, mobileNumberValue,
         userLocaleLanguage + '_' + userLocaleCountry);
   }
 
   Future<bool> validateMobileValidationCode(String smsCodeValue) async {
     CodeValidationResult codeValidationResult =
-        await _smsApi.validateMobileValidationCode(smsCodeValue);
+        await _mobileValidationApi.validateMobileValidationCode(smsCodeValue);
 
     return codeValidationResult.valid;
   }

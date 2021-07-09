@@ -23,10 +23,12 @@ class MobileNumberCheckViewModel extends FormViewModel {
       locator<ApplicationSettingsService>();
   final CountryService _countryService = locator<CountryService>();
 
-  final MobileValidationService _smsService = locator<MobileValidationService>();
+  final MobileValidationService _smsService =
+      locator<MobileValidationService>();
   final SnackbarService _snackbarService = locator<SnackbarService>();
   final NavigationService _navigationService = locator<NavigationService>();
   GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+  UserProfileInfo? _initialUserProfileInfo;
 
   String? _mobileNumber;
   int? _iccId;
@@ -48,7 +50,11 @@ class MobileNumberCheckViewModel extends FormViewModel {
   }
 
   Future<void> _checkMobile() async {
-    await _userProfileService.updateMobileInfo(_iccId!, mobileNumberValue!);
+    if (_initialUserProfileInfo!.mobile.icc.id != _iccId ||
+        _initialUserProfileInfo!.mobile.value != mobileNumberValue) {
+      await _userProfileService.updateMobileInfo(_iccId!, mobileNumberValue!);
+    }
+
     String icc = _internationalCallingCodes![_iccId]!.value;
     await _smsService.sendMobileValidationCode(
         icc,
@@ -64,7 +70,8 @@ class MobileNumberCheckViewModel extends FormViewModel {
 
   @override
   void onFutureError(dynamic error, Object? key) {
-    if (error is MobileValidationApiException || error is UserProfileApiException) {
+    if (error is MobileValidationApiException ||
+        error is UserProfileApiException) {
       _showErrorSnackbar(
           AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
     } else if (error is SocketException) {
@@ -97,14 +104,13 @@ class MobileNumberCheckViewModel extends FormViewModel {
             _applicationSettingsService.applicationSettings!.userLocaleCountry);
 
     //load user mobile info
-    UserProfileInfo userProfileInfo =
-        await _userProfileService.loadUserProfileInfo(
-            _applicationSettingsService.applicationSettings!.userLocaleLanguage,
-            _applicationSettingsService.applicationSettings!.userLocaleCountry);
+    _initialUserProfileInfo = await _userProfileService.loadUserProfileInfo(
+        _applicationSettingsService.applicationSettings!.userLocaleLanguage,
+        _applicationSettingsService.applicationSettings!.userLocaleCountry);
 
-    _mobileNumber = userProfileInfo.mobile.value;
+    _mobileNumber = _initialUserProfileInfo!.mobile.value;
 
-    _iccId = userProfileInfo.mobile.icc.id;
+    _iccId = _initialUserProfileInfo!.mobile.icc.id;
   }
 
   void updateIccId(int? value) {

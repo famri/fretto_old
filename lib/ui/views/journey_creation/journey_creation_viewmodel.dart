@@ -6,6 +6,7 @@ import 'package:fretto/app/app.router.dart';
 import 'package:fretto/exceptions/mobile_validation_exception.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/models/engine_type.dart';
+import 'package:fretto/models/geo_place_dto.dart';
 import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/engine_type_service.dart';
 import 'package:fretto/services/journey_request_service.dart';
@@ -225,5 +226,12 @@ class JourneyCreationViewModel extends FormViewModel {
     _workers = null;
     _formKey = null;
     notifyListeners();
+  }
+
+  Future<GeoPlaceDto?> navigateToFavoriteGeoPlaces() async {
+    GeoPlaceDto? geoPlace =
+        await _navigationService.navigateTo(Routes.favoritePlacesView);
+
+    return geoPlace;
   }
 }
