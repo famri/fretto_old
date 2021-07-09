@@ -22,6 +22,17 @@ class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
+  String get okButtonText => Intl.message(
+        'OK',
+        name: 'okButtonText',
+        desc: 'OK button text',
+      );
+
+  String get cancelButtonText => Intl.message(
+        'CANCEL',
+        name: 'cancelButtonText',
+        desc: 'Cancel button text',
+      );
   String get saveButtonText {
     return Intl.message(
       'SAVE',
@@ -975,7 +986,7 @@ class AppLocalizations {
   String get checkYourConnectionText {
     return Intl.message(
       'Unable to connect. Please check your Internet connection.',
-      name: 'check Your Connection Text',
+      name: 'checkYourConnectionText',
       desc: 'check Your Connection Text',
     );
   }
@@ -1000,6 +1011,89 @@ class AppLocalizations {
           args: [fieldName, max],
           desc: "max Length Validation Message",
           examples: const {'fieldName': 'Firstname', 'max': '15'});
+
+  String get mobileNumberCheckMobileNumberConfirmationTitle => Intl.message(
+        'Mobile number confirmation',
+        name: 'mobileNumberCheckMobileNumberConfirmationTitle',
+        desc: 'Mobile number confirmation Text',
+      );
+  String get mobileNumberCheckConfirm => Intl.message(
+        'CONFIRM',
+        name: 'mobileNumberCheckConfirm',
+        desc: 'Mobile number confirm',
+      );
+  String get mobileValidationSMSCodeTitle => Intl.message(
+        'Mobile number validation',
+        name: 'mobileValidationSMSCodeTitle',
+        desc: 'Mobile number validation Title',
+      );
+  String get mobileValidationSMSCodeText => Intl.message(
+        'An SMS containing your validation code was sent to your mobile. Please type the received code.',
+        name: 'mobileValidationSMSCodeText',
+        desc: 'Mobile number validation Text',
+      );
+  String get mobileValidationSMSCodeValidationMessage => Intl.message(
+        'Please type the 4 digits of the mobile validation code.',
+        name: 'mobileValidationSMSCodeText',
+        desc: 'Mobile number validation Text',
+      );
+  String get mobileValidationSMSCodeValidate => Intl.message(
+        'VALIDATE',
+        name: 'mobileValidationSMSCodeValidate',
+        desc: 'Mobile number validate button Text',
+      );
+  String get mobileValidationSMSCodeResend => Intl.message(
+        'RESEND SMS',
+        name: 'mobileValidationSMSCodeResend',
+        desc: 'Resend SMS button Text',
+      );
+  String get mobileValidationSMSCodeSuccessMessage => Intl.message(
+        'Your mobile number was validated succesfully!',
+        name: 'mobileValidationSMSCodeSuccessMessage',
+        desc: 'Mobile Validation SMS Code Success Message',
+      );
+
+  String get mobileValidationSMSCodeErrorMessage => Intl.message(
+        'Your mobile number validation code is wrong!',
+        name: 'mobileValidationSMSCodeErrorMessage',
+        desc: 'Mobile Validation SMS Code Error Message',
+      );
+
+  String get mobileValidationSMSResentMessage => Intl.message(
+        'An SMS was resent to your mobile number. It may take up to 10 minutes to be received.',
+        name: 'mobileValidationSMSResentMessage',
+        desc: 'Mobile Validation SMS Resent Message',
+      );
+
+  String get homeDemandText => Intl.message(
+        'Demand',
+        name: 'homeDemandText',
+        desc: 'home Demand Text',
+      );
+
+  String get homeSearchText => Intl.message(
+        'Search',
+        name: 'homeSearchText',
+        desc: 'home Search Text',
+      );
+
+  String get homeJourneysText => Intl.message(
+        'Journeys',
+        name: 'homeJourneysText',
+        desc: 'home Journeys Text',
+      );
+
+  String get homeDiscussionsText => Intl.message(
+        'Discussions',
+        name: 'homeDiscussionsText',
+        desc: 'home Discussions Text',
+      );
+
+  String get homeProfileText => Intl.message(
+        'Profile',
+        name: 'homeProfileText',
+        desc: 'home Profile Text',
+      );
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

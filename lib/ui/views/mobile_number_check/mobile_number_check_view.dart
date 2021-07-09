@@ -24,7 +24,8 @@ class MobileNumberCheckView extends StatelessWidget
       onModelReady: (model) => _initialize(model),
       builder: (context, model, child) => Scaffold(
           appBar: AppBar(
-            title: Text('Vérification de mobile'),
+            title: Text(AppLocalizationDelegate
+                .appLocalizations!.mobileNumberCheckMobileNumberConfirmationTitle),
           ),
           body: SafeArea(
               child: model.isBusy
@@ -76,7 +77,9 @@ class MobileNumberCheckView extends StatelessWidget
                             Padding(
                                 padding: EdgeInsets.symmetric(vertical: 15.0),
                                 child: BoxButton(
-                                  title: 'Confirmer',
+                                  title: AppLocalizationDelegate
+                                      .appLocalizations!
+                                      .mobileNumberCheckConfirm,
                                   onTap: model.checkMobile,
                                 ))
                           ])))),

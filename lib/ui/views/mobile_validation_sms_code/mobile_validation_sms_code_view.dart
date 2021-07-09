@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/ui/shared/ui_helpers.dart';
 import 'package:fretto/ui/widgets/box_button.dart';
 import 'package:fretto/ui/widgets/box_input_field.dart';
@@ -26,7 +27,8 @@ class MobileValidationSMSCodeView extends StatelessWidget
       onModelReady: (model) => listenToFormUpdated(model),
       builder: (context, model, child) => Scaffold(
           appBar: AppBar(
-            title: Text('Vérification de mobile'),
+            title: Text(AppLocalizationDelegate
+                .appLocalizations!.mobileValidationSMSCodeTitle),
           ),
           body: SafeArea(
               child: Padding(
@@ -36,7 +38,8 @@ class MobileValidationSMSCodeView extends StatelessWidget
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            'Un SMS contenant votre code de vérification vous sera envoyé dans quelques instant. Veuillez saisir le code reçu ci-dessous.',
+                            AppLocalizationDelegate
+                                .appLocalizations!.mobileValidationSMSCodeText,
                             style: Theme.of(context).textTheme.headline2,
                           ),
                           verticalSpaceMedium,
@@ -48,18 +51,21 @@ class MobileValidationSMSCodeView extends StatelessWidget
                                 validator: (value) => value != null &&
                                         value.length == 4
                                     ? null
-                                    : 'Veuillez rentrer les 4 chiffres du code SMS.',
+                                    : AppLocalizationDelegate.appLocalizations!
+                                        .mobileValidationSMSCodeValidationMessage,
                                 textInputAction: TextInputAction.done,
                               )),
                           verticalSpaceRegular,
                           BoxButton(
-                            title: 'Vérifier',
+                            title: AppLocalizationDelegate.appLocalizations!
+                                .mobileValidationSMSCodeValidate,
                             busy: model.isBusy,
                             onTap: model.isBusy ? () {} : model.validateSmsCode,
                           ),
                           verticalSpaceMedium,
                           BoxButton(
-                            title: 'Re-send SMS',
+                            title: AppLocalizationDelegate.appLocalizations!
+                                .mobileValidationSMSCodeResend,
                             onTap: model.isBusy
                                 ? () {}
                                 : () => model.resendSmsCode(icc, mobileNumber),

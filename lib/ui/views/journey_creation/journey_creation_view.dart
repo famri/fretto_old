@@ -6,7 +6,6 @@ import 'package:fretto/models/place_suggestion.dart';
 import 'package:fretto/ui/shared/colors.dart';
 import 'package:fretto/ui/shared/styles.dart';
 import 'package:fretto/ui/shared/ui_helpers.dart';
-import 'package:fretto/ui/views/favorite_places/favorite_places_view.dart';
 import 'package:fretto/ui/widgets/box_button.dart';
 import 'package:fretto/ui/widgets/box_drop_down_button_field.dart';
 import 'package:fretto/ui/widgets/box_input_field.dart';

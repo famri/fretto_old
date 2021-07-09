@@ -187,8 +187,8 @@ class JourneyCreationViewModel extends FormViewModel {
       description: AppLocalizationDelegate
               .appLocalizations!.validateMobileAlertText1 +
           AppLocalizationDelegate.appLocalizations!.validateMobileAlertText2,
-      mainButtonTitle: 'CANCEL',
-      secondaryButtonTitle: 'OK',
+      mainButtonTitle: AppLocalizationDelegate.appLocalizations!.cancelButtonText,
+      secondaryButtonTitle: AppLocalizationDelegate.appLocalizations!.okButtonText,
     );
     if (confirmationResponse != null) {
       //the bottom sheet was not dismissed

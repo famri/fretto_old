@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fretto/app/app.locator.dart';
-import 'package:fretto/app/app.router.dart';
 import 'package:fretto/exceptions/geo_place_api_exception.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
-import 'package:fretto/models/geo_place_dto.dart';
 import 'package:fretto/models/place_location.dart';
 import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/geo_place_service.dart';

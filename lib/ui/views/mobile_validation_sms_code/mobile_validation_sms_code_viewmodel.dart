@@ -29,14 +29,16 @@ class MobileValidationSMSCodeViewModel extends FormViewModel {
       bool isGoodCode = await runBusyFuture<bool>(
           _mobileValidationService.validateMobileValidationCode(smsCodeValue!));
       if (isGoodCode) {
-        _showSuccessSnackbar('Le code SMS est validé avec succès.');
+        _showSuccessSnackbar(AppLocalizationDelegate.appLocalizations!
+                                        .mobileValidationSMSCodeSuccessMessage);
         _formKey = null;
         Future.delayed(
             Duration(seconds: 3),
             () => _navigationService
                 .popUntil(ModalRoute.withName(Routes.homeView)));
       } else {
-        _showErrorSnackbar('Le code SMS est incorrect.');
+        _showErrorSnackbar(AppLocalizationDelegate.appLocalizations!
+                                        .mobileValidationSMSCodeErrorMessage);
       }
     }
   }
@@ -49,7 +51,8 @@ class MobileValidationSMSCodeViewModel extends FormViewModel {
         _applicationSettingsService.applicationSettings!.userLocaleCountry));
 
     _showSuccessSnackbar(
-        'Un message contenant votre code de validation vous a été envoyé. Il peut mettre jusqu\à 10 minutes pour vous arriver.');
+        AppLocalizationDelegate.appLocalizations!
+                                        .mobileValidationSMSResentMessage);
   }
 
   void _showErrorSnackbar(String message) {

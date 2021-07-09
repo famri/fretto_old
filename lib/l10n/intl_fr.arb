@@ -1,4 +1,16 @@
 {
+  "okButtonText": "OK",
+  "@okButtonText": {
+    "description": "OK button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancelButtonText": "ANNULER",
+  "@cancelButtonText": {
+    "description": "Cancel button text",
+    "type": "text",
+    "placeholders": {}
+  },
   "saveButtonText": "ENREGISTRER",
   "@saveButtonText": {
     "description": "Save button text",
@@ -777,5 +789,95 @@
         "example": "15"
       }
     }
+  },
+  "mobileNumberCheckMobileNumberConfirmationTitle": "Confirmation du numéro mobile",
+  "@mobileNumberCheckMobileNumberConfirmationTitle": {
+    "description": "Mobile number confirmation Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobileNumberCheckConfirm": "CONFIRMER",
+  "@mobileNumberCheckConfirm": {
+    "description": "Mobile number confirm",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobileValidationSMSCodeTitle": "Validation du numéro mobile",
+  "@mobileValidationSMSCodeTitle": {
+    "description": "Mobile number validation Title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobileValidationSMSCodeText": "Un SMS contenant votre code de validation a été envoyé à votre téléphone mobile. Veuillez saisir le code reçu.",
+  "@mobileValidationSMSCodeText": {
+    "description": "Mobile number validation Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobileValidationSMSCodeValidationMessage": "Veuillez rentrer le 4 chiffres du code de validation.",
+  "@mobileValidationSMSCodeValidationMessage": {
+    "description": "Mobile number validation Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobileValidationSMSCodeValidate": "VALIDER",
+  "@mobileValidationSMSCodeValidate": {
+    "description": "Mobile number validate button Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobileValidationSMSCodeResend": "RENVOYER LE SMS",
+  "@mobileValidationSMSCodeResend": {
+    "description": "Resend SMS button Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobileValidationSMSCodeSuccessMessage": "Votre numéro de téléphone mobile a été validé avec succès!",
+  "@mobileValidationSMSCodeSuccessMessage": {
+    "description": "Mobile Validation SMS Code Success Message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobileValidationSMSCodeErrorMessage": "Votre code de validation est incorrect!",
+  "@mobileValidationSMSCodeErrorMessage": {
+    "description": "Mobile Validation SMS Code Error Message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mobileValidationSMSResentMessage": "Un SMS a été envoyé à votre mobile. Il peut mettre jusqu'à 10 minutes avant que vous le recervrez.",
+  "@mobileValidationSMSResentMessage": {
+    "description": "Mobile Validation SMS Resent Message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeDemandText": "Demande",
+  "@homeDemandText": {
+    "description": "home Demand Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeSearchText": "Recherche",
+  "@homeSearchText": {
+    "description": "home Search Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeJourneysText": "Trajets",
+  "@homeJourneysText": {
+    "description": "home Journeys Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeDiscussionsText": "Discussions",
+  "@homeDiscussionsText": {
+    "description": "home Discussions Text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "homeProfileText": "Profil",
+  "@homeProfileText": {
+    "description": "home Profile Text",
+    "type": "text",
+    "placeholders": {}
   }
 }

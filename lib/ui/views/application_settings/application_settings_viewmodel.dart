@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/app/app.logger.dart';
 import 'package:fretto/app/app.router.dart';
 import 'package:fretto/constants/app_keys.dart';
 import 'package:fretto/exceptions/application_settings_exception.dart';
+import 'package:fretto/exceptions/country_api_exception.dart';
+import 'package:fretto/exceptions/user_locale_api_exception.dart';
+import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/models/application_settings.dart';
 import 'package:fretto/models/country.dart';
 import 'package:fretto/models/user_locale.dart';
@@ -11,6 +16,7 @@ import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/country_service.dart';
 import 'package:fretto/services/environment_service.dart';
 import 'package:fretto/services/user_locale_service.dart';
+import 'package:fretto/ui/shared/snackbar_type.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -25,6 +31,7 @@ class ApplicationSettingsViewModel extends BaseViewModel {
   final CountryService _countryService = locator<CountryService>();
   final UserLocaleService _userLocaleService = locator<UserLocaleService>();
   final NavigationService _navigationService = locator<NavigationService>();
+  final SnackbarService _snackbarService = locator<SnackbarService>();
 
   bool _isInitialized = false;
 
@@ -68,8 +75,11 @@ class ApplicationSettingsViewModel extends BaseViewModel {
     _userTimezoneId = value;
   }
 
-  Future<void> loadCountriesAndUserLocales() async {
-    setBusy(true);
+  Future<void> runBusyLoadCountriesAndUserLocales() async {
+    runBusyFuture(_loadCountriesAndUserLocales());
+  }
+
+  Future<void> _loadCountriesAndUserLocales() async {
     if (_applicationSettingsService.applicationSettings != null) {
       _userLocaleLanguageCode =
           _applicationSettingsService.applicationSettings!.userLocaleLanguage;
@@ -95,7 +105,6 @@ class ApplicationSettingsViewModel extends BaseViewModel {
       _userTimezoneId = _countries!.first.timeZones.first.id;
     }
     _isInitialized = true;
-    setBusy(false);
   }
 
   Future<bool> _saveApplicationSettings(BuildContext context) async {
@@ -151,5 +160,32 @@ class ApplicationSettingsViewModel extends BaseViewModel {
       Fretto.restartApp(context);
     }
     _navigationService.replaceWith(Routes.startupView);
+  }
+
+  @override
+  void onFutureError(dynamic error, Object? key) {
+    if (error is UserLocaleApiException || error is CountryApiException) {
+      _showErrorSnackbar(
+          AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
+    } else if (error is SocketException) {
+      if (error.message == 'Connection failed') {
+        _showErrorSnackbar(
+            AppLocalizationDelegate.appLocalizations!.checkYourConnectionText);
+      } else {
+        _showErrorSnackbar(
+            AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
+      }
+    } else {
+      _showErrorSnackbar(
+          AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
+    }
+  }
+
+  void _showErrorSnackbar(String message) {
+    _snackbarService.showCustomSnackBar(
+      variant: SnackbarType.error,
+      message: message,
+      duration: Duration(seconds: 3),
+    );
   }
 }

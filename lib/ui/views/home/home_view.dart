@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/ui/views/discussions/discussions_view.dart';
 import 'package:fretto/ui/views/journey_creation/journey_creation_view.dart';
 import 'package:fretto/ui/views/journey_requests/journey_requests_view.dart';
@@ -37,28 +38,32 @@ class HomeView extends StatelessWidget {
           onTap: viewModel.setIndex,
           items: [
             BottomNavigationBarItem(
-              label: 'Demande',
+              label: AppLocalizations.of(context)!
+                        .homeDemandText,
               icon: Icon(
                 Icons.art_track,
                 //color: Colors.amber,
               ),
             ),
             BottomNavigationBarItem(
-              label: 'Mes Trajets',
+              label: AppLocalizations.of(context)!
+                        .homeJourneysText,
               icon: Icon(
                 Icons.list,
                 // color: Colors.amber
               ),
             ),
             BottomNavigationBarItem(
-              label: 'Discussions',
+              label: AppLocalizations.of(context)!
+                        .homeDiscussionsText,
               icon: Icon(
                 Icons.message,
                 // color: Colors.amber
               ),
             ),
             BottomNavigationBarItem(
-              label: 'Profile',
+              label: AppLocalizations.of(context)!
+                        .homeProfileText,
               icon: Icon(
                 Icons.person,
                 // color: Colors.amber
