@@ -69,21 +69,25 @@ class JourneyCreationViewModel extends FormViewModel {
   }
 
   Future<void> updateJourneyRequest(journeyId) async {
-    _journeyRequestService.updateJourneyRequest(
-        journeyId,
-        _departurePlaceId!,
-        _departurePlaceType!,
-        _arrivalPlaceId!,
-        _arrivalPlaceType!,
-        DateTime.parse(_selectedDate!.toIso8601String().split("T")[0] +
-            " " +
-            _selectedTime!.hour.toString().padLeft(2, '0') +
-            ":" +
-            _selectedTime!.minute.toString().padLeft(2, '0') +
-            ":00"),
-        _engineTypeId!,
-        _workers ?? 0,
-        descriptionValue!);
+    bool isValid = _formKey!.currentState!.validate();
+    if (!isValid) return;
+    runBusyFuture(_journeyRequestService
+        .updateJourneyRequest(
+            journeyId,
+            _departurePlaceId!,
+            _departurePlaceType!,
+            _arrivalPlaceId!,
+            _arrivalPlaceType!,
+            DateTime.parse(_selectedDate!.toIso8601String().split("T")[0] +
+                " " +
+                _selectedTime!.hour.toString().padLeft(2, '0') +
+                ":" +
+                _selectedTime!.minute.toString().padLeft(2, '0') +
+                ":00"),
+            _engineTypeId!,
+            _workers ?? 0,
+            descriptionValue!)
+        .then((_) => _navigateToJourneyRequests()));
   }
 
   Future<void> createJourneyRequest() async {
@@ -187,8 +191,10 @@ class JourneyCreationViewModel extends FormViewModel {
       description: AppLocalizationDelegate
               .appLocalizations!.validateMobileAlertText1 +
           AppLocalizationDelegate.appLocalizations!.validateMobileAlertText2,
-      mainButtonTitle: AppLocalizationDelegate.appLocalizations!.cancelButtonText,
-      secondaryButtonTitle: AppLocalizationDelegate.appLocalizations!.okButtonText,
+      mainButtonTitle:
+          AppLocalizationDelegate.appLocalizations!.cancelButtonText,
+      secondaryButtonTitle:
+          AppLocalizationDelegate.appLocalizations!.okButtonText,
     );
     if (confirmationResponse != null) {
       //the bottom sheet was not dismissed
@@ -233,5 +239,9 @@ class JourneyCreationViewModel extends FormViewModel {
         await _navigationService.navigateTo(Routes.favoritePlacesView);
 
     return geoPlace;
+  }
+
+  _navigateToJourneyRequests() {
+    _navigationService.popUntil(ModalRoute.withName(Routes.homeView));
   }
 }

@@ -38,32 +38,28 @@ class HomeView extends StatelessWidget {
           onTap: viewModel.setIndex,
           items: [
             BottomNavigationBarItem(
-              label: AppLocalizations.of(context)!
-                        .homeDemandText,
+              label: AppLocalizations.of(context)!.homeDemandText,
               icon: Icon(
-                Icons.art_track,
+                Icons.airport_shuttle,
                 //color: Colors.amber,
               ),
             ),
             BottomNavigationBarItem(
-              label: AppLocalizations.of(context)!
-                        .homeJourneysText,
+              label: AppLocalizations.of(context)!.homeJourneysText,
               icon: Icon(
                 Icons.list,
                 // color: Colors.amber
               ),
             ),
             BottomNavigationBarItem(
-              label: AppLocalizations.of(context)!
-                        .homeDiscussionsText,
+              label: AppLocalizations.of(context)!.homeDiscussionsText,
               icon: Icon(
                 Icons.message,
                 // color: Colors.amber
               ),
             ),
             BottomNavigationBarItem(
-              label: AppLocalizations.of(context)!
-                        .homeProfileText,
+              label: AppLocalizations.of(context)!.homeProfileText,
               icon: Icon(
                 Icons.person,
                 // color: Colors.amber

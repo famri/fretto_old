@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
+import 'package:fretto/models/client_journey_request_dto.dart';
 import 'package:fretto/models/geo_place_dto.dart';
 import 'package:fretto/models/place_suggestion.dart';
 import 'package:fretto/ui/shared/colors.dart';
@@ -28,11 +29,11 @@ import 'journey_creation_viewmodel.dart';
   FormTextField(name: 'description')
 ])
 class JourneyCreationView extends StatelessWidget with $JourneyCreationView {
-  bool get isEditing => journeyId != null;
-  final int? journeyId;
+  bool get isEditing => journeyRequest != null;
+  final ClientJourneyRequestDto? journeyRequest;
   final FocusNode _engineTypeFocusNode = FocusNode();
 
-  JourneyCreationView({Key? key, this.journeyId}) : super(key: key);
+  JourneyCreationView({Key? key, this.journeyRequest}) : super(key: key);
 
   void dispose() {
     _engineTypeFocusNode.dispose();
@@ -215,11 +216,6 @@ class JourneyCreationView extends StatelessWidget with $JourneyCreationView {
                                         : AppLocalizations.of(context)!
                                             .createJourneyDescriptionValidatorMessage,
                                     textInputAction: TextInputAction.done),
-                                if (model.hasError)
-                                  Text(
-                                    model.modelError.toString(),
-                                    style: TextStyle(color: Colors.red),
-                                  ),
                               ],
                             ),
                           ),
@@ -231,13 +227,13 @@ class JourneyCreationView extends StatelessWidget with $JourneyCreationView {
                                 ? BoxButton(
                                     title: isEditing
                                         ? AppLocalizations.of(context)!
-                                            .saveButtonText
+                                            .updateButtonText
                                         : AppLocalizations.of(context)!
-                                            .publishButtonText,
+                                            .saveButtonText,
                                     onTap: isEditing
                                         ? () {
                                             model.updateJourneyRequest(
-                                                journeyId);
+                                                journeyRequest!.id);
                                           }
                                         : () {
                                             model.createJourneyRequest();
@@ -257,8 +253,38 @@ class JourneyCreationView extends StatelessWidget with $JourneyCreationView {
 
   Future<void> _initialize(JourneyCreationViewModel model) async {
     await model.loadEngineTypes();
-    arrivalController.text = model.formValueMap[ArrivalValueKey] ?? '';
+    if (isEditing) {
+      model.formValueMap[DepartureValueKey] =
+          journeyRequest!.departurePlace.name;
+
+      model.updateDeparturePlaceIdAndType(journeyRequest!.departurePlace.id,
+          journeyRequest!.departurePlace.type);
+
+      model.formValueMap[ArrivalValueKey] = journeyRequest!.arrivalPlace.name;
+
+      model.updateArrivalPlaceIdAndType(
+          journeyRequest!.arrivalPlace.id, journeyRequest!.arrivalPlace.type);
+
+      model.formValueMap[DateValueKey] =
+          DateFormat.yMd().format(journeyRequest!.dateTime);
+      model.updateSelectedDate(journeyRequest!.dateTime);
+
+      model.formValueMap[TimeValueKey] =
+          journeyRequest!.dateTime.hour.toString().padLeft(2, '0') +
+              ' : ' +
+              journeyRequest!.dateTime.minute.toString().padLeft(2, '0');
+
+      model
+          .updateSelectedTime(TimeOfDay.fromDateTime(journeyRequest!.dateTime));
+
+      model.formValueMap[DescriptionValueKey] = journeyRequest!.description;
+
+      model.updateEngineType(journeyRequest!.engineType.id);
+      model.updateWorkers(journeyRequest!.workers.toString());
+    }
+
     departureController.text = model.formValueMap[DepartureValueKey] ?? '';
+    arrivalController.text = model.formValueMap[ArrivalValueKey] ?? '';
 
     dateController.text = model.formValueMap[DateValueKey] ?? '';
     timeController.text = model.formValueMap[TimeValueKey] ?? '';

@@ -1,3 +1,162 @@
+import 'package:flutter/material.dart';
+import 'package:fretto/app/app.locator.dart';
+import 'package:fretto/app/app.router.dart';
+import 'package:fretto/l10n/locale/app_localizations.dart';
+import 'package:fretto/models/client_journey_request_dto.dart';
+import 'package:fretto/models/client_journey_requests_result.dart';
+import 'package:fretto/services/application_settings_service.dart';
+import 'package:fretto/services/journey_request_service.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
-class JourneyRequestsViewModel extends BaseViewModel {}
+class JourneyRequestsViewModel extends BaseViewModel {
+  final ApplicationSettingsService _applicationSettingsService =
+      locator<ApplicationSettingsService>();
+  final SnackbarService _snackbarService = locator<SnackbarService>();
+  final NavigationService _navigationService = locator<NavigationService>();
+  final JourneyRequestService _journeyRequestService =
+      locator<JourneyRequestService>();
+
+  List<SortingCriterion> sortingCriteria = [
+    SortingCriterion(
+        AppLocalizationDelegate.appLocalizations!.clientJourneysSortDateAsc,
+        'date-time,asc',
+        Icon(
+          Icons.arrow_upward_outlined,
+          color: Colors.blue,
+        )),
+    SortingCriterion(
+        AppLocalizationDelegate.appLocalizations!.clientJourneysSortDateDesc,
+        'date-time,desc',
+        Icon(
+          Icons.arrow_downward_outlined,
+          color: Colors.blue,
+        ))
+  ];
+  List<FilteringCriterion> filteringCriteria = [
+    FilteringCriterion(
+        AppLocalizationDelegate.appLocalizations!.clientJourneysFilterLastWeek,
+        'w1'),
+    FilteringCriterion(
+        AppLocalizationDelegate.appLocalizations!.clientJourneysFilterLastMonth,
+        'm1'),
+    FilteringCriterion(
+        AppLocalizationDelegate
+            .appLocalizations!.clientJourneysFilterLastQuarter,
+        'm3'),
+    FilteringCriterion(
+        AppLocalizationDelegate
+            .appLocalizations!.clientJourneysFilterLastSemester,
+        'm6'),
+    FilteringCriterion(
+        AppLocalizationDelegate.appLocalizations!.clientJourneysFilterLastYear,
+        'y1'),
+  ];
+
+  String sortingValue = 'date-time,desc';
+
+  String filteringValue = 'm1';
+
+  List<ClientJourneyRequestDto> _journeyRequests = [];
+
+  List<ClientJourneyRequestDto> get journeyRequests => _journeyRequests;
+
+  ClientJourneyRequestsResult? clientJourneyRequestsResult;
+  DateFormat? dateFormatter;
+  ScrollController? _scrollController;
+  ScrollController? get scrollController => _scrollController;
+
+  Future<void> initialize() async {
+    await runBusyFuture(_initialize());
+  }
+
+  void _scrollListener() {
+    if (clientJourneyRequestsResult!.hasNext &&
+        _scrollController!.offset >=
+            _scrollController!.position.maxScrollExtent &&
+        !_scrollController!.position.outOfRange) {
+      _journeyRequestService
+          .fetchClientJourneyRequestsResult(
+              filteringValue,
+              clientJourneyRequestsResult!.pageNumber + 1,
+              5,
+              sortingValue,
+              _applicationSettingsService
+                  .applicationSettings!.userLocaleLanguage,
+              _applicationSettingsService
+                  .applicationSettings!.userLocaleCountry)
+          .then((value) {
+        clientJourneyRequestsResult = value;
+        _journeyRequests.addAll(clientJourneyRequestsResult!.journeyRequests);
+        notifyListeners();
+      });
+    }
+  }
+
+  Future<void> _initialize() async {
+    clientJourneyRequestsResult =
+        await _journeyRequestService.fetchClientJourneyRequestsResult(
+            filteringValue,
+            0,
+            5,
+            sortingValue,
+            _applicationSettingsService.applicationSettings!.userLocaleLanguage,
+            _applicationSettingsService.applicationSettings!.userLocaleCountry);
+
+    _journeyRequests = clientJourneyRequestsResult!.journeyRequests;
+
+    dateFormatter = DateFormat(
+        'EEE dd/MM/yyyy HH:mm',
+        _applicationSettingsService.applicationSettings!.userLocaleLanguage +
+            '_' +
+            _applicationSettingsService.applicationSettings!.userLocaleCountry);
+    _scrollController = ScrollController()..addListener(_scrollListener);
+  }
+
+  Future<void> fetchAndSetClientJourneyRequests() async {
+    setBusy(true);
+    clientJourneyRequestsResult =
+        await _journeyRequestService.fetchClientJourneyRequestsResult(
+            filteringValue,
+            0,
+            5,
+            sortingValue,
+            _applicationSettingsService.applicationSettings!.userLocaleLanguage,
+            _applicationSettingsService.applicationSettings!.userLocaleCountry);
+
+    _journeyRequests = clientJourneyRequestsResult!.journeyRequests;
+
+    setBusy(false);
+  }
+
+  showDeleteJourneyWarning(BuildContext context, int id) {}
+
+  navigateToJourneyDetails(int index) {
+    _navigationService
+        .navigateTo(Routes.journeyDetailsView,
+            arguments: JourneyDetailsViewArguments(
+                journeyRequest: _journeyRequests[index]))!
+        .then((_) => fetchAndSetClientJourneyRequests());
+  }
+
+  void navigateToJourneyProposals(int index) {
+    _navigationService.navigateTo(Routes.journeyProposalsView,
+        arguments: JourneyProposalsViewArguments(
+            journeyId: _journeyRequests[index].id));
+  }
+}
+
+class SortingCriterion {
+  final String name;
+  final String value;
+  final Icon icon;
+  SortingCriterion(this.name, this.value, this.icon);
+}
+
+class FilteringCriterion {
+  final String name;
+  final String value;
+
+  FilteringCriterion(this.name, this.value);
+}

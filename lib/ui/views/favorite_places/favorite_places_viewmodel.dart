@@ -19,7 +19,7 @@ class FavoritePlacesViewModel extends BaseViewModel {
 
   final SnackbarService _snackbarService = locator<SnackbarService>();
 
-  List<GeoPlaceDto>? _userFavoritePlaces;
+  List<GeoPlaceDto>? _userFavoritePlaces = [];
   List<GeoPlaceDto>? get userFavoritePlaces => _userFavoritePlaces;
 
   Future<void> navigateToCreateFavoritePlace() async {

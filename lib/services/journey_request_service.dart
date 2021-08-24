@@ -1,7 +1,7 @@
 import 'package:fretto/api/journey_request_api.dart';
 import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/app/app.logger.dart';
-import 'package:fretto/models/journey_request_create_dto.dart';
+import 'package:fretto/models/client_journey_requests_result.dart';
 import 'package:fretto/models/journey_request_search_result.dart';
 import 'package:logger/logger.dart';
 
@@ -69,5 +69,16 @@ class JourneyRequestService {
         engineTypeId,
         workers,
         description);
+  }
+
+  Future<ClientJourneyRequestsResult> fetchClientJourneyRequestsResult(
+      String filtering,
+      int page,
+      int size,
+      String sorting,
+      String userLocaleLanguage,
+      String userLocaleCountry) async {
+    return _journeyRequestApi.fetchClientJourneyRequestsResult(
+        filtering, page, size, sorting, userLocaleLanguage, userLocaleCountry);
   }
 }

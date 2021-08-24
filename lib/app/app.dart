@@ -28,7 +28,10 @@ import 'package:fretto/ui/views/create_favorite_place/create_favorite_place_view
 import 'package:fretto/ui/views/discussions/discussions_viemodel.dart';
 import 'package:fretto/ui/views/favorite_places/favorite_places_view.dart';
 import 'package:fretto/ui/views/home/home_view.dart';
+import 'package:fretto/ui/views/journey_creation/journey_creation_view.dart';
 import 'package:fretto/ui/views/journey_creation/journey_creation_viewmodel.dart';
+import 'package:fretto/ui/views/journey_details/journey_details_view.dart';
+import 'package:fretto/ui/views/journey_proposals/journey_proposals_view.dart';
 import 'package:fretto/ui/views/journey_requests/journey_requests_viewmodel.dart';
 import 'package:fretto/ui/views/mobile_number_check/mobile_number_check_view.dart';
 import 'package:fretto/ui/views/mobile_validation_sms_code/mobile_validation_sms_code_view.dart';
@@ -53,6 +56,9 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: FavoritePlacesView),
     MaterialRoute(page: MobileNumberCheckView),
     MaterialRoute(page: MobileValidationSMSCodeView),
+    MaterialRoute(page: JourneyCreationView),
+    MaterialRoute(page: JourneyDetailsView),
+    MaterialRoute(page: JourneyProposalsView),
   ],
   dependencies: [
     Presolve(

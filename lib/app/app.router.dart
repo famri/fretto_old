@@ -9,12 +9,16 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../models/client_journey_request_dto.dart';
 import '../ui/views/account_type_choice/account_type_choice_view.dart';
 import '../ui/views/application_settings/application_settings_view.dart';
 import '../ui/views/authentication_choice/authentication_choice_view.dart';
 import '../ui/views/create_favorite_place/create_favorite_place_view.dart';
 import '../ui/views/favorite_places/favorite_places_view.dart';
 import '../ui/views/home/home_view.dart';
+import '../ui/views/journey_creation/journey_creation_view.dart';
+import '../ui/views/journey_details/journey_details_view.dart';
+import '../ui/views/journey_proposals/journey_proposals_view.dart';
 import '../ui/views/mobile_number_check/mobile_number_check_view.dart';
 import '../ui/views/mobile_validation_sms_code/mobile_validation_sms_code_view.dart';
 import '../ui/views/signin/signin_view.dart';
@@ -34,6 +38,9 @@ class Routes {
   static const String mobileNumberCheckView = '/mobile-number-check-view';
   static const String mobileValidationSMSCodeView =
       '/mobile-validation-sm-scode-view';
+  static const String journeyCreationView = '/journey-creation-view';
+  static const String journeyDetailsView = '/journey-details-view';
+  static const String journeyProposalsView = '/journey-proposals-view';
   static const all = <String>{
     startupView,
     applicationSettingsView,
@@ -46,6 +53,9 @@ class Routes {
     favoritePlacesView,
     mobileNumberCheckView,
     mobileValidationSMSCodeView,
+    journeyCreationView,
+    journeyDetailsView,
+    journeyProposalsView,
   };
 }
 
@@ -65,6 +75,9 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.mobileNumberCheckView, page: MobileNumberCheckView),
     RouteDef(Routes.mobileValidationSMSCodeView,
         page: MobileValidationSMSCodeView),
+    RouteDef(Routes.journeyCreationView, page: JourneyCreationView),
+    RouteDef(Routes.journeyDetailsView, page: JourneyDetailsView),
+    RouteDef(Routes.journeyProposalsView, page: JourneyProposalsView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -160,6 +173,38 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    JourneyCreationView: (data) {
+      var args = data.getArgs<JourneyCreationViewArguments>(
+        orElse: () => JourneyCreationViewArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => JourneyCreationView(
+          key: args.key,
+          journeyRequest: args.journeyRequest,
+        ),
+        settings: data,
+      );
+    },
+    JourneyDetailsView: (data) {
+      var args = data.getArgs<JourneyDetailsViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => JourneyDetailsView(
+          key: args.key,
+          journeyRequest: args.journeyRequest,
+        ),
+        settings: data,
+      );
+    },
+    JourneyProposalsView: (data) {
+      var args = data.getArgs<JourneyProposalsViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => JourneyProposalsView(
+          key: args.key,
+          journeyId: args.journeyId,
+        ),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -206,4 +251,25 @@ class MobileValidationSMSCodeViewArguments {
   final String mobileNumber;
   MobileValidationSMSCodeViewArguments(
       {this.key, required this.icc, required this.mobileNumber});
+}
+
+/// JourneyCreationView arguments holder class
+class JourneyCreationViewArguments {
+  final Key? key;
+  final ClientJourneyRequestDto? journeyRequest;
+  JourneyCreationViewArguments({this.key, this.journeyRequest});
+}
+
+/// JourneyDetailsView arguments holder class
+class JourneyDetailsViewArguments {
+  final Key? key;
+  final ClientJourneyRequestDto journeyRequest;
+  JourneyDetailsViewArguments({this.key, required this.journeyRequest});
+}
+
+/// JourneyProposalsView arguments holder class
+class JourneyProposalsViewArguments {
+  final Key? key;
+  final int journeyId;
+  JourneyProposalsViewArguments({this.key, required this.journeyId});
 }
