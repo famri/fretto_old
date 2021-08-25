@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/app/app.router.dart';
@@ -6,6 +8,7 @@ import 'package:fretto/models/client_journey_request_dto.dart';
 import 'package:fretto/models/client_journey_requests_result.dart';
 import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/journey_request_service.dart';
+import 'package:fretto/ui/shared/snackbar_type.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -130,7 +133,79 @@ class JourneyRequestsViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  showDeleteJourneyWarning(BuildContext context, int id) {}
+  showDeleteJourneyWarning(BuildContext context, int id) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+              AppLocalizations.of(context)!.deleteJourneyRequestWarningTitle),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(AppLocalizations.of(context)!
+                    .deleteJourneyRequestWarningText),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child:
+                  Text(MaterialLocalizations.of(context).continueButtonLabel),
+              onPressed: () {
+                Navigator.of(context).pop();
+                runBusyFuture(
+                    _journeyRequestService.cancelJourneyRequest(id).then((_) {
+                  _journeyRequests.removeWhere((element) => element.id == id);
+                  _showSuccessSnackbar(AppLocalizationDelegate
+                      .appLocalizations!.deleteJourneyRequestSuccessMessage);
+                }));
+              },
+            ),
+            TextButton(
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void onFutureError(dynamic error, Object? key) {
+    if (error is SocketException) {
+      if (error.message == 'Connection failed') {
+        _showErrorSnackbar(
+            AppLocalizationDelegate.appLocalizations!.checkYourConnectionText);
+      } else {
+        _showErrorSnackbar(
+            AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
+      }
+    } else {
+      _showErrorSnackbar(
+          AppLocalizationDelegate.appLocalizations!.somethingWentWrongText);
+    }
+  }
+
+  void _showErrorSnackbar(String message) {
+    _snackbarService.showCustomSnackBar(
+      variant: SnackbarType.error,
+      message: message,
+      duration: Duration(seconds: 3),
+    );
+  }
+
+  void _showSuccessSnackbar(String message) {
+    _snackbarService.showCustomSnackBar(
+      variant: SnackbarType.success,
+      message: message,
+      duration: Duration(seconds: 3),
+    );
+  }
 
   navigateToJourneyDetails(int index) {
     _navigationService

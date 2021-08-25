@@ -94,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dateBeforeValidatorMessage" : MessageLookupByLibrary.simpleMessage("La date de début doit être avant la date de fin."),
     "deleteButtonText" : MessageLookupByLibrary.simpleMessage("SUPPRIMER"),
     "deleteJourneyRequestErrorMessage" : MessageLookupByLibrary.simpleMessage("Une erreur s\'est produite. Inpossible de supprimer cette demande. Si le problème persiste, veuillez contacter le support."),
+    "deleteJourneyRequestSuccessMessage" : MessageLookupByLibrary.simpleMessage("Demande de trajet supprimée avec succès."),
     "deleteJourneyRequestWarningText" : MessageLookupByLibrary.simpleMessage("Êtes vous sûr de vouloir supprimer cette demande de trajet?"),
     "deleteJourneyRequestWarningTitle" : MessageLookupByLibrary.simpleMessage("SUPPRESSION DE DEMANDE DE TRAJET"),
     "doneTooltipText" : MessageLookupByLibrary.simpleMessage("Terminer"),

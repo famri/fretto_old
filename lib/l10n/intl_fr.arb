@@ -671,6 +671,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "deleteJourneyRequestSuccessMessage": "Demande de trajet supprimée avec succès.",
+  "@deleteJourneyRequestSuccessMessage": {
+    "description": "delete Journey Request Success Message",
+    "type": "text",
+    "placeholders": {}
+  },
   "proposalsNoProposalsYetText": "Pas encore de propositions.",
   "@proposalsNoProposalsYetText": {
     "description": "proposals No Proposals Yet Text",

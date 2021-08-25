@@ -160,36 +160,38 @@ class JourneyRequestApi {
     }
   }
 
-  Future<void> deleteJourneyRequest(int id) async {
+  Future<void> cancelJourneyRequest(int id) async {
     var journeyRequestsUri = Uri.https(_environmentService.getValue(AppDomain),
-        _environmentService.getValue(AppName) + '/journey-requests/$id');
-
+        _environmentService.getValue(AppName) + '/journey-requests/$id/status');
+    Map<String, String> requestBody = {"status": "canceled"};
     try {
-      final response = await http.delete(
-        journeyRequestsUri,
-        headers: {
-          HttpHeaders.authorizationHeader:
-              'Bearer ${_authenticationService.token!}',
-          HttpHeaders.contentTypeHeader: "application/json"
-        },
-      );
-      var responseData = json.decode(response.body);
-      if (response.statusCode != 200) {
-        if (response.body.isNotEmpty &&
-            responseData['errorCode'] != null &&
-            responseData['errors'] != null) {
-          var errorsList = json.decode(response.body)['errors'];
-          var strBuffer = StringBuffer();
-          errorsList.forEach((item) {
-            strBuffer.write(item);
-            strBuffer.write(', ');
-          });
-          String errorMessage = strBuffer
-              .toString()
-              .substring(0, strBuffer.toString().length - 2);
-          throw JourneyRequestApiException(
-              message: errorMessage, statusCode: response.statusCode);
+      final response = await http.patch(journeyRequestsUri,
+          headers: {
+            HttpHeaders.authorizationHeader:
+                'Bearer ${_authenticationService.token!}',
+            HttpHeaders.contentTypeHeader: "application/json"
+          },
+          body: jsonEncode(requestBody));
+
+      if (response.statusCode != 204) {
+        if (response.body.isNotEmpty) {
+          var responseData = json.decode(response.body);
+          if (responseData['errorCode'] != null &&
+              responseData['errors'] != null) {
+            var errorsList = json.decode(response.body)['errors'];
+            var strBuffer = StringBuffer();
+            errorsList.forEach((item) {
+              strBuffer.write(item);
+              strBuffer.write(', ');
+            });
+            String errorMessage = strBuffer
+                .toString()
+                .substring(0, strBuffer.toString().length - 2);
+            throw JourneyRequestApiException(
+                message: errorMessage, statusCode: response.statusCode);
+          }
         }
+
         throw JourneyRequestApiException(
             message: 'Received status code:' + response.statusCode.toString(),
             statusCode: response.statusCode);

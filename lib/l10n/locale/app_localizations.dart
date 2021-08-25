@@ -913,6 +913,14 @@ class AppLocalizations {
     );
   }
 
+  String get deleteJourneyRequestSuccessMessage {
+    return Intl.message(
+      'Journey request deleted sucessfully.',
+      name: 'deleteJourneyRequestSuccessMessage',
+      desc: 'delete Journey Request Success Message',
+    );
+  }
+
   String get proposalsNoProposalsYetText {
     return Intl.message(
       'No offers yet.',

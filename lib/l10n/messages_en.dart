@@ -94,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dateBeforeValidatorMessage" : MessageLookupByLibrary.simpleMessage("Start date should be before end date."),
     "deleteButtonText" : MessageLookupByLibrary.simpleMessage("DELETE"),
     "deleteJourneyRequestErrorMessage" : MessageLookupByLibrary.simpleMessage("Something went wrong. We were unable to delete this journey request. If problem persists, please contact support."),
+    "deleteJourneyRequestSuccessMessage" : MessageLookupByLibrary.simpleMessage("Journey request deleted sucessfully."),
     "deleteJourneyRequestWarningText" : MessageLookupByLibrary.simpleMessage("Are you sure you want to remove this journey request?"),
     "deleteJourneyRequestWarningTitle" : MessageLookupByLibrary.simpleMessage("DELETION OF JOURNEY REQUEST"),
     "doneTooltipText" : MessageLookupByLibrary.simpleMessage("Done"),

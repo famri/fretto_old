@@ -81,4 +81,8 @@ class JourneyRequestService {
     return _journeyRequestApi.fetchClientJourneyRequestsResult(
         filtering, page, size, sorting, userLocaleLanguage, userLocaleCountry);
   }
+
+  Future<void> cancelJourneyRequest(int id) async {
+    return _journeyRequestApi.cancelJourneyRequest(id);
+  }
 }
