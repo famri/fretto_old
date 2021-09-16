@@ -880,6 +880,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "discussionsAppBarTitle": "DISCUSSIONS",
+  "@discussionsAppBarTitle": {
+    "description": "discussions App Bar Title",
+    "type": "text",
+    "placeholders": {}
+  },
   "homeProfileText": "Profil",
   "@homeProfileText": {
     "description": "home Profile Text",

@@ -97,6 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteJourneyRequestSuccessMessage" : MessageLookupByLibrary.simpleMessage("Journey request deleted sucessfully."),
     "deleteJourneyRequestWarningText" : MessageLookupByLibrary.simpleMessage("Are you sure you want to remove this journey request?"),
     "deleteJourneyRequestWarningTitle" : MessageLookupByLibrary.simpleMessage("DELETION OF JOURNEY REQUEST"),
+    "discussionsAppBarTitle" : MessageLookupByLibrary.simpleMessage("DISCUSSIONS"),
     "doneTooltipText" : MessageLookupByLibrary.simpleMessage("Done"),
     "editButtonText" : MessageLookupByLibrary.simpleMessage("EDIT"),
     "emailValidatorMessage" : MessageLookupByLibrary.simpleMessage("E-mail is incorrect."),

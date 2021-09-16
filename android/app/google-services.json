@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "14029663493",
+    "project_id": "fretto-fe591",
+    "storage_bucket": "fretto-fe591.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14029663493:android:c4e4179fc401298d98db6c",
+        "android_client_info": {
+          "package_name": "com.excentria_it.fretto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14029663493-ar9tc5uock7qt35c2ia492s0dap4t2t5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgXFBHV40gsrqGW4am8UVuh788jJ9X2GY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14029663493-ar9tc5uock7qt35c2ia492s0dap4t2t5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

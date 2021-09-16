@@ -12,6 +12,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../api/authentication_api.dart';
 import '../api/country_api.dart';
+import '../api/discussion_api.dart';
 import '../api/engine_type_api.dart';
 import '../api/gender_api.dart';
 import '../api/geo_place_api.dart';
@@ -24,6 +25,7 @@ import '../api/user_profile_api.dart';
 import '../services/application_settings_service.dart';
 import '../services/authentication_service.dart';
 import '../services/country_service.dart';
+import '../services/discussion_service.dart';
 import '../services/engine_type_service.dart';
 import '../services/environment_service.dart';
 import '../services/gender_service.dart';
@@ -31,9 +33,10 @@ import '../services/geo_place_service.dart';
 import '../services/journey_request_service.dart';
 import '../services/mobile_validation_service.dart';
 import '../services/place_service.dart';
+import '../services/push_notification_service.dart';
 import '../services/user_locale_service.dart';
 import '../services/user_profile_service.dart';
-import '../ui/views/discussions/discussions_viemodel.dart';
+import '../ui/views/discussions/discussions_viewmodel.dart';
 import '../ui/views/journey_creation/journey_creation_viewmodel.dart';
 import '../ui/views/journey_requests/journey_requests_viewmodel.dart';
 import '../ui/views/profile/profile_viewmodel.dart';
@@ -83,4 +86,7 @@ Future setupLocator(
   locator.registerLazySingleton(() => MobileValidationService());
   locator.registerLazySingleton(() => GeoPlaceApi());
   locator.registerLazySingleton(() => GeoPlaceService());
+  locator.registerLazySingleton(() => DiscussionApi());
+  locator.registerLazySingleton(() => DiscussionService());
+  locator.registerLazySingleton(() => PushNotificationService());
 }

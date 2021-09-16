@@ -53,10 +53,39 @@ class HomeView extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               label: AppLocalizations.of(context)!.homeDiscussionsText,
-              icon: Icon(
-                Icons.message,
-                // color: Colors.amber
-              ),
+              icon: viewModel.getMissedMessagesCount() > 0
+                  ? Stack(children: <Widget>[
+                      Icon(
+                        Icons.message,
+                        size: 32,
+                      ),
+                      Positioned(
+                        right: 0,
+                        child: new Container(
+                          padding: EdgeInsets.all(1),
+                          decoration: new BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          constraints: BoxConstraints(
+                            minWidth: 20,
+                            minHeight: 20,
+                          ),
+                          child: new Text(
+                            '${viewModel.getMissedMessagesCount()}',
+                            style: new TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                    ])
+                  : Icon(
+                      Icons.message,
+                      // color: Colors.amber
+                    ),
             ),
             BottomNavigationBarItem(
               label: AppLocalizations.of(context)!.homeProfileText,

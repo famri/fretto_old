@@ -66,7 +66,6 @@ class EngineTypeApi {
       final extractedData = responseData as Map<String, dynamic>;
 
       List content = extractedData["content"] as List;
-      log.v('End fetching engine types with locale : $lang ==> $content');
 
       return content
           .map<EngineType>((json) => EngineType.fromJson(json))

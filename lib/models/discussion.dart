@@ -5,17 +5,17 @@ class Discussion {
   final int id;
   final bool active;
   final DateTime dateTime;
-  final Message latestMessage;
+  Message latestMessage;
   final Interlocutor client;
   final Interlocutor transporter;
 
   Discussion(
       {required this.id,
       required this.active,
-     required  this.dateTime,
-     required  this.latestMessage,
-     required  this.client,
-    required   this.transporter});
+      required this.dateTime,
+      required this.latestMessage,
+      required this.client,
+      required this.transporter});
 
   factory Discussion.fromJson(Map<String, dynamic> json) {
     return Discussion(

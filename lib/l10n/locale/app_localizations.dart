@@ -1097,6 +1097,12 @@ class AppLocalizations {
         desc: 'home Discussions Text',
       );
 
+  String get discussionsAppBarTitle => Intl.message(
+        'DISCUSSIONS',
+        name: 'discussionsAppBarTitle',
+        desc: 'discussions App Bar Title',
+      );
+
   String get homeProfileText => Intl.message(
         'Profile',
         name: 'homeProfileText',
