@@ -17,25 +17,25 @@ class DiscussionService with ReactiveServiceMixin {
   DiscussionApi _discussionApi = locator<DiscussionApi>();
   ReactiveList<Discussion> _discussions = ReactiveList<Discussion>();
   RxValue<int> _missedMessages = RxValue<int>(0);
-  Discussion? _currentDiscussion;
 
   int get missedMessages => _missedMessages.value;
   ReactiveList<Discussion> get discussions => _discussions;
-
-  Discussion? get currentDiscussion => _currentDiscussion;
-  ReactiveList<List<Message>> _currentDiscussionMessages =
-      ReactiveList<List<Message>>();
 
   Future<DiscussionsResult> fetchDiscussionsResult(
       int pageNumber, int size) async {
     return _discussionApi.fetchDiscussionsResult(pageNumber, size);
   }
 
-  void addMessageToDiscussion(int discussionId, Message message) {
-    _discussions
-        .toList()
-        .firstWhere((element) => element.id == discussionId)
-        .latestMessage = message;
+  Future<void> addMessageToDiscussion(int discussionId, Message message) async {
+    Discussion? discussion =
+        await _discussionApi.findDiscussionById(discussionId);
+
+    _discussions.removeWhere((d) => d.id == discussionId);
+
+    if (discussion != null) {
+      bringDiscussionToTop(discussion);
+    }
+    //notifyListeners();
   }
 
   void incrementMissedMessages() {
@@ -49,10 +49,11 @@ class DiscussionService with ReactiveServiceMixin {
   void addAllDiscussions(discussions) {}
 
   Future<Discussion?> findDiscussion(int clientId, int transporterId) async {
-    return _discussionApi.findDiscussion(clientId, transporterId);
+    return _discussionApi.findDiscussionByClientIdAndTransporterId(
+        clientId, transporterId);
   }
 
-  void addDiscussionToTop(Discussion? discussion) {
+  void bringDiscussionToTop(Discussion? discussion) {
     if (_discussions.isNotEmpty && _discussions.length >= 10) {
       _discussions.removeLast();
     }

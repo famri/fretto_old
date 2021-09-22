@@ -33,7 +33,7 @@ class DiscussionsView extends StatelessWidget {
                           return Card(
                             child: ListTile(
                               onTap: () =>
-                                  model.showMessages(model.discussions[index]),
+                                  model.navigateToMessages(model.discussions[index]),
                               leading: CircleAvatar(
                                 radius: 25.0,
                                 backgroundImage: NetworkImage(model.isClient

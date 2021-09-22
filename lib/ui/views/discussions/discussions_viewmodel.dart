@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fretto/app/app.locator.dart';
+import 'package:fretto/app/app.router.dart';
 import 'package:fretto/models/discussion.dart';
 import 'package:fretto/models/discussions_result.dart';
+import 'package:fretto/services/authentication_service.dart';
 import 'package:fretto/services/discussion_service.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class DiscussionsViewModel extends ReactiveViewModel {
   DiscussionService _discussionService = locator<DiscussionService>();
-
+  NavigationService _navigationService = locator<NavigationService>();
+  AuthenticationService _authenticationService =
+      locator<AuthenticationService>();
   List<Discussion> get discussions => _discussionService.discussions.toList();
 
   DiscussionsResult? discussionsResult;
@@ -35,7 +40,14 @@ class DiscussionsViewModel extends ReactiveViewModel {
     }
   }
 
-  showMessages(discussion) {}
+  Future<void> navigateToMessages(Discussion discussion) async {
+    _navigationService.navigateTo(Routes.messagingView,
+        arguments: MessagingViewArguments(
+            interlocutor: _authenticationService.isClient
+                ? discussion.transporter
+                : discussion.client,
+            discussionId: discussion.id));
+  }
 
   Future<void> initialize() async {
     print('initializing discussion view model');

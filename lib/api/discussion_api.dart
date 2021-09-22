@@ -63,7 +63,8 @@ class DiscussionApi {
     }
   }
 
-  Future<Discussion?> findDiscussion(int clientId, int transporterId) async {
+  Future<Discussion?> findDiscussionByClientIdAndTransporterId(
+      int clientId, int transporterId) async {
     var queryParams = {
       'clientId': clientId.toString(),
       'transporterId': transporterId.toString()
@@ -72,6 +73,55 @@ class DiscussionApi {
         _environmentService.getValue(AppDomain),
         _environmentService.getValue(AppName) + '/users/me/discussions',
         queryParams);
+
+    try {
+      final response = await http.get(
+        discussionsUri,
+        headers: {
+          HttpHeaders.authorizationHeader:
+              "Bearer ${_authenticationService.token!}",
+          HttpHeaders.contentTypeHeader: "application/json"
+        },
+      );
+
+      if (response.statusCode != 200) {
+        if (response.statusCode == 404) {
+          return null;
+        }
+        if (response.body.isNotEmpty &&
+            json.decode(response.body)['errors'] != null) {
+          var errorsList = json.decode(response.body)['errors'];
+          var strBuffer = StringBuffer();
+          errorsList.forEach((item) {
+            strBuffer.write(item);
+            strBuffer.write(', ');
+          });
+          String errorMessage = strBuffer
+              .toString()
+              .substring(0, strBuffer.toString().length - 2);
+          throw DiscussionApiException(message: errorMessage);
+        } else {
+          throw DiscussionApiException(
+              message:
+                  'Received status code:' + response.statusCode.toString());
+        }
+      }
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
+      Discussion foundDiscussions = Discussion.fromJson(extractedData);
+
+      return foundDiscussions;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<Discussion?> findDiscussionById(int discussionId) async {
+    var discussionsUri = Uri.https(
+        _environmentService.getValue(AppDomain),
+        _environmentService.getValue(AppName) +
+            '/users/me/discussions/$discussionId');
 
     try {
       final response = await http.get(

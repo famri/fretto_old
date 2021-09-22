@@ -10,15 +10,18 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../models/client_journey_request_dto.dart';
+import '../models/interlocutor.dart';
 import '../ui/views/account_type_choice/account_type_choice_view.dart';
 import '../ui/views/application_settings/application_settings_view.dart';
 import '../ui/views/authentication_choice/authentication_choice_view.dart';
 import '../ui/views/create_favorite_place/create_favorite_place_view.dart';
+import '../ui/views/discussions/discussions_view.dart';
 import '../ui/views/favorite_places/favorite_places_view.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/journey_creation/journey_creation_view.dart';
 import '../ui/views/journey_details/journey_details_view.dart';
 import '../ui/views/journey_proposals/journey_proposals_view.dart';
+import '../ui/views/messaging/messaging_view.dart';
 import '../ui/views/mobile_number_check/mobile_number_check_view.dart';
 import '../ui/views/mobile_validation_sms_code/mobile_validation_sms_code_view.dart';
 import '../ui/views/signin/signin_view.dart';
@@ -41,6 +44,8 @@ class Routes {
   static const String journeyCreationView = '/journey-creation-view';
   static const String journeyDetailsView = '/journey-details-view';
   static const String journeyProposalsView = '/journey-proposals-view';
+  static const String discussionsView = '/discussions-view';
+  static const String messagingView = '/messaging-view';
   static const all = <String>{
     startupView,
     applicationSettingsView,
@@ -56,6 +61,8 @@ class Routes {
     journeyCreationView,
     journeyDetailsView,
     journeyProposalsView,
+    discussionsView,
+    messagingView,
   };
 }
 
@@ -78,6 +85,8 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.journeyCreationView, page: JourneyCreationView),
     RouteDef(Routes.journeyDetailsView, page: JourneyDetailsView),
     RouteDef(Routes.journeyProposalsView, page: JourneyProposalsView),
+    RouteDef(Routes.discussionsView, page: DiscussionsView),
+    RouteDef(Routes.messagingView, page: MessagingView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -205,6 +214,23 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    DiscussionsView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const DiscussionsView(),
+        settings: data,
+      );
+    },
+    MessagingView: (data) {
+      var args = data.getArgs<MessagingViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => MessagingView(
+          key: args.key,
+          interlocutor: args.interlocutor,
+          discussionId: args.discussionId,
+        ),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -272,4 +298,13 @@ class JourneyProposalsViewArguments {
   final Key? key;
   final int journeyId;
   JourneyProposalsViewArguments({this.key, required this.journeyId});
+}
+
+/// MessagingView arguments holder class
+class MessagingViewArguments {
+  final Key? key;
+  final Interlocutor interlocutor;
+  final int discussionId;
+  MessagingViewArguments(
+      {this.key, required this.interlocutor, required this.discussionId});
 }
