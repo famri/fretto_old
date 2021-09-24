@@ -24,29 +24,15 @@ class DiscussionsViewModel extends ReactiveViewModel {
 
   get isClient => true;
 
-  void _scrollListener() {
-    if (discussionsResult!.hasNext &&
-        _scrollController!.offset >=
-            _scrollController!.position.maxScrollExtent &&
-        !_scrollController!.position.outOfRange) {
-      //fetch next page
-      _discussionService
-          .fetchDiscussionsResult(discussionsResult!.pageNumber + 1, 10)
-          .then((value) {
-        discussionsResult = value;
-        _discussionService.addAllDiscussions(discussionsResult!.discussions);
-        notifyListeners();
-      });
-    }
-  }
-
   Future<void> navigateToMessages(Discussion discussion) async {
-    _navigationService.navigateTo(Routes.messagingView,
-        arguments: MessagingViewArguments(
-            interlocutor: _authenticationService.isClient
-                ? discussion.transporter
-                : discussion.client,
-            discussionId: discussion.id));
+    _navigationService
+        .navigateTo(Routes.messagingView,
+            arguments: MessagingViewArguments(
+                interlocutor: _authenticationService.isClient
+                    ? discussion.transporter
+                    : discussion.client,
+                discussionId: discussion.id))!
+        .then((_) => initialize());
   }
 
   Future<void> initialize() async {
@@ -55,10 +41,18 @@ class DiscussionsViewModel extends ReactiveViewModel {
   }
 
   Future<void> _initialize() async {
-    discussionsResult = await _discussionService.fetchDiscussionsResult(0, 10);
+    await _discussionService.fetchFirstDiscussionsResult();
+  }
 
-    _discussionService.discussions.addAll(discussionsResult!.discussions);
+  Future<void> fetchNextDiscussionsResult() async {
+    await _discussionService.fetchNextDiscussionsResult();
+  }
 
-    _scrollController = ScrollController()..addListener(_scrollListener);
+  @override
+  void dispose() {
+    if (_scrollController != null) {
+      _scrollController!.dispose();
+    }
+    super.dispose();
   }
 }

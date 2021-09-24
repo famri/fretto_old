@@ -3,6 +3,7 @@ import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/models/discussion_messages_result.dart';
 import 'package:fretto/models/message.dart';
 import 'package:fretto/services/application_settings_service.dart';
+import 'package:fretto/services/discussion_service.dart';
 import 'package:fretto/services/messaging_service.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
@@ -12,12 +13,10 @@ class MessagingViewModel extends ReactiveViewModel {
       locator<ApplicationSettingsService>();
 
   final MessagingService _messagingService = locator<MessagingService>();
-
+  final DiscussionService _discussionService = locator<DiscussionService>();
   bool? nextPage;
 
   ScrollController _scrollController = ScrollController();
-
-  DiscussionMessagesResult? _messagesResult;
 
   int _showMessageDateTimeIndex = -1;
 
@@ -33,7 +32,8 @@ class MessagingViewModel extends ReactiveViewModel {
 
   TextEditingController? get messageTextController => _messageTextController;
 
-  DiscussionMessagesResult? get discussionMessagesResult => _messagesResult;
+  DiscussionMessagesResult? get discussionMessagesResult =>
+      _messagingService.discussionMessagesResult;
 
   List<Message> get messages => _messagingService.messages;
 
@@ -54,10 +54,7 @@ class MessagingViewModel extends ReactiveViewModel {
 
     _messageTextController = TextEditingController();
 
-    _messagesResult = await _messagingService.fetchDiscussionMessagesResult(
-        discussionId, 0, 10);
-    _messagingService.resetMessages();
-    _messagingService.addAllMessages(_messagesResult!.messages);
+    await _messagingService.fetchFirstDiscussionMessagesResult(discussionId);
   }
 
   void switchShowMessageDateTime(int reversedIndex) {
@@ -80,19 +77,21 @@ class MessagingViewModel extends ReactiveViewModel {
   Future<void> sendMessage() async {
     _messagingService
         .sendMessage(_discussionId!, _messageTextController!.text)
-        .then((value) => _scrollController.animateTo(
-            _scrollController.position.maxScrollExtent + 50,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeOut));
+        .then((value) {
+      if (_messagingService.discussionMessagesResult != null &&
+          _messagingService.discussionMessagesResult!.hasNext) {
+        _messagingService.removeMessageFromBottom();
+      }
+      _messagingService.addMessageToTop(value);
+      _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent + 50,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOut);
+      _messageTextController!.text = '';
+    });
   }
 
-  Future<void> fetchDiscussionMessagesResult() async {
-    _messagingService
-        .fetchDiscussionMessagesResult(
-            _discussionId!, _messagesResult!.pageNumber + 1, 10)
-        .then((value) {
-      _messagesResult = value;
-      _messagingService.addAllMessages(_messagesResult!.messages);
-    });
+  Future<void> fetchNextDiscussionMessagesResult() async {
+    _messagingService.fetchNextDiscussionMessagesResult(_discussionId!);
   }
 }

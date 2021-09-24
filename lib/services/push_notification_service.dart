@@ -8,6 +8,7 @@ import 'package:fretto/app/app.router.dart';
 import 'package:fretto/models/discussion.dart';
 import 'package:fretto/models/message.dart';
 import 'package:fretto/services/authentication_service.dart';
+import 'package:fretto/ui/views/home/home_viewmodel.dart';
 import 'package:logger/logger.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -22,6 +23,7 @@ class PushNotificationService {
 
   AuthenticationService _authenticationService =
       locator<AuthenticationService>();
+  HomeViewModel homeViewModel = locator<HomeViewModel>();
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   String? _token;
@@ -73,20 +75,15 @@ class PushNotificationService {
         Discussion newDiscussion =
             Discussion.fromJson(json.decode(data['content']));
 
-        _discussionService.bringDiscussionToTop(newDiscussion);
+        if (_discussionService.discussionsResult!.hasNext) {
+          _discussionService.removeDiscussionFromBottom();
+        }
+        _discussionService.addDiscussionToTop(newDiscussion);
+
         _discussionService.incrementMissedMessages();
         break;
 
       case 'message':
-        //TODO
-        //if current route is the discussion route then add the message to the discussion,
-        //else
-        //increment the number of missed messages on top of discussions icon of the navigation bar
-        //  if current route is discussions then:
-        //    if the discussion exists then insert the newly received message and bring the discussion to the top
-        //    else
-        //    add the discussion and bring it to the top
-        //else
         Map<String, dynamic> content = json.decode(data["content"]);
 
         Message message = Message.fromJson(content["message"]);
@@ -98,9 +95,33 @@ class PushNotificationService {
             discussionId ==
                 (_navigationService.currentArguments as MessagingViewArguments)
                     .discussionId) {
-          _messagingService.addAllMessages([message]);
+          //if discussion is opened
+
+          if (_messagingService.discussionMessagesResult!.hasNext) {
+            _messagingService.removeMessageFromBottom();
+          }
+          _messagingService.addMessageToTop(message);
+        } else if ((_navigationService.currentRoute == Routes.homeView ||
+                _navigationService.currentRoute == "") &&
+            homeViewModel.currentIndex == 2) {
+          //if discussion is closed
+          Discussion? discussion =
+              _discussionService.findDiscussionById(discussionId);
+
+          if (discussion != null) {
+            _discussionService.removeDiscussion(discussion);
+          } else {
+            discussion =
+                await _discussionService.fetchDiscussionById(discussionId);
+            _discussionService.removeDiscussionFromBottom();
+          }
+
+          discussion!.latestMessage = message;
+
+          _discussionService.addDiscussionToTop(discussion);
+
+          _discussionService.incrementMissedMessages();
         } else {
-          _discussionService.addMessageToDiscussion(discussionId, message);
           _discussionService.incrementMissedMessages();
         }
 
@@ -129,7 +150,11 @@ class PushNotificationService {
               arguments: HomeViewArguments(viewIndex: 2));
           Discussion newDiscussion =
               Discussion.fromJson(json.decode(data['content']));
-          _discussionService.bringDiscussionToTop(newDiscussion);
+
+          if (_discussionService.discussionsResult!.hasNext) {
+            _discussionService.removeDiscussionFromBottom();
+          }
+          _discussionService.addDiscussionToTop(newDiscussion);
 
           _discussionService.incrementMissedMessages();
         } else {

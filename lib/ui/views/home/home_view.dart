@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/ui/views/discussions/discussions_view.dart';
 import 'package:fretto/ui/views/journey_creation/journey_creation_view.dart';
@@ -97,7 +98,7 @@ class HomeView extends StatelessWidget {
           ],
         ),
       ),
-      viewModelBuilder: () => HomeViewModel(),
+      viewModelBuilder: () => locator<HomeViewModel>(),
     );
   }
 

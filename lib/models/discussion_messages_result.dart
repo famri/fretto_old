@@ -5,7 +5,7 @@ class DiscussionMessagesResult {
   final int totalPages;
   final int pageNumber;
   final int pageSize;
-  final bool hasNext;
+  bool hasNext;
 
   final List<Message> messages;
 

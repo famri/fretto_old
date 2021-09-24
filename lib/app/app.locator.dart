@@ -38,10 +38,9 @@ import '../services/place_service.dart';
 import '../services/push_notification_service.dart';
 import '../services/user_locale_service.dart';
 import '../services/user_profile_service.dart';
-import '../ui/views/discussions/discussions_viewmodel.dart';
+import '../ui/views/home/home_viewmodel.dart';
 import '../ui/views/journey_creation/journey_creation_viewmodel.dart';
 import '../ui/views/journey_requests/journey_requests_viewmodel.dart';
-import '../ui/views/messaging/messaging_viewmodel.dart';
 import '../ui/views/profile/profile_viewmodel.dart';
 import '../utils/location_helper.dart';
 
@@ -72,9 +71,8 @@ Future setupLocator(
   locator.registerLazySingleton(() => JourneyRequestService());
   locator.registerLazySingleton(() => JourneyCreationViewModel());
   locator.registerLazySingleton(() => JourneyRequestsViewModel());
-  locator.registerLazySingleton(() => DiscussionsViewModel());
-  locator.registerLazySingleton(() => MessagingViewModel());
   locator.registerLazySingleton(() => ProfileViewModel());
+  locator.registerLazySingleton(() => HomeViewModel());
   locator.registerLazySingleton(() => CountryApi());
   locator.registerLazySingleton(() => CountryService());
   locator.registerLazySingleton(() => UserLocaleApi());

@@ -17,25 +17,47 @@ class MessagingService with ReactiveServiceMixin {
 
   ReactiveList<Message> _messages = ReactiveList<Message>();
 
+  DiscussionMessagesResult? _discussionMessagesResult;
+
   ReactiveList<Message> get messages => _messages;
 
-  void addAllMessages(List<Message> messages) {
-    _messages.addAll(messages);
+  DiscussionMessagesResult? get discussionMessagesResult =>
+      _discussionMessagesResult;
+
+  int _pageSize = 10;
+  int get pageSize => _pageSize;
+
+  Future<void> fetchFirstDiscussionMessagesResult(int discussionId) async {
+    _messagingApi
+        .fetchDiscussionMessages(discussionId, 0, _pageSize)
+        .then((value) {
+      _discussionMessagesResult = value;
+      _messages.assignAll(value.messages);
+    });
   }
 
-  Future<DiscussionMessagesResult> fetchDiscussionMessagesResult(
-      int discussionId, int pageNumber, int pageSize) async {
-    return _messagingApi.fetchDiscussionMessages(
-        discussionId, pageNumber, pageSize);
+  Future<Message> sendMessage(int discussionId, String messageContent) async {
+    return _messagingApi.sendMessage(discussionId, messageContent);
   }
 
-  Future<void> sendMessage(int discussionId, String messageContent) async {
-    _messagingApi.sendMessage(discussionId, messageContent).then((value) =>
-        fetchDiscussionMessagesResult(discussionId, 0, 1).then((value) =>
-            _messages.assignAll([value.messages.first, ..._messages])));
+  Future<void> fetchNextDiscussionMessagesResult(int discussionId) async {
+    if (_discussionMessagesResult != null &&
+        _discussionMessagesResult!.hasNext) {
+      _messagingApi
+          .fetchDiscussionMessages(discussionId,
+              _discussionMessagesResult!.pageNumber + 1, _pageSize)
+          .then((value) {
+        _discussionMessagesResult = value;
+        _messages.addAll(value.messages);
+      });
+    }
   }
 
-  void resetMessages() {
-    _messages.assignAll([]);
+  void removeMessageFromBottom() {
+    _messages.removeLast();
+  }
+
+  void addMessageToTop(Message message) {
+    _messages.insert(0, message);
   }
 }

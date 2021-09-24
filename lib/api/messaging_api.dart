@@ -6,6 +6,8 @@ import 'package:fretto/app/app.logger.dart';
 import 'package:fretto/constants/app_keys.dart';
 import 'package:fretto/exceptions/messaging_api_exception.dart';
 import 'package:fretto/models/discussion_messages_result.dart';
+import 'package:fretto/models/gender.dart';
+import 'package:fretto/models/message.dart';
 import 'package:fretto/services/authentication_service.dart';
 import 'package:fretto/services/environment_service.dart';
 import 'package:http/http.dart' as http;
@@ -63,7 +65,7 @@ class MessagingApi {
     }
   }
 
-  Future<void> sendMessage(int discussionId, String messageContent) async {
+  Future<Message> sendMessage(int discussionId, String messageContent) async {
     var saveMessageUri = Uri.https(
         _environmentService.getValue(AppDomain),
         _environmentService.getValue(AppName) +
@@ -101,6 +103,12 @@ class MessagingApi {
                   'Received status code:' + response.statusCode.toString());
         }
       }
+
+      var responseData = json.decode(response.body);
+
+      final extractedData = responseData as Map<String, dynamic>;
+
+      return Message.fromJson(extractedData);
     } catch (error) {
       throw error;
     }

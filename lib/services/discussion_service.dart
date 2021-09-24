@@ -3,10 +3,7 @@ import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/app/app.logger.dart';
 import 'package:fretto/models/discussion.dart';
 import 'package:fretto/models/discussions_result.dart';
-import 'package:fretto/models/message.dart';
 import 'package:logger/logger.dart';
-import 'package:observable_ish/observable_ish.dart';
-import 'package:observable_ish/value/value.dart';
 import 'package:stacked/stacked.dart';
 
 class DiscussionService with ReactiveServiceMixin {
@@ -16,26 +13,32 @@ class DiscussionService with ReactiveServiceMixin {
   Logger log = getLogger('DiscussionService');
   DiscussionApi _discussionApi = locator<DiscussionApi>();
   ReactiveList<Discussion> _discussions = ReactiveList<Discussion>();
-  RxValue<int> _missedMessages = RxValue<int>(0);
+  ReactiveValue<int> _missedMessages = ReactiveValue<int>(0);
+
+  DiscussionsResult? _discussionsResult;
+
+  int _pageSize = 10;
 
   int get missedMessages => _missedMessages.value;
+
   ReactiveList<Discussion> get discussions => _discussions;
 
-  Future<DiscussionsResult> fetchDiscussionsResult(
-      int pageNumber, int size) async {
-    return _discussionApi.fetchDiscussionsResult(pageNumber, size);
+  DiscussionsResult? get discussionsResult => _discussionsResult;
+
+  int get pageSize => _pageSize;
+
+  Future<void> fetchFirstDiscussionsResult() async {
+    _discussionsResult =
+        await _discussionApi.fetchDiscussionsResult(0, _pageSize);
+    _discussions.assignAll(_discussionsResult!.discussions);
   }
 
-  Future<void> addMessageToDiscussion(int discussionId, Message message) async {
-    Discussion? discussion =
-        await _discussionApi.findDiscussionById(discussionId);
-
-    _discussions.removeWhere((d) => d.id == discussionId);
-
-    if (discussion != null) {
-      bringDiscussionToTop(discussion);
+  Future<void> fetchNextDiscussionsResult() async {
+    if (_discussionsResult != null && _discussionsResult!.hasNext) {
+      _discussionsResult = await _discussionApi.fetchDiscussionsResult(
+          _discussionsResult!.pageNumber + 1, _pageSize);
+      _discussions.addAll(_discussionsResult!.discussions);
     }
-    //notifyListeners();
   }
 
   void incrementMissedMessages() {
@@ -46,17 +49,45 @@ class DiscussionService with ReactiveServiceMixin {
     _missedMessages.value -= decrementBy;
   }
 
-  void addAllDiscussions(discussions) {}
-
-  Future<Discussion?> findDiscussion(int clientId, int transporterId) async {
+  Future<Discussion?> fetchDiscussionByClientIdAndTransporterId(
+      int clientId, int transporterId) async {
     return _discussionApi.findDiscussionByClientIdAndTransporterId(
         clientId, transporterId);
   }
 
-  void bringDiscussionToTop(Discussion? discussion) {
-    if (_discussions.isNotEmpty && _discussions.length >= 10) {
-      _discussions.removeLast();
-    }
-    _discussions.assignAll([discussion!, ..._discussions.toList()]);
+  Future<Discussion?> fetchDiscussionById(int discussionId) async {
+    return _discussionApi.findDiscussionById(discussionId);
   }
+
+  void addDiscussionToTop(Discussion discussion) {
+    _discussions.insert(0, discussion);
+  }
+
+  void removeDiscussion(Discussion discussion) {
+    _discussions.remove(discussion);
+  }
+
+  Discussion? findDiscussionById(int discussionId) {
+    try {
+      return _discussions.firstWhere((d) => d.id == discussionId);
+    } catch (StateError) {
+      return null;
+    }
+  }
+
+  void removeDiscussionFromBottom() {
+    _discussions.removeLast();
+  }
+
+/*   void updateLatestMessage(int? discussionId, Message message) {
+    try {
+      Discussion discussion =
+          _discussions.firstWhere((d) => d.id == discussionId);
+      discussion.latestMessage = message;
+      _discussions.insert(
+          _discussions.indexWhere((d) => d.id == discussionId), discussion);
+    } catch (StateError) {
+      return;
+    }
+  } */
 }

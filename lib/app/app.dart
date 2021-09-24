@@ -31,16 +31,15 @@ import 'package:fretto/ui/views/application_settings/application_settings_view.d
 import 'package:fretto/ui/views/authentication_choice/authentication_choice_view.dart';
 import 'package:fretto/ui/views/create_favorite_place/create_favorite_place_view.dart';
 import 'package:fretto/ui/views/discussions/discussions_view.dart';
-import 'package:fretto/ui/views/discussions/discussions_viewmodel.dart';
 import 'package:fretto/ui/views/favorite_places/favorite_places_view.dart';
 import 'package:fretto/ui/views/home/home_view.dart';
+import 'package:fretto/ui/views/home/home_viewmodel.dart';
 import 'package:fretto/ui/views/journey_creation/journey_creation_view.dart';
 import 'package:fretto/ui/views/journey_creation/journey_creation_viewmodel.dart';
 import 'package:fretto/ui/views/journey_details/journey_details_view.dart';
 import 'package:fretto/ui/views/journey_proposals/journey_proposals_view.dart';
 import 'package:fretto/ui/views/journey_requests/journey_requests_viewmodel.dart';
 import 'package:fretto/ui/views/messaging/messaging_view.dart';
-import 'package:fretto/ui/views/messaging/messaging_viewmodel.dart';
 import 'package:fretto/ui/views/mobile_number_check/mobile_number_check_view.dart';
 import 'package:fretto/ui/views/mobile_validation_sms_code/mobile_validation_sms_code_view.dart';
 import 'package:fretto/ui/views/profile/profile_viewmodel.dart';
@@ -88,9 +87,8 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: JourneyRequestService),
     LazySingleton(classType: JourneyCreationViewModel),
     LazySingleton(classType: JourneyRequestsViewModel),
-    LazySingleton(classType: DiscussionsViewModel),
-    LazySingleton(classType: MessagingViewModel),
     LazySingleton(classType: ProfileViewModel),
+    LazySingleton(classType: HomeViewModel),
     LazySingleton(classType: CountryApi),
     LazySingleton(classType: CountryService),
     LazySingleton(classType: UserLocaleApi),

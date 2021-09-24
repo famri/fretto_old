@@ -27,4 +27,9 @@ class Discussion {
         transporter:
             Interlocutor.fromJson(json["transporter"] as Map<String, dynamic>));
   }
+
+  @override
+  int get hashCode => this.id;
+
+  bool operator ==(o) => o is Discussion && id == o.id;
 }

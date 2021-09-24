@@ -52,15 +52,14 @@ class MessagingView extends StatelessWidget {
                                   child: RefreshIndicator(
                                       triggerMode:
                                           RefreshIndicatorTriggerMode.anywhere,
-                                      onRefresh: () =>
-                                          model.fetchDiscussionMessagesResult(),
+                                      onRefresh: () => model
+                                          .fetchNextDiscussionMessagesResult(),
                                       child: ListView.builder(
                                           physics: const BouncingScrollPhysics(
                                               parent:
                                                   AlwaysScrollableScrollPhysics()),
                                           controller: model.scrollController,
-                                          shrinkWrap: false,
-                                          //reverse: true,
+                                          shrinkWrap: true,
                                           itemCount: model.messages.length,
                                           itemBuilder: (ctx, index) {
                                             int reversedIndex =
