@@ -9,6 +9,7 @@ import 'package:fretto/models/gender.dart';
 import 'package:fretto/services/application_settings_service.dart';
 import 'package:fretto/services/authentication_service.dart';
 import 'package:fretto/services/gender_service.dart';
+import 'package:fretto/services/push_notification_service.dart';
 import 'package:fretto/ui/shared/snackbar_type.dart';
 import 'package:fretto/ui/views/signup/signup_view.form.dart';
 import 'package:fretto/utils/validators.dart';
@@ -28,6 +29,9 @@ class SignupViewModel extends FormViewModel {
       locator<AuthenticationService>();
 
   final SnackbarService _snackbarService = locator<SnackbarService>();
+
+  final PushNotificationService _pushNotificationService =
+      locator<PushNotificationService>();
 
   final DateFormat _dateFormatter = DateFormat.yMd();
   bool _isInitialized = false;
@@ -90,7 +94,7 @@ class SignupViewModel extends FormViewModel {
     notifyListeners();
   }
 
-  void signup() {
+  Future<void> signup() async {
     final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
     runBusyFuture(
@@ -106,9 +110,12 @@ class SignupViewModel extends FormViewModel {
                 lastnameValue!,
                 _dateFormatter.parse(dateOfBirthValue!),
                 _receiveNewsLetter!)
-            .then((_) {
-          _navigationService.clearStackAndShow(Routes.homeView);
-        }),
+            .then((_) => _pushNotificationService.initialize().then((_) {
+                  _pushNotificationService
+                      .saveRegistredDeviceTokenToBackend()
+                      .then((_) => _navigationService
+                          .clearStackAndShow(Routes.homeView));
+                })),
         busyObject: signupBusyObj);
   }
 
@@ -147,13 +154,13 @@ class SignupViewModel extends FormViewModel {
     );
   }
 
-  String? validatePasswordConfirmation(
-      String? passwordConfirmation) {
+  String? validatePasswordConfirmation(String? passwordConfirmation) {
     String? validationMessage =
         Validators.passwordValidator(passwordConfirmation);
     if (validationMessage != null) return validationMessage;
     if (passwordValue != passwordConfirmation) {
-      return AppLocalizationDelegate.appLocalizations!.signUpPasswordValidationMessage;
+      return AppLocalizationDelegate
+          .appLocalizations!.signUpPasswordValidationMessage;
     }
     return null;
   }

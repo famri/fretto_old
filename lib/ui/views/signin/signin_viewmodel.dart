@@ -6,6 +6,7 @@ import 'package:fretto/app/app.router.dart';
 import 'package:fretto/exceptions/authentication_api_exception.dart';
 import 'package:fretto/l10n/locale/app_localizations.dart';
 import 'package:fretto/services/authentication_service.dart';
+import 'package:fretto/services/push_notification_service.dart';
 import 'package:fretto/ui/shared/snackbar_type.dart';
 import 'package:fretto/ui/views/signin/signin_view.form.dart';
 import 'package:stacked/stacked.dart';
@@ -17,6 +18,9 @@ class SigninViewModel extends FormViewModel {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
 
+  final PushNotificationService _pushNotificationService =
+      locator<PushNotificationService>();
+
   final SnackbarService _snackbarService = locator<SnackbarService>();
 
   String signinBusyObj = 'SigninBusyObj';
@@ -25,13 +29,16 @@ class SigninViewModel extends FormViewModel {
 
   GlobalKey<FormState> get formKey => _formKey;
 
-  void signin() {
+  Future<void> signin() async {
     final isValid = _formKey.currentState!.validate();
     if (!isValid) return;
     runBusyFuture(
-        _authenticationService
-            .signin(loginValue!, passwordValue!)
-            .then((_) => _navigationService.clearStackAndShow(Routes.homeView)),
+        _authenticationService.signin(loginValue!, passwordValue!).then((_) {
+          _pushNotificationService.initialize().then((_) =>
+              _pushNotificationService.saveRegistredDeviceTokenToBackend().then(
+                  (_) =>
+                      _navigationService.clearStackAndShow(Routes.homeView)));
+        }),
         busyObject: signinBusyObj);
   }
 

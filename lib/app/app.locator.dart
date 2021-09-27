@@ -12,6 +12,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../api/authentication_api.dart';
 import '../api/country_api.dart';
+import '../api/device_token_api.dart';
 import '../api/discussion_api.dart';
 import '../api/engine_type_api.dart';
 import '../api/gender_api.dart';
@@ -93,4 +94,5 @@ Future setupLocator(
   locator.registerLazySingleton(() => PushNotificationService());
   locator.registerLazySingleton(() => MessagingApi());
   locator.registerLazySingleton(() => MessagingService());
+  locator.registerLazySingleton(() => DeviceTokenApi());
 }

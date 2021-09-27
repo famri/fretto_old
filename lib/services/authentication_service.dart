@@ -61,6 +61,7 @@ class AuthenticationService {
     // Save new userAuthData
     bool isSuccessfullyAuthenticated =
         await _updateStoredUserAuthData(_userAuthData);
+
     return isSuccessfullyAuthenticated;
   }
 

@@ -1,5 +1,6 @@
 import 'package:fretto/api/authentication_api.dart';
 import 'package:fretto/api/country_api.dart';
+import 'package:fretto/api/device_token_api.dart';
 import 'package:fretto/api/discussion_api.dart';
 import 'package:fretto/api/engine_type_api.dart';
 import 'package:fretto/api/gender_api.dart';
@@ -109,6 +110,7 @@ import 'package:stacked_services/stacked_services.dart';
     LazySingleton(classType: PushNotificationService),
     LazySingleton(classType: MessagingApi),
     LazySingleton(classType: MessagingService),
+    LazySingleton(classType: DeviceTokenApi),
   ],
   logger: StackedLogger(),
 )

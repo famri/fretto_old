@@ -12,17 +12,18 @@ class StartupViewModel extends BaseViewModel {
       locator<ApplicationSettingsService>();
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
-
   final PushNotificationService _pushNotificationService =
       locator<PushNotificationService>();
-
   Future<void> runStartupLogic() async {
-    await _pushNotificationService.initialize();
-
     if (_applicationSettingsService.applicationSettings == null) {
       _navigationService.replaceWith(Routes.applicationSettingsView);
     } else if (await _authenticationService.tryAutoLogin()) {
-      _navigationService.replaceWith(Routes.homeView);
+      _pushNotificationService.initialize().then((_) {
+        _pushNotificationService
+            .saveRegistredDeviceTokenToBackend()
+            .then((_) => _navigationService.replaceWith(Routes.homeView));
+      });
+
       //TODO
       //save device token from pushNotificationService to the backend
     } else {

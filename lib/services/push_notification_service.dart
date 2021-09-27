@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:fretto/api/device_token_api.dart';
 import 'package:fretto/app/app.locator.dart';
 import 'package:fretto/app/app.logger.dart';
 import 'package:fretto/app/app.router.dart';
@@ -23,10 +24,18 @@ class PushNotificationService {
 
   AuthenticationService _authenticationService =
       locator<AuthenticationService>();
+
+  DeviceTokenApi _deviceTokenApi = locator<DeviceTokenApi>();
+
   HomeViewModel homeViewModel = locator<HomeViewModel>();
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+
   String? _token;
+
+  late Stream<String> _tokenStream;
+
+  String? get deviceToken => _token;
 
   Future initialize() async {
     if (Platform.isIOS) {
@@ -45,10 +54,11 @@ class PushNotificationService {
     }
     _token = await _fcm.getToken();
 
-    //TODO
-    //save token to server
-
     print("DEVICE TOKEN:==> " + _token!);
+
+    _tokenStream = _fcm.onTokenRefresh;
+    _tokenStream.listen(saveDeviceTokenToBackend);
+
     //handle messages which caused app to open a terminated state
     RemoteMessage? initialMessage = await _fcm.getInitialMessage();
 
@@ -64,76 +74,90 @@ class PushNotificationService {
     FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
   }
 
+  Future<void> saveDeviceTokenToBackend(String deviceToken) async {
+    _deviceTokenApi.saveDeviceToken(deviceToken);
+  }
+
+  Future<void> saveRegistredDeviceTokenToBackend() async {
+    if (_token != null) {
+      await _deviceTokenApi.saveDeviceToken(_token!);
+    }
+  }
+
   Future<void> _handleForegroundMessage(RemoteMessage message) async {
     print("received foreground message $message");
-    Map<String, dynamic> data = message.data;
 
-    String? type = data['type'];
+    if (_authenticationService.isAuthenticated) {
+      Map<String, dynamic> data = message.data;
 
-    switch (type) {
-      case 'discussion':
-        Discussion newDiscussion =
-            Discussion.fromJson(json.decode(data['content']));
+      String? type = data['type'];
 
-        if (_discussionService.discussionsResult!.hasNext) {
-          _discussionService.removeDiscussionFromBottom();
-        }
-        _discussionService.addDiscussionToTop(newDiscussion);
+      switch (type) {
+        case 'discussion':
+          Discussion newDiscussion =
+              Discussion.fromJson(json.decode(data['content']));
 
-        _discussionService.incrementMissedMessages();
-        break;
-
-      case 'message':
-        Map<String, dynamic> content = json.decode(data["content"]);
-
-        Message message = Message.fromJson(content["message"]);
-
-        int discussionId = content["discussionId"];
-
-        if (_navigationService.currentRoute == Routes.messagingView &&
-            _navigationService.currentArguments is MessagingViewArguments &&
-            discussionId ==
-                (_navigationService.currentArguments as MessagingViewArguments)
-                    .discussionId) {
-          //if discussion is opened
-
-          if (_messagingService.discussionMessagesResult!.hasNext) {
-            _messagingService.removeMessageFromBottom();
-          }
-          _messagingService.addMessageToTop(message);
-        } else if ((_navigationService.currentRoute == Routes.homeView ||
-                _navigationService.currentRoute == "") &&
-            homeViewModel.currentIndex == 2) {
-          //if discussion is closed
-          Discussion? discussion =
-              _discussionService.findDiscussionById(discussionId);
-
-          if (discussion != null) {
-            _discussionService.removeDiscussion(discussion);
-          } else {
-            discussion =
-                await _discussionService.fetchDiscussionById(discussionId);
+          if (_discussionService.discussionsResult!.hasNext) {
             _discussionService.removeDiscussionFromBottom();
           }
-
-          discussion!.latestMessage = message;
-
-          _discussionService.addDiscussionToTop(discussion);
+          _discussionService.addDiscussionToTop(newDiscussion);
 
           _discussionService.incrementMissedMessages();
-        } else {
-          _discussionService.incrementMissedMessages();
-        }
+          break;
 
-        break;
+        case 'message':
+          Map<String, dynamic> content = json.decode(data["content"]);
 
-      case 'journey':
-        break;
+          Message message = Message.fromJson(content["message"]);
 
-      case 'proposal':
-        break;
+          int discussionId = content["discussionId"];
 
-      default:
+          if (_navigationService.currentRoute == Routes.messagingView &&
+              _navigationService.currentArguments is MessagingViewArguments &&
+              discussionId ==
+                  (_navigationService.currentArguments
+                          as MessagingViewArguments)
+                      .discussionId) {
+            //if discussion is opened
+
+            if (_messagingService.discussionMessagesResult!.hasNext) {
+              _messagingService.removeMessageFromBottom();
+            }
+            _messagingService.addMessageToTop(message);
+          } else if ((_navigationService.currentRoute == Routes.homeView ||
+                  _navigationService.currentRoute == "") &&
+              homeViewModel.currentIndex == 2) {
+            //if discussion is closed
+            Discussion? discussion =
+                _discussionService.findDiscussionById(discussionId);
+
+            if (discussion != null) {
+              _discussionService.removeDiscussion(discussion);
+            } else {
+              discussion =
+                  await _discussionService.fetchDiscussionById(discussionId);
+              _discussionService.removeDiscussionFromBottom();
+            }
+
+            discussion!.latestMessage = message;
+
+            _discussionService.addDiscussionToTop(discussion);
+
+            _discussionService.incrementMissedMessages();
+          } else {
+            _discussionService.incrementMissedMessages();
+          }
+
+          break;
+
+        case 'journey':
+          break;
+
+        case 'proposal':
+          break;
+
+        default:
+      }
     }
   }
 
@@ -145,7 +169,7 @@ class PushNotificationService {
 
     switch (type) {
       case 'discussion':
-        if (await _authenticationService.tryAutoLogin()) {
+        if (_authenticationService.isAuthenticated) {
           _navigationService.navigateTo(Routes.homeView,
               arguments: HomeViewArguments(viewIndex: 2));
           Discussion newDiscussion =
